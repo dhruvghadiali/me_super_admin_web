@@ -3,7 +3,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@MEShadcnComponents/*": ["./src/components/ui/*"]
+      "@MEUtils/*": ["./src/utils/*"],
+      "@MERedux/*": ["./src/slice/*"],
+      "@MEHelpers/*": ["./src/helpers/*"],
+      "@MEContexts/*": ["./src/contexts/*"],
+      "@MEShadcnComponents/*": ["./src/components/ui/*"],
+      "@MECommonComponents/*": ["./src/components/common/*"]
     }
   }
 }
