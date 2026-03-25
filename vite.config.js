@@ -14,9 +14,10 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      '@MERedux': path.resolve(__dirname, 'src/slice'),
+      "@MEPages": path.resolve(__dirname, 'src/pages'),
+      "@MERedux": path.resolve(__dirname, 'src/slice'),
       "@MEUtils": path.resolve(__dirname, "./src/utils"),
-      '@MEHelpers': path.resolve(__dirname, 'src/helpers'),
+      "@MEHelpers": path.resolve(__dirname, 'src/helpers'),
       "@MEContexts": path.resolve(__dirname, "./src/contexts"),
       "@MEShadcnComponents": path.resolve(__dirname, "./src/components/ui"),
       "@MECommonComponents": path.resolve(__dirname, "./src/components/common"),

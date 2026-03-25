@@ -5,6 +5,7 @@
       "@/*": ["./src/*"],
       "@MEUtils/*": ["./src/utils/*"],
       "@MERedux/*": ["./src/slice/*"],
+      "@MEPages/*": ["./src/pages/*"],
       "@MEHelpers/*": ["./src/helpers/*"],
       "@MEContexts/*": ["./src/contexts/*"],
       "@MEShadcnComponents/*": ["./src/components/ui/*"],

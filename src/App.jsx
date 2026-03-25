@@ -3,12 +3,15 @@ import { DASHBOARD, SIGN_IN } from "@MEUtils/pageRoutes";
 
 import { ThemeProvider } from "@MEContexts/themeProvider.jsx";
 
+// HOC components
 import AuthChecker from "@MECommonComponents/hoc/authChecker";
 import PublicRoute from "@MECommonComponents/hoc/PublicRoute";
 import ProtectedRoute from "@MECommonComponents/hoc/protectedRoute";
 
+// Pages
+import SigninPage from "@MEPages/signinPage";
 
-function App() {
+const App = () => {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <Router>
@@ -21,7 +24,7 @@ function App() {
                   redirectAuthenticated={true}
                   redirectTo={DASHBOARD}
                 >
-                  <> sign in</>
+                  <SigninPage />
                 </PublicRoute>
               }
             />
@@ -41,6 +44,6 @@ function App() {
       </Router>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

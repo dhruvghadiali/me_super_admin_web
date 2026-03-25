@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { clearAuthData } from "@MEHelpers/authHelpers";
-// import { API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
 import { signIn } from "@MERedux/authentication/authenticationAction";
 
 export const signInSlice = createSlice({
@@ -26,22 +25,22 @@ export const signInSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(signIn.pending, (state, _) => {
-        // state.user = {};
-        // state.token = "";
-        // state.error = "";
-        // state.loader = true;
+        state.user = {};
+        state.token = "";
+        state.error = "";
+        state.loader = true;
       })
       .addCase(signIn.fulfilled, (state, action) => {
-        // state.user = action.payload.user;
-        // state.token = action.payload.token;
-        // state.error = "";
-        // state.loader = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.error = "";
+        state.loader = false;
       })
       .addCase(signIn.rejected, (state, action) => {
-        // state.user = {};
-        // state.token = "";
-        // state.error = action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
-        // state.loader = false;
+        state.user = {};
+        state.token = "";
+        state.error = action.payload.error;
+        state.loader = false;
       });
   },
 });
