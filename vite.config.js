@@ -17,10 +17,13 @@ export default defineConfig({
       "@MEPages": path.resolve(__dirname, 'src/pages'),
       "@MERedux": path.resolve(__dirname, 'src/slice'),
       "@MEUtils": path.resolve(__dirname, "./src/utils"),
+      "@MEAssets": path.resolve(__dirname, "./src/assets"),
       "@MEHelpers": path.resolve(__dirname, 'src/helpers'),
       "@MEContexts": path.resolve(__dirname, "./src/contexts"),
+      "@MELocalization": path.resolve(__dirname, "./src/localization"),
       "@MEShadcnComponents": path.resolve(__dirname, "./src/components/ui"),
       "@MECommonComponents": path.resolve(__dirname, "./src/components/common"),
+      "@MEScreenComponents": path.resolve(__dirname, "./src/components/screen"),
     },
   },
 });

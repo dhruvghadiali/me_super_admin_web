@@ -6,10 +6,13 @@
       "@MEUtils/*": ["./src/utils/*"],
       "@MERedux/*": ["./src/slice/*"],
       "@MEPages/*": ["./src/pages/*"],
+      "@MEAssets/*": ["./src/assets/*"],
       "@MEHelpers/*": ["./src/helpers/*"],
       "@MEContexts/*": ["./src/contexts/*"],
+      "@MELocalization/*": ["./src/localization/*"],
       "@MEShadcnComponents/*": ["./src/components/ui/*"],
-      "@MECommonComponents/*": ["./src/components/common/*"]
+      "@MECommonComponents/*": ["./src/components/common/*"],
+      "@MEScreenComponents/*": ["./src/components/screen/*"],
     }
   }
 }
