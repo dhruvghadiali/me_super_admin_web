@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { DASHBOARD, SIGN_IN } from "@MEUtils/pageRoutes";
+import { DASHBOARD, SCHOOLS, SIGN_IN } from "@MEUtils/pageRoutes";
 
 import { ThemeProvider } from "@MEContexts/themeProvider.jsx";
 
@@ -7,6 +7,9 @@ import { ThemeProvider } from "@MEContexts/themeProvider.jsx";
 import AuthChecker from "@MECommonComponents/hoc/authChecker";
 import PublicRoute from "@MECommonComponents/hoc/PublicRoute";
 import ProtectedRoute from "@MECommonComponents/hoc/protectedRoute";
+
+// Layout
+import MESidebar from "@MECommonComponents/sidebar";
 
 // Pages
 import SigninPage from "@MEPages/signinPage";
@@ -32,10 +35,19 @@ const App = () => {
               path={DASHBOARD}
               element={
                 <ProtectedRoute>
-                  <> dashboard </>
-                  {/* <MESidebar>
-                    <DashboardPage />
-                  </MESidebar> */}
+                  <MESidebar>
+                    <> dashboard </>
+                  </MESidebar>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={SCHOOLS}
+              element={
+                <ProtectedRoute>
+                  <MESidebar>
+                    <> schools </>
+                  </MESidebar>
                 </ProtectedRoute>
               }
             />
