@@ -9,10 +9,11 @@ import PublicRoute from "@MECommonComponents/hoc/PublicRoute";
 import ProtectedRoute from "@MECommonComponents/hoc/protectedRoute";
 
 // Layout
-import MESidebar from "@MECommonComponents/sidebar";
+import MESidebarComponent from "@MECommonComponents/sidebar";
 
 // Pages
 import SigninPage from "@MEPages/signinPage";
+import SchoolsPage from "@MEPages/schoolsPage";
 
 const App = () => {
   return (
@@ -35,9 +36,9 @@ const App = () => {
               path={DASHBOARD}
               element={
                 <ProtectedRoute>
-                  <MESidebar>
+                  <MESidebarComponent>
                     <> dashboard </>
-                  </MESidebar>
+                  </MESidebarComponent>
                 </ProtectedRoute>
               }
             />
@@ -45,9 +46,9 @@ const App = () => {
               path={SCHOOLS}
               element={
                 <ProtectedRoute>
-                  <MESidebar>
-                    <> schools </>
-                  </MESidebar>
+                  <MESidebarComponent>
+                    <SchoolsPage />
+                  </MESidebarComponent>
                 </ProtectedRoute>
               }
             />

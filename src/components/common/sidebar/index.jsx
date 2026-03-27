@@ -45,7 +45,7 @@ import {
 
 import logo from "@MEAssets/logo.png";
 
-const MESidebar = ({ children }) => {
+const MESidebarComponent = ({ children }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -163,4 +163,4 @@ const MESidebar = ({ children }) => {
   );
 };
 
-export default MESidebar;
+export default MESidebarComponent;
