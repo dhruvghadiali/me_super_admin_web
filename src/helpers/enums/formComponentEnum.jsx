@@ -1,0 +1,13 @@
+/**
+ * Enumeration for selection components.
+ */
+const SELECTION_COMPONENT_VARIANTS = Object.freeze({
+  DEFAULT: "DEFAULT",
+  PRIMARY: "PRIMARY",
+  SECONDARY: "SECONDARY",
+  SUCCESS: "SUCCESS",
+  WARNING: "WARNING",
+  DESTRUCTIVE: "DESTRUCTIVE",
+});
+
+export { SELECTION_COMPONENT_VARIANTS };

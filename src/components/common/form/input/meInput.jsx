@@ -1,4 +1,5 @@
 import { Input } from "@MEShadcnComponents/input";
+import { Label } from "@MEShadcnComponents/label";
 
 const MEInputComponent = (props) => {
   const {
@@ -15,12 +16,12 @@ const MEInputComponent = (props) => {
 
   return (
     <div className="space-y-1.5">
-      <label
+      <Label
         htmlFor={id}
         className={`text-sm font-medium ${errorMessage ? "text-destructive" : "text-foreground"}`}
       >
         {label}
-      </label>
+      </Label>
       <Input
         id={id}
         name={name}
@@ -34,7 +35,7 @@ const MEInputComponent = (props) => {
         onChange={onChange}
       />
       {errorMessage && (
-        <p className="text-xs text-destructive mt-1">{errorMessage}</p>
+        <p className="mt-2 mb-5 text-xs text-destructive">{errorMessage}</p>
       )}
     </div>
   );

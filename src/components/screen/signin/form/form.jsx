@@ -37,8 +37,8 @@ import {
   signInFormSubmitButtonLabel,
 } from "@MELocalization/en";
 
-import MEInputComponent from "@MECommonComponents/form/meInput";
-import MEPasswordInputComponent from "@MECommonComponents/form/mePasswordInput";
+import MEInputComponent from "@MECommonComponents/form/input/meInput";
+import MEPasswordInputComponent from "@MECommonComponents/form/input/mePasswordInput";
 
 const SigninScreenAuthFormComponent = () => {
   const dispatch = useDispatch();

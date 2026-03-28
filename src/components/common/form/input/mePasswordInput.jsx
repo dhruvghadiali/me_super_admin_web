@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 import { Input } from "@MEShadcnComponents/input";
+import { Label } from "@MEShadcnComponents/label";
 
 const MEPasswordInputComponent = (props) => {
   const {
@@ -20,12 +21,12 @@ const MEPasswordInputComponent = (props) => {
 
   return (
     <div className="space-y-1.5">
-      <label
+      <Label
         htmlFor={id}
         className={`text-sm font-medium ${errorMessage ? "text-destructive" : "text-foreground"}`}
       >
         {label}
-      </label>
+      </Label>
       <div className="relative">
         <Input
           id={id}

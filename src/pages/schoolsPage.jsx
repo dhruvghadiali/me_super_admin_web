@@ -1,5 +1,7 @@
+import SchoolScreenFormComponent from "@MEScreenComponents/schools/form";
+
 const SchoolsPage = () => {
-    return <div>SchoolsPage</div>;
+    return <SchoolScreenFormComponent />;
 };
 
 export default SchoolsPage;
