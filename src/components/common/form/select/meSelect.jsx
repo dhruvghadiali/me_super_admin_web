@@ -14,6 +14,7 @@ import {
   selectMessageClassNameByVariant,
   selectedValueClassNameByVariant,
 } from "@MECommonComponents/form/select/meSelectClassNameWrapper";
+import { SELECTION_COMPONENT_VARIANTS } from "@MEHelpers/enums";
 
 import _ from "lodash";
 
@@ -38,7 +39,7 @@ const MESelectComponent = (props) => {
     <>
       <div className="space-y-1.5 w-full">
         <Label
-          className={`${selectLabelClassNameByVariant(labelvariant)} text-sm font-medium`}
+          className={`${message ? selectLabelClassNameByVariant(SELECTION_COMPONENT_VARIANTS.DESTRUCTIVE) : selectLabelClassNameByVariant(labelvariant)} text-sm font-medium`}
         >
           {label} {required && <span className="text-destructive">*</span>}
         </Label>
@@ -49,7 +50,7 @@ const MESelectComponent = (props) => {
             disabled={disabled}
           >
             <SelectTrigger
-              className={`w-full py-5 text-primary border-input shadow-xs focus-visible:border-primary/80 focus-visible:ring-primary/20 focus:ring-0`}
+              className={`w-full py-5 ${message ? selectClassNameByVariant(SELECTION_COMPONENT_VARIANTS.DESTRUCTIVE) : selectClassNameByVariant(selectVariant)}`}
             >
               <SelectValue placeholder={_.upperFirst(placeholder)} />
             </SelectTrigger>
@@ -84,13 +85,13 @@ const MESelectComponent = (props) => {
         </div>
         {message && (
           <p
-            className={`mt-4 mb-5 text-xs ${selectMessageClassNameByVariant(
+            className={`mt-1 text-xs ${selectMessageClassNameByVariant(
               messagevariant,
             )}`}
             role="alert"
             aria-live="polite"
           >
-            {"message"}
+            {message}
           </p>
         )}
       </div>

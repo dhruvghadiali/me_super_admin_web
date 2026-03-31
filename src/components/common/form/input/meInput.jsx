@@ -7,11 +7,12 @@ const MEInputComponent = (props) => {
     name,
     label,
     value,
-    onBlur,
-    onChange,
     placeholder,
     autoComplete,
     errorMessage,
+    required = false,
+    onBlur,
+    onChange,
   } = props;
 
   return (
@@ -20,7 +21,7 @@ const MEInputComponent = (props) => {
         htmlFor={id}
         className={`text-sm font-medium ${errorMessage ? "text-destructive" : "text-foreground"}`}
       >
-        {label}
+        {label} {required && <span className="text-destructive">*</span>}
       </Label>
       <Input
         id={id}
@@ -35,7 +36,7 @@ const MEInputComponent = (props) => {
         onChange={onChange}
       />
       {errorMessage && (
-        <p className="mt-2 mb-5 text-xs text-destructive">{errorMessage}</p>
+        <p className="text-xs text-destructive">{errorMessage}</p>
       )}
     </div>
   );

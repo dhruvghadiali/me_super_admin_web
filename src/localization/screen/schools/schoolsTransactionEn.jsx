@@ -1,0 +1,1 @@
+export * from "@MELocalization/screen/schools/organizationForm/organizationFormTransactionEn";

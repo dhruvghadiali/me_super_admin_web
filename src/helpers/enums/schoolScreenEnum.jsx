@@ -9,4 +9,12 @@ const SCHOOL_FORM_ACCORDION_ITEMS = Object.freeze({
   SCHOOL_ADMINS: "SCHOOL_ADMINS",
 });
 
-export { SCHOOL_FORM_ACCORDION_ITEMS };
+/**
+ * Enumeration for school form operation states.
+ */
+const SCHOOL_FORM_OPERATION_STATES = Object.freeze({
+  ADD: "ADD",
+  EDIT: "EDIT",
+});
+
+export { SCHOOL_FORM_ACCORDION_ITEMS, SCHOOL_FORM_OPERATION_STATES };

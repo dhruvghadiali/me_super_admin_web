@@ -1,1 +1,2 @@
-export * from "@/utils/validationMessage/authvalidationMessage";
+export * from "@/utils/validationMessage/schoolsValidationMessage";
+export * from "@/utils/validationMessage/authvalidationValidationMessage";
