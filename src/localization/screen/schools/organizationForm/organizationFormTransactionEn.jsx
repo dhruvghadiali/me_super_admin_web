@@ -1,89 +1,67 @@
 
-const organizationNameInputLabel = `name`;
-const organizationNameInputName = `organizationName`;
-const organizationNameInputPlaceholder = `enter organization name`;
+const organizationFormNameInputLabel = `name`;
+const organizationFormNameInputPlaceholder = `enter organization name`;
 
-const organizationShortNameInputLabel = `short name`;
-const organizationShortNameInputName = `organizationShortName`;
-const organizationShortNameInputPlaceholder = `enter organization short name`;
+const organizationFormShortNameInputLabel = `short name`;
+const organizationFormShortNameInputPlaceholder = `enter organization short name`;
 
-const organizationEmailInputLabel = `email`;
-const organizationEmailInputName = `organizationEmail`;
-const organizationEmailInputPlaceholder = `enter organization email`;
+const organizationFormEmailInputLabel = `email`;
+const organizationFormEmailInputPlaceholder = `enter organization email`;
 
-const organizationPhoneNumberInputLabel = `phone number`;
-const organizationPhoneNumberInputName = `organizationPhoneNumber`;
-const organizationPhoneNumberInputPlaceholder = `enter organization phone number`;
+const organizationFormPhoneNumberInputLabel = `phone number`;
+const organizationFormPhoneNumberInputPlaceholder = `enter organization phone number`;
 
-const organizationGovernmentRegisterNumberInputLabel = `government register number`;
-const organizationGovernmentRegisterNumberInputName = `organizationGovernmentRegisterNumber`;
-const organizationGovernmentRegisterNumberInputPlaceholder = `enter organization government register number`;
+const organizationFormGovernmentRegisterNumberInputLabel = `government register number`;
+const organizationFormGovernmentRegisterNumberInputPlaceholder = `enter organization government register number`;
 
-const organizationAddressInputLabel = `address`;
-const organizationAddressInputName = `organizationAddress`;
-const organizationAddressInputPlaceholder = `enter organization address`;
+const organizationFormAddressInputLabel = `address`;
+const organizationFormAddressInputPlaceholder = `enter organization address`;
 
-const organizationStateInputLabel = `state`;
-const organizationStateInputName = `organizationState`;
-const organizationStateInputPlaceholder = `enter organization state`;
+const organizationFormStateSelectionLabel = `state`;
+const organizationFormStateSelectionPlaceholder = `enter organization state`;
 
-const organizationDistrictInputLabel = `district`;
-const organizationDistrictInputName = `organizationDistrict`;
-const organizationDistrictInputPlaceholder = `enter organization district`;
+const organizationFormDistrictSelectionLabel = `district`;
+const organizationFormDistrictSelectionPlaceholder = `enter organization district`;
 
-const organizationCityInputLabel = `city`;
-const organizationCityInputName = `organizationCity`;
-const organizationCityInputPlaceholder = `enter organization city`;
+const organizationFormCitySelectionLabel = `city`;
+const organizationFormCitySelectionPlaceholder = `enter organization city`;
 
-const organizationAreaNameInputLabel = `area name`;
-const organizationAreaNameInputName = `organizationAreaName`;
-const organizationAreaNameInputPlaceholder = `enter organization area name`;
+const organizationFormAreaNameSelectionLabel = `area name`;
+const organizationFormAreaNameSelectionPlaceholder = `enter organization area name`;
 
-const organizationZipCodeInputLabel = `zip code`;
-const organizationZipCodeInputName = `organizationZipCode`;
-const organizationZipCodeInputPlaceholder = `enter organization zip code`;
+const organizationFormZipCodeSelectionLabel = `zip code`;
+const organizationFormZipCodeSelectionPlaceholder = `enter organization zip code`;
 
-const organizationSaveButtonLabel = `save`;
-const organizationEditButtonLabel = `edit`;
-const organizationCancelButtonLabel = `cancel`;
+const organizationFormSaveButtonLabel = `save`;
+const organizationFormEditButtonLabel = `edit`;
+const organizationFormCancelButtonLabel = `cancel`;
 const organizationFormSubmitMessage = `please review the changes before submitting`;
 
 export {
-  organizationNameInputName,
-  organizationNameInputLabel,
-  organizationNameInputPlaceholder,
-  organizationShortNameInputName,
-  organizationShortNameInputLabel,
-  organizationShortNameInputPlaceholder,
-  organizationEmailInputName,
-  organizationEmailInputLabel,
-  organizationEmailInputPlaceholder,
-  organizationPhoneNumberInputName,
-  organizationPhoneNumberInputLabel,
-  organizationPhoneNumberInputPlaceholder,
-  organizationGovernmentRegisterNumberInputName,
-  organizationGovernmentRegisterNumberInputLabel,
-  organizationGovernmentRegisterNumberInputPlaceholder,
-  organizationAddressInputName,
-  organizationAddressInputLabel,
-  organizationAddressInputPlaceholder,
-  organizationStateInputName,
-  organizationStateInputLabel,
-  organizationStateInputPlaceholder,
-  organizationDistrictInputName,
-  organizationDistrictInputLabel,
-  organizationDistrictInputPlaceholder,
-  organizationCityInputName,
-  organizationCityInputLabel,
-  organizationCityInputPlaceholder,
-  organizationAreaNameInputName,
-  organizationAreaNameInputLabel,
-  organizationAreaNameInputPlaceholder,
-  organizationZipCodeInputName,
-  organizationZipCodeInputLabel,
-  organizationZipCodeInputPlaceholder,
-  organizationSaveButtonLabel,
-  organizationEditButtonLabel,
-  organizationCancelButtonLabel,
+  organizationFormNameInputLabel,
+  organizationFormNameInputPlaceholder,
+  organizationFormShortNameInputLabel,
+  organizationFormShortNameInputPlaceholder,
+  organizationFormEmailInputLabel,
+  organizationFormEmailInputPlaceholder,
+  organizationFormPhoneNumberInputLabel,
+  organizationFormPhoneNumberInputPlaceholder,
+  organizationFormGovernmentRegisterNumberInputLabel,
+  organizationFormGovernmentRegisterNumberInputPlaceholder,
+  organizationFormAddressInputLabel,
+  organizationFormAddressInputPlaceholder,
+  organizationFormStateSelectionLabel,
+  organizationFormStateSelectionPlaceholder,
+  organizationFormDistrictSelectionLabel,
+  organizationFormDistrictSelectionPlaceholder,
+  organizationFormCitySelectionLabel,
+  organizationFormCitySelectionPlaceholder,
+  organizationFormAreaNameSelectionLabel,
+  organizationFormAreaNameSelectionPlaceholder,
+  organizationFormZipCodeSelectionLabel,
+  organizationFormZipCodeSelectionPlaceholder,
+  organizationFormSaveButtonLabel,
+  organizationFormEditButtonLabel,
+  organizationFormCancelButtonLabel,
   organizationFormSubmitMessage,
 };

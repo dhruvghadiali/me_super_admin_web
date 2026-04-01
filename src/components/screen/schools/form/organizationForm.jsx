@@ -5,13 +5,12 @@ import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 import * as Yup from "yup";
 
+import { Button } from "@MEShadcnComponents/button";
 import {
   SELECTION_COMPONENT_VARIANTS,
   SCHOOL_FORM_OPERATION_STATES,
 } from "@MEHelpers/enums";
-import {
-  phoneNumberRegex,
-} from "@MEHelpers/regex";
+import { phoneNumberRegex } from "@MEHelpers/regex";
 import {
   emailMaxChar,
   emailMinChar,
@@ -52,46 +51,33 @@ import {
   governmentRegistrationNumberMinLength,
 } from "@MEUtils/validationMessage";
 import {
-  organizationNameInputName,
-  organizationNameInputLabel,
-  organizationNameInputPlaceholder,
-  organizationShortNameInputName,
-  organizationShortNameInputLabel,
-  organizationShortNameInputPlaceholder,
-  organizationEmailInputName,
-  organizationEmailInputLabel,
-  organizationEmailInputPlaceholder,
-  organizationPhoneNumberInputName,
-  organizationPhoneNumberInputLabel,
-  organizationPhoneNumberInputPlaceholder,
-  organizationGovernmentRegisterNumberInputName,
-  organizationGovernmentRegisterNumberInputLabel,
-  organizationGovernmentRegisterNumberInputPlaceholder,
-  organizationAddressInputName,
-  organizationAddressInputLabel,
-  organizationAddressInputPlaceholder,
-  organizationStateInputName,
-  organizationStateInputLabel,
-  organizationStateInputPlaceholder,
-  organizationDistrictInputName,
-  organizationDistrictInputLabel,
-  organizationDistrictInputPlaceholder,
-  organizationCityInputName,
-  organizationCityInputLabel,
-  organizationCityInputPlaceholder,
-  organizationAreaNameInputName,
-  organizationAreaNameInputLabel,
-  organizationAreaNameInputPlaceholder,
-  organizationZipCodeInputName,
-  organizationZipCodeInputLabel,
-  organizationZipCodeInputPlaceholder,
-  organizationSaveButtonLabel,
-  organizationEditButtonLabel,
-  organizationCancelButtonLabel,
+  organizationFormNameInputLabel,
+  organizationFormNameInputPlaceholder,
+  organizationFormShortNameInputLabel,
+  organizationFormShortNameInputPlaceholder,
+  organizationFormEmailInputLabel,
+  organizationFormEmailInputPlaceholder,
+  organizationFormPhoneNumberInputLabel,
+  organizationFormPhoneNumberInputPlaceholder,
+  organizationFormGovernmentRegisterNumberInputLabel,
+  organizationFormGovernmentRegisterNumberInputPlaceholder,
+  organizationFormAddressInputLabel,
+  organizationFormAddressInputPlaceholder,
+  organizationFormStateSelectionLabel,
+  organizationFormStateSelectionPlaceholder,
+  organizationFormDistrictSelectionLabel,
+  organizationFormDistrictSelectionPlaceholder,
+  organizationFormCitySelectionLabel,
+  organizationFormCitySelectionPlaceholder,
+  organizationFormAreaNameSelectionLabel,
+  organizationFormAreaNameSelectionPlaceholder,
+  organizationFormZipCodeSelectionLabel,
+  organizationFormZipCodeSelectionPlaceholder,
+  organizationFormSaveButtonLabel,
+  organizationFormEditButtonLabel,
+  organizationFormCancelButtonLabel,
   organizationFormSubmitMessage,
 } from "@MELocalization/en";
-
-import { Button } from "@MEShadcnComponents/button";
 
 import MEInputComponent from "@MECommonComponents/form/input/meInput";
 import MESelectComponent from "@MECommonComponents/form/select/meSelect";
@@ -125,45 +111,42 @@ const SchoolScreenOrganizationFormComponent = () => {
     switch (schoolFormOperationState) {
       case SCHOOL_FORM_OPERATION_STATES.ADD:
         return _.upperFirst(
-          t("organizationSaveButtonLabel", {
-            defaultValue: organizationSaveButtonLabel,
+          t("organizationFormSaveButtonLabel", {
+            defaultValue: organizationFormSaveButtonLabel,
           }),
         );
       case SCHOOL_FORM_OPERATION_STATES.EDIT:
         return _.upperFirst(
-          t("organizationEditButtonLabel", {
-            defaultValue: organizationEditButtonLabel,
+          t("organizationFormEditButtonLabel", {
+            defaultValue: organizationFormEditButtonLabel,
           }),
         );
       default:
         return _.upperFirst(
-          t("organizationSaveButtonLabel", {
-            defaultValue: organizationSaveButtonLabel,
+          t("organizationFormSaveButtonLabel", {
+            defaultValue: organizationFormSaveButtonLabel,
           }),
         );
     }
   };
 
+  console.log("formik values", formik.values, organizationFormValues);
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-4 sm:gap-x-6 p-2">
         <MEInputComponent
           required={true}
           label={_.upperFirst(
-            t("organizationNameInputLabel", {
-              defaultValue: organizationNameInputLabel,
-            }),
-          )}
-          name={_.upperFirst(
-            t("organizationNameInputName", {
-              defaultValue: organizationNameInputName,
+            t("organizationFormNameInputLabel", {
+              defaultValue: organizationFormNameInputLabel,
             }),
           )}
           placeholder={_.upperFirst(
-            t("organizationNameInputPlaceholder", {
-              defaultValue: organizationNameInputPlaceholder,
+            t("organizationFormNameInputPlaceholder", {
+              defaultValue: organizationFormNameInputPlaceholder,
             }),
           )}
+          name={"name"}
           value={formik.values.name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -174,20 +157,16 @@ const SchoolScreenOrganizationFormComponent = () => {
         <MEInputComponent
           required={true}
           label={_.upperFirst(
-            t("organizationShortNameInputLabel", {
-              defaultValue: organizationShortNameInputLabel,
-            }),
-          )}
-          name={_.upperFirst(
-            t("organizationShortNameInputName", {
-              defaultValue: organizationShortNameInputName,
+            t("organizationFormShortNameInputLabel", {
+              defaultValue: organizationFormShortNameInputLabel,
             }),
           )}
           placeholder={_.upperFirst(
-            t("organizationShortNameInputPlaceholder", {
-              defaultValue: organizationShortNameInputPlaceholder,
+            t("organizationFormShortNameInputPlaceholder", {
+              defaultValue: organizationFormShortNameInputPlaceholder,
             }),
           )}
+          name={"shortName"}
           value={formik.values.shortName}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -200,20 +179,16 @@ const SchoolScreenOrganizationFormComponent = () => {
         <MEInputComponent
           required={true}
           label={_.upperFirst(
-            t("organizationEmailInputLabel", {
-              defaultValue: organizationEmailInputLabel,
-            }),
-          )}
-          name={_.upperFirst(
-            t("organizationEmailInputName", {
-              defaultValue: organizationEmailInputName,
+            t("organizationFormEmailInputLabel", {
+              defaultValue: organizationFormEmailInputLabel,
             }),
           )}
           placeholder={_.upperFirst(
-            t("organizationEmailInputPlaceholder", {
-              defaultValue: organizationEmailInputPlaceholder,
+            t("organizationFormEmailInputPlaceholder", {
+              defaultValue: organizationFormEmailInputPlaceholder,
             }),
           )}
+          name={"email"}
           value={formik.values.email}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -226,20 +201,16 @@ const SchoolScreenOrganizationFormComponent = () => {
         <MEInputComponent
           required={true}
           label={_.upperFirst(
-            t("organizationPhoneNumberInputLabel", {
-              defaultValue: organizationPhoneNumberInputLabel,
-            }),
-          )}
-          name={_.upperFirst(
-            t("organizationPhoneNumberInputName", {
-              defaultValue: organizationPhoneNumberInputName,
+            t("organizationFormPhoneNumberInputLabel", {
+              defaultValue: organizationFormPhoneNumberInputLabel,
             }),
           )}
           placeholder={_.upperFirst(
-            t("organizationPhoneNumberInputPlaceholder", {
-              defaultValue: organizationPhoneNumberInputPlaceholder,
+            t("organizationFormPhoneNumberInputPlaceholder", {
+              defaultValue: organizationFormPhoneNumberInputPlaceholder,
             }),
           )}
+          name={"phoneNumber"}
           value={formik.values.phoneNumber}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -252,21 +223,17 @@ const SchoolScreenOrganizationFormComponent = () => {
         <MEInputComponent
           required={true}
           label={_.upperFirst(
-            t("organizationGovernmentRegisterNumberInputLabel", {
-              defaultValue: organizationGovernmentRegisterNumberInputLabel,
-            }),
-          )}
-          name={_.upperFirst(
-            t("organizationGovernmentRegisterNumberInputName", {
-              defaultValue: organizationGovernmentRegisterNumberInputName,
+            t("organizationFormGovernmentRegisterNumberInputLabel", {
+              defaultValue: organizationFormGovernmentRegisterNumberInputLabel,
             }),
           )}
           placeholder={_.upperFirst(
-            t("organizationGovernmentRegisterNumberInputPlaceholder", {
+            t("organizationFormGovernmentRegisterNumberInputPlaceholder", {
               defaultValue:
-                organizationGovernmentRegisterNumberInputPlaceholder,
+                organizationFormGovernmentRegisterNumberInputPlaceholder,
             }),
           )}
+          name={"governmentRegisterNumber"}
           value={formik.values.governmentRegisterNumber}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -280,20 +247,16 @@ const SchoolScreenOrganizationFormComponent = () => {
         <MEInputComponent
           required={true}
           label={_.upperFirst(
-            t("organizationAddressInputLabel", {
-              defaultValue: organizationAddressInputLabel,
-            }),
-          )}
-          name={_.upperFirst(
-            t("organizationAddressInputName", {
-              defaultValue: organizationAddressInputName,
+            t("organizationFormAddressInputLabel", {
+              defaultValue: organizationFormAddressInputLabel,
             }),
           )}
           placeholder={_.upperFirst(
-            t("organizationAddressInputPlaceholder", {
-              defaultValue: organizationAddressInputPlaceholder,
+            t("organizationFormAddressInputPlaceholder", {
+              defaultValue: organizationFormAddressInputPlaceholder,
             }),
           )}
+          name={"address"}
           value={formik.values.address}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -308,15 +271,16 @@ const SchoolScreenOrganizationFormComponent = () => {
           required={true}
           clearable={true}
           label={_.upperFirst(
-            t("organizationStateInputLabel", {
-              defaultValue: organizationStateInputLabel,
+            t("organizationFormStateSelectionLabel", {
+              defaultValue: organizationFormStateSelectionLabel,
             }),
           )}
-          name={_.upperFirst(
-            t("organizationStateInputName", {
-              defaultValue: organizationStateInputName,
+          placeholder={_.upperFirst(
+            t("organizationFormStateSelectionPlaceholder", {
+              defaultValue: organizationFormStateSelectionPlaceholder,
             }),
           )}
+          name={"state"}
           items={[
             { value: "active", label: "Active" },
             { value: "inactive", label: "Inactive" },
@@ -327,11 +291,6 @@ const SchoolScreenOrganizationFormComponent = () => {
               ? formik.errors.state
               : ""
           }
-          placeholder={_.upperFirst(
-            t("organizationStateInputPlaceholder", {
-              defaultValue: organizationStateInputPlaceholder,
-            }),
-          )}
           selectedValue={formik.values.state}
           labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
           selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
@@ -345,15 +304,16 @@ const SchoolScreenOrganizationFormComponent = () => {
           disabled={false}
           clearable={true}
           label={_.upperFirst(
-            t("organizationDistrictInputLabel", {
-              defaultValue: organizationDistrictInputLabel,
+            t("organizationFormDistrictSelectionLabel", {
+              defaultValue: organizationFormDistrictSelectionLabel,
             }),
           )}
-          name={_.upperFirst(
-            t("organizationDistrictInputName", {
-              defaultValue: organizationDistrictInputName,
+          placeholder={_.upperFirst(
+            t("organizationFormDistrictSelectionPlaceholder", {
+              defaultValue: organizationFormDistrictSelectionPlaceholder,
             }),
           )}
+          name={"district"}
           items={[
             { value: "active", label: "Active" },
             { value: "inactive", label: "Inactive" },
@@ -364,11 +324,6 @@ const SchoolScreenOrganizationFormComponent = () => {
               ? formik.errors.district
               : ""
           }
-          placeholder={_.upperFirst(
-            t("organizationDistrictInputPlaceholder", {
-              defaultValue: organizationDistrictInputPlaceholder,
-            }),
-          )}
           selectedValue={formik.values.district}
           labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
           selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
@@ -382,15 +337,16 @@ const SchoolScreenOrganizationFormComponent = () => {
           disabled={false}
           clearable={true}
           label={_.upperFirst(
-            t("organizationCityInputLabel", {
-              defaultValue: organizationCityInputLabel,
+            t("organizationFormCitySelectionLabel", {
+              defaultValue: organizationFormCitySelectionLabel,
             }),
           )}
-          name={_.upperFirst(
-            t("organizationCityInputName", {
-              defaultValue: organizationCityInputName,
+          placeholder={_.upperFirst(
+            t("organizationFormCitySelectionPlaceholder", {
+              defaultValue: organizationFormCitySelectionPlaceholder,
             }),
           )}
+          name={"city"}
           items={[
             { value: "active", label: "Active" },
             { value: "inactive", label: "Inactive" },
@@ -399,11 +355,6 @@ const SchoolScreenOrganizationFormComponent = () => {
           message={
             formik.touched.city && formik.errors.city ? formik.errors.city : ""
           }
-          placeholder={_.upperFirst(
-            t("organizationCityInputPlaceholder", {
-              defaultValue: organizationCityInputPlaceholder,
-            }),
-          )}
           selectedValue={formik.values.city}
           labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
           selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
@@ -417,15 +368,16 @@ const SchoolScreenOrganizationFormComponent = () => {
           disabled={false}
           clearable={true}
           label={_.upperFirst(
-            t("organizationAreaNameInputLabel", {
-              defaultValue: organizationAreaNameInputLabel,
+            t("organizationFormAreaNameSelectionLabel", {
+              defaultValue: organizationFormAreaNameSelectionLabel,
             }),
           )}
-          name={_.upperFirst(
-            t("organizationAreaNameInputName", {
-              defaultValue: organizationAreaNameInputName,
+          placeholder={_.upperFirst(
+            t("organizationFormAreaNameSelectionPlaceholder", {
+              defaultValue: organizationFormAreaNameSelectionPlaceholder,
             }),
           )}
+          name={"areaName"}
           items={[
             { value: "active", label: "Active" },
             { value: "inactive", label: "Inactive" },
@@ -436,11 +388,6 @@ const SchoolScreenOrganizationFormComponent = () => {
               ? formik.errors.areaName
               : ""
           }
-          placeholder={_.upperFirst(
-            t("organizationAreaNameInputPlaceholder", {
-              defaultValue: organizationAreaNameInputPlaceholder,
-            }),
-          )}
           selectedValue={formik.values.areaName}
           labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
           selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
@@ -454,15 +401,16 @@ const SchoolScreenOrganizationFormComponent = () => {
           disabled={false}
           clearable={true}
           label={_.upperFirst(
-            t("organizationZipCodeInputLabel", {
-              defaultValue: organizationZipCodeInputLabel,
+            t("organizationFormZipCodeSelectionLabel", {
+              defaultValue: organizationFormZipCodeSelectionLabel,
             }),
           )}
-          name={_.upperFirst(
-            t("organizationZipCodeInputName", {
-              defaultValue: organizationZipCodeInputName,
+          placeholder={_.upperFirst(
+            t("organizationFormZipCodeSelectionPlaceholder", {
+              defaultValue: organizationFormZipCodeSelectionPlaceholder,
             }),
           )}
+          name={"zipCode"}
           items={[
             { value: "active", label: "Active" },
             { value: "inactive", label: "Inactive" },
@@ -473,11 +421,6 @@ const SchoolScreenOrganizationFormComponent = () => {
               ? formik.errors.zipCode
               : ""
           }
-          placeholder={_.upperFirst(
-            t("organizationZipCodeInputPlaceholder", {
-              defaultValue: organizationZipCodeInputPlaceholder,
-            }),
-          )}
           selectedValue={formik.values.zipCode}
           labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
           selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
@@ -506,8 +449,8 @@ const SchoolScreenOrganizationFormComponent = () => {
             onClick={formik.handleReset}
           >
             {_.upperFirst(
-              t("organizationCancelButtonLabel", {
-                defaultValue: organizationCancelButtonLabel,
+              t("organizationFormCancelButtonLabel", {
+                defaultValue: organizationFormCancelButtonLabel,
               }),
             )}
           </Button>

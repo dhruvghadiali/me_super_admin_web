@@ -1,5 +1,411 @@
+import { useTranslation } from "react-i18next";
+import { useFormik } from "formik";
+import { useSelector, useDispatch } from "react-redux";
+
+import _ from "lodash";
+import moment from "moment";
+import * as Yup from "yup";
+
+import { Button } from "@MEShadcnComponents/button";
+import { setSchoolFormValues } from "@MERedux/schools/schoolsSlice";
+import { phoneNumberRegex, yearDigitRegex } from "@MEHelpers/regex";
+import {
+  SELECTION_COMPONENT_VARIANTS,
+  SCHOOL_FORM_OPERATION_STATES,
+} from "@MEHelpers/enums";
+import {
+  emailMaxChar,
+  emailMinChar,
+  phoneNumberChar,
+  schoolNameMaxChar,
+  schoolNameMinChar,
+  schoolShortNameMaxChar,
+  schoolShortNameMinChar,
+  schoolAffiliateNumberMaxChar,
+  schoolAffiliateNumberMinChar,
+  schoolEstablishedYearMinNumber,
+  schoolEditionBoardMaxLimit,
+  schoolEditionBoardMinLimit,
+} from "@MEUtils/validationConst";
+import {
+  emailInvalid,
+  emailRequired,
+  emailMinLength,
+  emailMaxLength,
+  phoneNumberLength,
+  phoneNumberInvalid,
+  phoneNumberRequired,
+  schoolNameRequired,
+  schoolNameMaxLength,
+  schoolNameMinLength,
+  schoolShortNameRequired,
+  schoolShortNameMaxLength,
+  schoolShortNameMinLength,
+  schoolAffiliateNumberRequired,
+  schoolAffiliateNumberMaxLength,
+  schoolAffiliateNumberMinLength,
+  schoolEstablishedYearInvalid,
+  schoolEstablishedYearMinYear,
+  schoolEstablishedYearMaxYear,
+  schoolEstablishedYearRequired,
+  schoolTypeRequired,
+  educationBoardsMin,
+  educationBoardsMax,
+  educationBoardsRequired,
+} from "@MEUtils/validationMessage";
+import {
+  schoolFormNameInputLabel,
+  schoolFormNameInputPlaceholder,
+  schoolFormShortNameInputLabel,
+  schoolFormShortNameInputPlaceholder,
+  schoolFormAffiliateNumberInputLabel,
+  schoolFormAffiliateNumberInputPlaceholder,
+  schoolFormEmailInputLabel,
+  schoolFormEmailInputPlaceholder,
+  schoolFormPhoneNumberInputLabel,
+  schoolFormPhoneNumberInputPlaceholder,
+  schoolFormEstablishedYearInputLabel,
+  schoolFormEstablishedYearInputPlaceholder,
+  schoolFormSchoolTypeSelectionLabel,
+  schoolFormSchoolTypeSelectionPlaceholder,
+  schoolFormEducationBoardsSelectionLabel,
+  schoolFormEducationBoardsSelectionPlaceholder,
+  schoolFormSaveButtonLabel,
+  schoolFormEditButtonLabel,
+  schoolFormCancelButtonLabel,
+  schoolFormSubmitMessage,
+} from "@MELocalization/en";
+
+import MEInputComponent from "@MECommonComponents/form/input/meInput";
+import MESelectComponent from "@MECommonComponents/form/select/meSelect";
+import MEMultiSelectionComponent from "@MECommonComponents/form/combobox/meMultiSelection";
+
 const SchoolScreenSchoolFormComponent = () => {
-  return <h1>School Form</h1>;
+  const dispatch = useDispatch();
+
+  const { t } = useTranslation();
+  const { schoolFormValues, schoolFormOperationState } = useSelector(
+    (state) => state.schools,
+  );
+
+  const formik = useFormik({
+    initialValues: schoolFormValues,
+    validationSchema,
+    onSubmit: (values) => {
+      switch (schoolFormOperationState) {
+        case SCHOOL_FORM_OPERATION_STATES.ADD:
+          dispatch(setSchoolFormValues(values));
+          break;
+        case SCHOOL_FORM_OPERATION_STATES.EDIT:
+          // Dispatch edit school action
+          break;
+        default:
+          break;
+      }
+    },
+  });
+
+  const submitButtonText = () => {
+    switch (schoolFormOperationState) {
+      case SCHOOL_FORM_OPERATION_STATES.ADD:
+        return _.upperFirst(
+          t("schoolFormSaveButtonLabel", {
+            defaultValue: schoolFormSaveButtonLabel,
+          }),
+        );
+      case SCHOOL_FORM_OPERATION_STATES.EDIT:
+        return _.upperFirst(
+          t("schoolFormEditButtonLabel", {
+            defaultValue: schoolFormEditButtonLabel,
+          }),
+        );
+      default:
+        return _.upperFirst(
+          t("schoolFormSaveButtonLabel", {
+            defaultValue: schoolFormSaveButtonLabel,
+          }),
+        );
+    }
+  };
+
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-4 sm:gap-x-6 p-2">
+        <MEInputComponent
+          required={true}
+          label={_.upperFirst(
+            t("schoolFormNameInputLabel", {
+              defaultValue: schoolFormNameInputLabel,
+            }),
+          )}
+          placeholder={_.upperFirst(
+            t("schoolFormNameInputPlaceholder", {
+              defaultValue: schoolFormNameInputPlaceholder,
+            }),
+          )}
+          name={"name"}
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errorMessage={
+            formik.touched.name && formik.errors.name ? formik.errors.name : ""
+          }
+        />
+
+        <MEInputComponent
+          required={true}
+          label={_.upperFirst(
+            t("schoolFormShortNameInputLabel", {
+              defaultValue: schoolFormShortNameInputLabel,
+            }),
+          )}
+          placeholder={_.upperFirst(
+            t("schoolFormShortNameInputPlaceholder", {
+              defaultValue: schoolFormShortNameInputPlaceholder,
+            }),
+          )}
+          name={"shortName"}
+          value={formik.values.shortName}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errorMessage={
+            formik.touched.shortName && formik.errors.shortName
+              ? formik.errors.shortName
+              : ""
+          }
+        />
+
+        <MEInputComponent
+          required={true}
+          label={_.upperFirst(
+            t("schoolFormAffiliateNumberInputLabel", {
+              defaultValue: schoolFormAffiliateNumberInputLabel,
+            }),
+          )}
+          placeholder={_.upperFirst(
+            t("schoolFormAffiliateNumberInputPlaceholder", {
+              defaultValue: schoolFormAffiliateNumberInputPlaceholder,
+            }),
+          )}
+          name={"affiliateNumber"}
+          value={formik.values.affiliateNumber}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errorMessage={
+            formik.touched.affiliateNumber && formik.errors.affiliateNumber
+              ? formik.errors.affiliateNumber
+              : ""
+          }
+        />
+
+        <MEInputComponent
+          required={true}
+          label={_.upperFirst(
+            t("schoolFormEmailInputLabel", {
+              defaultValue: schoolFormEmailInputLabel,
+            }),
+          )}
+          placeholder={_.upperFirst(
+            t("schoolFormEmailInputPlaceholder", {
+              defaultValue: schoolFormEmailInputPlaceholder,
+            }),
+          )}
+          name={"email"}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errorMessage={
+            formik.touched.email && formik.errors.email
+              ? formik.errors.email
+              : ""
+          }
+        />
+
+        <MEInputComponent
+          required={true}
+          label={_.upperFirst(
+            t("schoolFormPhoneNumberInputLabel", {
+              defaultValue: schoolFormPhoneNumberInputLabel,
+            }),
+          )}
+          placeholder={_.upperFirst(
+            t("schoolFormPhoneNumberInputPlaceholder", {
+              defaultValue: schoolFormPhoneNumberInputPlaceholder,
+            }),
+          )}
+          name={"phoneNumber"}
+          value={formik.values.phoneNumber}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errorMessage={
+            formik.touched.phoneNumber && formik.errors.phoneNumber
+              ? formik.errors.phoneNumber
+              : ""
+          }
+        />
+
+        <MEInputComponent
+          required={true}
+          label={_.upperFirst(
+            t("schoolFormEstablishedYearInputLabel", {
+              defaultValue: schoolFormEstablishedYearInputLabel,
+            }),
+          )}
+          placeholder={_.upperFirst(
+            t("schoolFormEstablishedYearInputPlaceholder", {
+              defaultValue: schoolFormEstablishedYearInputPlaceholder,
+            }),
+          )}
+          name={"establishedYear"}
+          value={formik.values.establishedYear}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          errorMessage={
+            formik.touched.establishedYear && formik.errors.establishedYear
+              ? formik.errors.establishedYear
+              : ""
+          }
+        />
+
+        <MESelectComponent
+          disabled={false}
+          required={true}
+          clearable={true}
+          label={_.upperFirst(
+            t("schoolFormSchoolTypeSelectionLabel", {
+              defaultValue: schoolFormSchoolTypeSelectionLabel,
+            }),
+          )}
+          placeholder={_.upperFirst(
+            t("schoolFormSchoolTypeSelectionPlaceholder", {
+              defaultValue: schoolFormSchoolTypeSelectionPlaceholder,
+            }),
+          )}
+          name={"schoolType"}
+          items={[
+            { value: "active", label: "Active" },
+            { value: "inactive", label: "Inactive" },
+            { value: "pending", label: "Pending" },
+          ]}
+          message={
+            formik.touched.schoolType && formik.errors.schoolType
+              ? formik.errors.schoolType
+              : ""
+          }
+          selectedValue={formik.values.schoolType}
+          labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
+          selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
+          messagevariant={SELECTION_COMPONENT_VARIANTS.DESTRUCTIVE}
+          selectedVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
+          onValueChange={(value) => formik.setFieldValue("schoolType", value)}
+          onBlur={formik.handleBlur}
+        />
+
+        <MEMultiSelectionComponent
+          disabled={false}
+          required={true}
+          clearable={true}
+          label={_.upperFirst(
+            t("schoolFormEducationBoardsSelectionLabel", {
+              defaultValue: schoolFormEducationBoardsSelectionLabel,
+            }),
+          )}
+          placeholder={_.upperFirst(
+            t("schoolFormEducationBoardsSelectionPlaceholder", {
+              defaultValue: schoolFormEducationBoardsSelectionPlaceholder,
+            }),
+          )}
+          name={"educationBoards"}
+          items={[
+            { value: "active", label: "Active" },
+            { value: "inactive", label: "Inactive" },
+            { value: "pending", label: "Pending" },
+          ]}
+          message={
+            formik.touched.educationBoards && formik.errors.educationBoards
+              ? formik.errors.educationBoards
+              : ""
+          }
+          selectedValues={formik.values.educationBoards}
+          labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
+          selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
+          messagevariant={SELECTION_COMPONENT_VARIANTS.DESTRUCTIVE}
+          selectedVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
+          onValueChange={(values) =>
+            formik.setFieldValue("educationBoards", values)
+          }
+          onBlur={formik.handleBlur}
+        />
+      </div>
+      <div className="flex flex-col gap-3 pt-5 mt-5 border-t border-primary/20">
+        <p className="text-xs sm:text-sm text-muted-foreground">
+          {_.upperFirst(
+            t("schoolFormSubmitMessage", {
+              defaultValue: schoolFormSubmitMessage,
+            }),
+          )}
+        </p>
+        <div className="flex items-center gap-3">
+          <Button type="submit" className="hover:cursor-pointer">
+            {submitButtonText()}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="hover:cursor-pointer"
+            onClick={formik.handleReset}
+          >
+            {_.upperFirst(
+              t("schoolFormCancelButtonLabel", {
+                defaultValue: schoolFormCancelButtonLabel,
+              }),
+            )}
+          </Button>
+        </div>
+      </div>
+    </form>
+  );
 };
+
+const validationSchema = Yup.object({
+  affiliateNumber: Yup.string()
+    .trim()
+    .min(schoolAffiliateNumberMinChar, schoolAffiliateNumberMinLength)
+    .max(schoolAffiliateNumberMaxChar, schoolAffiliateNumberMaxLength)
+    .required(schoolAffiliateNumberRequired),
+  name: Yup.string()
+    .trim()
+    .min(schoolNameMinChar, schoolNameMinLength)
+    .max(schoolNameMaxChar, schoolNameMaxLength)
+    .required(schoolNameRequired),
+  shortName: Yup.string()
+    .trim()
+    .min(schoolShortNameMinChar, schoolShortNameMinLength)
+    .max(schoolShortNameMaxChar, schoolShortNameMaxLength)
+    .required(schoolShortNameRequired),
+  email: Yup.string()
+    .trim()
+    .email(emailInvalid)
+    .min(emailMinChar, emailMinLength)
+    .max(emailMaxChar, emailMaxLength)
+    .required(emailRequired),
+  phoneNumber: Yup.string()
+    .trim()
+    .matches(phoneNumberRegex, phoneNumberInvalid)
+    .min(phoneNumberChar, phoneNumberLength)
+    .max(phoneNumberChar, phoneNumberLength)
+    .required(phoneNumberRequired),
+  establishedYear: Yup.number()
+    .typeError(schoolEstablishedYearInvalid)
+    .min(schoolEstablishedYearMinNumber, schoolEstablishedYearMinYear)
+    .max(moment().year(), schoolEstablishedYearMaxYear)
+    .required(schoolEstablishedYearRequired),
+  schoolType: Yup.string().trim().required(schoolTypeRequired),
+  educationBoards: Yup.array()
+    .of(Yup.string().trim())
+    .min(schoolEditionBoardMinLimit, educationBoardsMin)
+    .max(schoolEditionBoardMaxLimit, educationBoardsMax)
+    .required(educationBoardsRequired),
+});
 
 export default SchoolScreenSchoolFormComponent;
