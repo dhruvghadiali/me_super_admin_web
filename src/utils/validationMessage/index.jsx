@@ -1,2 +1,5 @@
-export * from "@/utils/validationMessage/schoolsValidationMessage";
-export * from "@/utils/validationMessage/authvalidationValidationMessage";
+export * from "@MEUtils/validationMessage/schoolsValidationMessage";
+export * from "@MEUtils/validationMessage/commonFormValidationMessage";
+export * from "@/utils/validationMessage/authFormvalidationValidationMessage";
+export * from "@MEUtils/validationMessage/organizationFormValidationMessage";
+export * from "@MEUtils/validationMessage/organizationMemberFormValidationMessage";
