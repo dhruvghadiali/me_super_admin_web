@@ -185,6 +185,7 @@ const SchoolScreenOrganizationMembersFormComponent = () => {
                 type="button"
                 variant="destructive"
                 size="sm"
+                className={"hover:cursor-pointer"}
                 onClick={() => removeMember(memberIndex)}
               >
                 <Trash2 className="w-4 h-4" />
@@ -584,7 +585,7 @@ const SchoolScreenOrganizationMembersFormComponent = () => {
           <Button
             type="button"
             onClick={addMember}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 hover:cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             {_.upperFirst(

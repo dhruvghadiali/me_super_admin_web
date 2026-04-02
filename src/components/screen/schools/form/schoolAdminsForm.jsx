@@ -143,6 +143,7 @@ const SchoolScreenSchoolAdminsFormComponent = () => {
                 type="button"
                 variant="destructive"
                 size="sm"
+                className={"hover:cursor-pointer"}
                 onClick={() => removeAdmin(adminIndex)}
               >
                 <Trash2 className="w-4 h-4" />
@@ -254,7 +255,7 @@ const SchoolScreenSchoolAdminsFormComponent = () => {
           <Button
             type="button"
             onClick={addAdmin}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 hover:cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             {_.upperFirst(
