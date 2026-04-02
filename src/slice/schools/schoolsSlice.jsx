@@ -67,6 +67,7 @@ export const schoolsSlice = createSlice({
     schoolAddressesFormValues: [schoolAddressesInitialValues],
     schoolAdminsFormValues: [schoolAdminsInitialValues],
     schoolFormOperationState: SCHOOL_FORM_OPERATION_STATES.ADD,
+    addSchoolFormHasError: false,
   },
   reducers: {
     setOrganizationFormValues: (state, action) => {
@@ -125,6 +126,9 @@ export const schoolsSlice = createSlice({
         state.schoolAdminsFormValues.splice(index, 1);
       }
     },
+    setAddSchoolFormHasError: (state, action) => {
+      state.addSchoolFormHasError = action.payload;
+    },
   },
   extraReducers: (builder) => {},
 });
@@ -136,6 +140,7 @@ export const {
   setSchoolFormValues,
   removeSchoolAddress,
   addOrganizationMember,
+  setAddSchoolFormHasError,
   removeOrganizationMember,
   setSchoolAdminsFormValues,
   setOrganizationFormValues,

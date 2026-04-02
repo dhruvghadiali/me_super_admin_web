@@ -1,3 +1,4 @@
+import React, { forwardRef, useImperativeHandle } from "react";
 import { useFormik } from "formik";
 import { Plus, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -106,7 +107,7 @@ import {
 import MEInputComponent from "@MECommonComponents/form/input/meInput";
 import MESelectComponent from "@MECommonComponents/form/select/meSelect";
 
-const SchoolScreenOrganizationMembersFormComponent = () => {
+const SchoolScreenOrganizationMembersFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { organizationMembersFormValues, schoolFormOperationState } =
@@ -119,7 +120,6 @@ const SchoolScreenOrganizationMembersFormComponent = () => {
     validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      console.log("Submitting organization members:", values);
       switch (schoolFormOperationState) {
         case SCHOOL_FORM_OPERATION_STATES.ADD:
           dispatch(
@@ -159,6 +159,15 @@ const SchoolScreenOrganizationMembersFormComponent = () => {
 
   const addMember = () => dispatch(addOrganizationMember());
   const removeMember = (index) => dispatch(removeOrganizationMember(index));
+
+  // Expose formik methods to parent component
+  useImperativeHandle(ref, () => ({
+    validateForm: formik.validateForm,
+    submitForm: formik.submitForm,
+    setTouched: formik.setTouched,
+    isValid: formik.isValid,
+    errors: formik.errors,
+  }));
 
   const renderMemberForm = (memberIndex) => {
     const memberErrors = formik.errors.organizationMembers?.[memberIndex] || {};
@@ -630,7 +639,7 @@ const SchoolScreenOrganizationMembersFormComponent = () => {
       </form>
     </>
   );
-};
+});
 
 const validationSchema = Yup.object({
   organizationMembers: Yup.array()

@@ -1,3 +1,4 @@
+import React, { forwardRef, useImperativeHandle } from "react";
 import { useFormik } from "formik";
 import { Plus, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -67,7 +68,7 @@ import {
 
 import MEInputComponent from "@MECommonComponents/form/input/meInput";
 
-const SchoolScreenSchoolAdminsFormComponent = () => {
+const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
@@ -119,6 +120,24 @@ const SchoolScreenSchoolAdminsFormComponent = () => {
 
   const addAdmin = () => dispatch(addSchoolAdmin());
   const removeAdmin = (index) => dispatch(removeSchoolAdmin(index));
+
+  // Expose formik methods to parent component
+  useImperativeHandle(ref, () => ({
+    validateForm: formik.validateForm,
+    submitForm: formik.submitForm,
+    setTouched: formik.setTouched,
+    isValid: formik.isValid,
+    errors: formik.errors,
+  }));
+
+  // Expose formik methods to parent component
+  useImperativeHandle(ref, () => ({
+    validateForm: formik.validateForm,
+    submitForm: formik.submitForm,
+    setTouched: formik.setTouched,
+    isValid: formik.isValid,
+    errors: formik.errors,
+  }));
 
   const renderAdminForm = (adminIndex) => {
     const adminErrors = formik.errors.schoolAdmins?.[adminIndex] || {};
@@ -298,7 +317,7 @@ const SchoolScreenSchoolAdminsFormComponent = () => {
       </form>
     </>
   );
-};
+});
 
 const validationSchema = Yup.object({
   schoolAdmins: Yup.array()

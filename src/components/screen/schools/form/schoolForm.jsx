@@ -1,3 +1,4 @@
+import React, { forwardRef, useImperativeHandle } from "react";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
@@ -80,7 +81,7 @@ import MEInputComponent from "@MECommonComponents/form/input/meInput";
 import MESelectComponent from "@MECommonComponents/form/select/meSelect";
 import MEMultiSelectionComponent from "@MECommonComponents/form/combobox/meMultiSelection";
 
-const SchoolScreenSchoolFormComponent = () => {
+const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
@@ -104,6 +105,15 @@ const SchoolScreenSchoolFormComponent = () => {
       }
     },
   });
+
+  // Expose formik methods to parent component
+  useImperativeHandle(ref, () => ({
+    validateForm: formik.validateForm,
+    submitForm: formik.submitForm,
+    setTouched: formik.setTouched,
+    isValid: formik.isValid,
+    errors: formik.errors,
+  }));
 
   const submitButtonText = () => {
     switch (schoolFormOperationState) {
@@ -365,7 +375,7 @@ const SchoolScreenSchoolFormComponent = () => {
       </div>
     </form>
   );
-};
+});
 
 const validationSchema = Yup.object({
   affiliateNumber: Yup.string()

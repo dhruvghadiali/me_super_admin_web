@@ -1,3 +1,4 @@
+import React, { forwardRef, useImperativeHandle } from "react";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,11 +7,12 @@ import _ from "lodash";
 import * as Yup from "yup";
 
 import { Button } from "@MEShadcnComponents/button";
+import { phoneNumberRegex } from "@MEHelpers/regex";
+import { setOrganizationFormValues } from "@MERedux/schools/schoolsSlice";
 import {
   SELECTION_COMPONENT_VARIANTS,
   SCHOOL_FORM_OPERATION_STATES,
 } from "@MEHelpers/enums";
-import { phoneNumberRegex } from "@MEHelpers/regex";
 import {
   emailMaxChar,
   emailMinChar,
@@ -82,7 +84,7 @@ import {
 import MEInputComponent from "@MECommonComponents/form/input/meInput";
 import MESelectComponent from "@MECommonComponents/form/select/meSelect";
 
-const SchoolScreenOrganizationFormComponent = () => {
+const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
@@ -107,6 +109,15 @@ const SchoolScreenOrganizationFormComponent = () => {
     },
   });
 
+  // Expose formik methods to parent component
+  useImperativeHandle(ref, () => ({
+    validateForm: formik.validateForm,
+    submitForm: formik.submitForm,
+    setTouched: formik.setTouched,
+    isValid: formik.isValid,
+    errors: formik.errors,
+  }));
+
   const submitButtonText = () => {
     switch (schoolFormOperationState) {
       case SCHOOL_FORM_OPERATION_STATES.ADD:
@@ -130,7 +141,6 @@ const SchoolScreenOrganizationFormComponent = () => {
     }
   };
 
-  console.log("formik values", formik.values, organizationFormValues);
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-4 sm:gap-x-6 p-2">
@@ -458,7 +468,7 @@ const SchoolScreenOrganizationFormComponent = () => {
       </div>
     </form>
   );
-};
+});
 
 const validationSchema = Yup.object({
   name: Yup.string()

@@ -1,3 +1,4 @@
+import React, { forwardRef, useImperativeHandle } from "react";
 import { useFormik } from "formik";
 import { Plus, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -64,7 +65,7 @@ import {
 import MEInputComponent from "@MECommonComponents/form/input/meInput";
 import MESelectComponent from "@MECommonComponents/form/select/meSelect";
 
-const SchoolScreenSchoolAddressesFormComponent = () => {
+const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
@@ -116,6 +117,15 @@ const SchoolScreenSchoolAddressesFormComponent = () => {
 
   const addAddress = () => dispatch(addSchoolAddress());
   const removeAddress = (index) => dispatch(removeSchoolAddress(index));
+
+  // Expose formik methods to parent component
+  useImperativeHandle(ref, () => ({
+    validateForm: formik.validateForm,
+    submitForm: formik.submitForm,
+    setTouched: formik.setTouched,
+    isValid: formik.isValid,
+    errors: formik.errors,
+  }));
 
   const renderAddressForm = (addressIndex) => {
     const addressErrors = formik.errors.schoolAddresses?.[addressIndex] || {};
@@ -428,7 +438,7 @@ const SchoolScreenSchoolAddressesFormComponent = () => {
       </form>
     </>
   );
-};
+});
 
 const validationSchema = Yup.object({
   schoolAddresses: Yup.array()
