@@ -51,6 +51,13 @@ const schoolAddressesInitialValues = {
   zipcode: "",
 };
 
+const schoolAdminsInitialValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phoneNumber: "",
+};
+
 export const schoolsSlice = createSlice({
   name: "schools",
   initialState: {
@@ -58,6 +65,7 @@ export const schoolsSlice = createSlice({
     organizationFormValues: organizationFormInitialValues,
     organizationMembersFormValues: [organizationMembersInitialValues],
     schoolAddressesFormValues: [schoolAddressesInitialValues],
+    schoolAdminsFormValues: [schoolAdminsInitialValues],
     schoolFormOperationState: SCHOOL_FORM_OPERATION_STATES.ADD,
   },
   reducers: {
@@ -98,16 +106,38 @@ export const schoolsSlice = createSlice({
         state.schoolAddressesFormValues.splice(index, 1);
       }
     },
+    setSchoolAdminsFormValues: (state, action) => {
+      state.schoolAdminsFormValues = action.payload;
+    },
+    addSchoolAdmin: (state) => {
+      if (state.schoolAdminsFormValues.length < 5) {
+        state.schoolAdminsFormValues.push({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phoneNumber: "",
+        });
+      }
+    },
+    removeSchoolAdmin: (state, action) => {
+      const index = action.payload;
+      if (state.schoolAdminsFormValues.length > 1 && index >= 0 && index < state.schoolAdminsFormValues.length) {
+        state.schoolAdminsFormValues.splice(index, 1);
+      }
+    },
   },
   extraReducers: (builder) => {},
 });
 
 export const {
+  addSchoolAdmin,
   addSchoolAddress,
+  removeSchoolAdmin,
   setSchoolFormValues,
   removeSchoolAddress,
   addOrganizationMember,
   removeOrganizationMember,
+  setSchoolAdminsFormValues,
   setOrganizationFormValues,
   setSchoolFormOperationState,
   setSchoolAddressesFormValues,
