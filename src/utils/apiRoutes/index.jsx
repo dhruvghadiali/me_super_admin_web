@@ -1,3 +1,4 @@
 const signInAPIRoute = "/signin";
+const schoolsAPIRoute = "/schools";
 
-export { signInAPIRoute };
+export { signInAPIRoute, schoolsAPIRoute };

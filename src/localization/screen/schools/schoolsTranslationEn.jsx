@@ -1,3 +1,5 @@
+
+export * from "@MELocalization/screen/schools/schoolPageTranslationEn";
 export * from "@MELocalization/screen/schools/schoolFormAccordionTranslationEn";
 export * from "@MELocalization/screen/schools/schoolForm/schoolFormTranslationEn";
 export * from "@MELocalization/screen/schools/schoolAdminsForm/schoolAdminsFormTranslationEn";

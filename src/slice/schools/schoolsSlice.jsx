@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { getschools } from "@MERedux/schools/schoolsAction";
 import { SCHOOL_FORM_OPERATION_STATES } from "@MEHelpers/enums";
 
 const organizationFormInitialValues = {
@@ -68,6 +69,9 @@ export const schoolsSlice = createSlice({
     schoolAdminsFormValues: [schoolAdminsInitialValues],
     schoolFormOperationState: SCHOOL_FORM_OPERATION_STATES.ADD,
     addSchoolFormHasError: false,
+    schools: [],
+    schoolListError: "",
+    schoolListLoader: false,
   },
   reducers: {
     setOrganizationFormValues: (state, action) => {
@@ -84,12 +88,18 @@ export const schoolsSlice = createSlice({
     },
     addOrganizationMember: (state) => {
       if (state.organizationMembersFormValues.length < 5) {
-        state.organizationMembersFormValues.push(organizationMembersInitialValues);
+        state.organizationMembersFormValues.push(
+          organizationMembersInitialValues,
+        );
       }
     },
     removeOrganizationMember: (state, action) => {
       const index = action.payload;
-      if (state.organizationMembersFormValues.length > 1 && index >= 0 && index < state.organizationMembersFormValues.length) {
+      if (
+        state.organizationMembersFormValues.length > 1 &&
+        index >= 0 &&
+        index < state.organizationMembersFormValues.length
+      ) {
         state.organizationMembersFormValues.splice(index, 1);
       }
     },
@@ -103,7 +113,11 @@ export const schoolsSlice = createSlice({
     },
     removeSchoolAddress: (state, action) => {
       const index = action.payload;
-      if (state.schoolAddressesFormValues.length > 1 && index >= 0 && index < state.schoolAddressesFormValues.length) {
+      if (
+        state.schoolAddressesFormValues.length > 1 &&
+        index >= 0 &&
+        index < state.schoolAddressesFormValues.length
+      ) {
         state.schoolAddressesFormValues.splice(index, 1);
       }
     },
@@ -122,7 +136,11 @@ export const schoolsSlice = createSlice({
     },
     removeSchoolAdmin: (state, action) => {
       const index = action.payload;
-      if (state.schoolAdminsFormValues.length > 1 && index >= 0 && index < state.schoolAdminsFormValues.length) {
+      if (
+        state.schoolAdminsFormValues.length > 1 &&
+        index >= 0 &&
+        index < state.schoolAdminsFormValues.length
+      ) {
         state.schoolAdminsFormValues.splice(index, 1);
       }
     },
@@ -130,7 +148,24 @@ export const schoolsSlice = createSlice({
       state.addSchoolFormHasError = action.payload;
     },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getschools.pending, (state) => {
+        state.schools = [];
+        state.schoolListError = "";
+        state.schoolListLoader = true;
+      })
+      .addCase(getschools.fulfilled, (state, action) => {
+        state.schools = action.payload.schools;
+        state.schoolListError = action.payload.error;
+        state.schoolListLoader = false;
+      })
+      .addCase(getschools.rejected, (state, action) => {
+        state.schools = [];
+        state.schoolListLoader = false;
+        state.schoolListError = action.payload.error;
+      });
+  },
 });
 
 export const {

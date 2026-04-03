@@ -17,4 +17,17 @@ const SCHOOL_FORM_OPERATION_STATES = Object.freeze({
   EDIT: "EDIT",
 });
 
-export { SCHOOL_FORM_ACCORDION_ITEMS, SCHOOL_FORM_OPERATION_STATES };
+/**
+ * Enumeration for school information for weeknames.
+ */
+const SCHOOL_WEEK_DAYS = Object.freeze({
+  SUNDAY: "sunday",
+  MONDAY: "monday",
+  TUESDAY: "tuesday",
+  WEDNESDAY: "wednesday",
+  THURSDAY: "thursday",
+  FRIDAY: "friday",
+  SATURDAY: "saturday",
+});
+
+export { SCHOOL_FORM_ACCORDION_ITEMS, SCHOOL_FORM_OPERATION_STATES, SCHOOL_WEEK_DAYS };
