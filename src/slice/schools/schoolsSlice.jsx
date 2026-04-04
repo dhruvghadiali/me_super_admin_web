@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { getschools } from "@MERedux/schools/schoolsAction";
-import { SCHOOL_FORM_OPERATION_STATES } from "@MEHelpers/enums";
+import {
+  SCHOOL_INFORMATION_VIEW,
+  SCHOOL_FORM_OPERATION_STATES,
+} from "@MEHelpers/enums";
 
 const organizationFormInitialValues = {
   name: "",
@@ -69,6 +72,7 @@ export const schoolsSlice = createSlice({
     schoolAdminsFormValues: [schoolAdminsInitialValues],
     schoolFormOperationState: SCHOOL_FORM_OPERATION_STATES.ADD,
     addSchoolFormHasError: false,
+    schoolInformationView: SCHOOL_INFORMATION_VIEW.TABLE,
     schools: [],
     schoolListError: "",
     schoolListLoader: false,
@@ -147,6 +151,9 @@ export const schoolsSlice = createSlice({
     setAddSchoolFormHasError: (state, action) => {
       state.addSchoolFormHasError = action.payload;
     },
+    setSchoolInformationView: (state, action) => {
+      state.schoolInformationView = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -175,6 +182,7 @@ export const {
   setSchoolFormValues,
   removeSchoolAddress,
   addOrganizationMember,
+  setSchoolInformationView,
   setAddSchoolFormHasError,
   removeOrganizationMember,
   setSchoolAdminsFormValues,

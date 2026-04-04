@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import _ from "lodash";
 
+import { SCHOOL_INFORMATION_VIEW } from "@MEHelpers/enums";
 import { getschools } from "@MERedux/schools/schoolsAction";
+import { setSchoolInformationView } from "@MERedux/schools/schoolsSlice";
 import {
   schoolDataLoaderHeader,
   schoolDataLoaderMessage,
@@ -14,16 +16,21 @@ import {
 } from "@MELocalization/en";
 
 import SchoolScreenFormComponent from "@MEScreenComponents/schools/form";
-import MEDataLoaderComponent from "@MECommonComponents/loader/dataLoader";
-import MEDataListNotFoundComponent from "@MECommonComponents/message/dataListNotFound";
+import MEDataLoaderComponent from "@MECommonComponents/loader/meDataLoader";
+import SchoolScreenTableDataComponet from "@MEScreenComponents/schools/tableData";
+import MEDataListNotFoundComponent from "@MECommonComponents/message/meDataListNotFound";
+import MEPageDetailsNotFoundComponent from "@MECommonComponents/message/mePageDetailsNotFound";
 
 const SchoolsPage = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { schoolListLoader, schools } = useSelector((state) => state.schools);
+  const { schoolListLoader, schools, schoolInformationView } = useSelector(
+    (state) => state.schools,
+  );
 
   useEffect(() => {
+    dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
     dispatch(getschools());
   }, [dispatch]);
 
@@ -73,7 +80,14 @@ const SchoolsPage = () => {
     );
   }
 
-  return <SchoolScreenFormComponent />;
+  switch (schoolInformationView) {
+    case SCHOOL_INFORMATION_VIEW.TABLE:
+      return <SchoolScreenTableDataComponet />;
+    case SCHOOL_INFORMATION_VIEW.FORM:
+      return <SchoolScreenFormComponent />;
+    default:
+      return <MEPageDetailsNotFoundComponent />;
+  }
 };
 
 export default SchoolsPage;

@@ -30,4 +30,17 @@ const SCHOOL_WEEK_DAYS = Object.freeze({
   SATURDAY: "saturday",
 });
 
-export { SCHOOL_FORM_ACCORDION_ITEMS, SCHOOL_FORM_OPERATION_STATES, SCHOOL_WEEK_DAYS };
+/**
+ * Enumeration for school information view.
+ */
+const SCHOOL_INFORMATION_VIEW = Object.freeze({
+  TABLE: "TABLE",
+  FORM: "FORM",
+});
+
+export {
+  SCHOOL_WEEK_DAYS,
+  SCHOOL_INFORMATION_VIEW,
+  SCHOOL_FORM_ACCORDION_ITEMS,
+  SCHOOL_FORM_OPERATION_STATES,
+};

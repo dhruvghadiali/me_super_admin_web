@@ -24,7 +24,7 @@ const MEDataListNotFoundComponent = (props) => {
         <CardContent className="flex flex-col items-center justify-center p-8 sm:p-12 text-center space-y-6">
           <div className="relative mb-4">
             <div className="relative bg-secondary rounded-full p-3 border-2 border-primary">
-              <AlertTriangleIcon className="h-10 w-10 sm:h-14 sm:w-14 text-primary" />
+              <AlertTriangleIcon className="h-10 w-10 sm:h-14 sm:w-14 text-destructive" />
             </div>
           </div>
 
