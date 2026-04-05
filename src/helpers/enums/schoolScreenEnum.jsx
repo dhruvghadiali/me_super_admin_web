@@ -9,13 +9,6 @@ const SCHOOL_FORM_ACCORDION_ITEMS = Object.freeze({
   SCHOOL_ADMINS: "SCHOOL_ADMINS",
 });
 
-/**
- * Enumeration for school form operation states.
- */
-const SCHOOL_FORM_OPERATION_STATES = Object.freeze({
-  ADD: "ADD",
-  EDIT: "EDIT",
-});
 
 /**
  * Enumeration for school information for weeknames.
@@ -38,9 +31,19 @@ const SCHOOL_INFORMATION_VIEW = Object.freeze({
   FORM: "FORM",
 });
 
+/**
+ * Enumeration for school screen DB operations.
+ */
+const SCHOOL_SCREEN_DB_OPERATIONS = Object.freeze({
+  ADD: "ADD",
+  EDIT: "EDIT",
+  DELETE: "DELETE",
+  VIEW: "VIEW",
+});
+
 export {
   SCHOOL_WEEK_DAYS,
   SCHOOL_INFORMATION_VIEW,
   SCHOOL_FORM_ACCORDION_ITEMS,
-  SCHOOL_FORM_OPERATION_STATES,
+  SCHOOL_SCREEN_DB_OPERATIONS,
 };

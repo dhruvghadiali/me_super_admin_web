@@ -9,7 +9,7 @@ import * as Yup from "yup";
 
 import { phoneNumberRegex } from "@MEHelpers/regex";
 import { Button } from "@MEShadcnComponents/button";
-import { SCHOOL_FORM_OPERATION_STATES } from "@MEHelpers/enums";
+import { SCHOOL_SCREEN_DB_OPERATIONS } from "@MEHelpers/enums";
 import {
   Card,
   CardContent,
@@ -72,7 +72,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { schoolAdminsFormValues, schoolFormOperationState } = useSelector(
+  const { schoolAdminsFormValues, schoolScreenDBOperation } = useSelector(
     (state) => state.schools,
   );
 
@@ -83,11 +83,11 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      switch (schoolFormOperationState) {
-        case SCHOOL_FORM_OPERATION_STATES.ADD:
+      switch (schoolScreenDBOperation) {
+        case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
           dispatch(setSchoolAdminsFormValues(values.schoolAdmins));
           break;
-        case SCHOOL_FORM_OPERATION_STATES.EDIT:
+        case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
           break;
         default:
           break;
@@ -96,14 +96,14 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   });
 
   const submitButtonText = () => {
-    switch (schoolFormOperationState) {
-      case SCHOOL_FORM_OPERATION_STATES.ADD:
+    switch (schoolScreenDBOperation) {
+      case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         return _.upperFirst(
           t("schoolAdminsFormSaveButtonLabel", {
             defaultValue: schoolAdminsFormSaveButtonLabel,
           }),
         );
-      case SCHOOL_FORM_OPERATION_STATES.EDIT:
+      case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
         return _.upperFirst(
           t("schoolAdminsFormEditButtonLabel", {
             defaultValue: schoolAdminsFormEditButtonLabel,

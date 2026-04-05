@@ -17,7 +17,7 @@ import {
 } from "@MEShadcnComponents/card";
 import {
   SELECTION_COMPONENT_VARIANTS,
-  SCHOOL_FORM_OPERATION_STATES,
+  SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
 import {
   addOrganizationMember,
@@ -110,7 +110,7 @@ import MESelectComponent from "@MECommonComponents/form/select/meSelect";
 const SchoolScreenOrganizationMembersFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { organizationMembersFormValues, schoolFormOperationState } =
+  const { organizationMembersFormValues, schoolScreenDBOperation } =
     useSelector((state) => state.schools);
 
   const formik = useFormik({
@@ -120,13 +120,13 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef((props, ref) => 
     validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      switch (schoolFormOperationState) {
-        case SCHOOL_FORM_OPERATION_STATES.ADD:
+      switch (schoolScreenDBOperation) {
+        case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
           dispatch(
             setOrganizationMembersFormValues(values.organizationMembers),
           );
           break;
-        case SCHOOL_FORM_OPERATION_STATES.EDIT:
+        case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
           break;
         default:
           break;
@@ -135,14 +135,14 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef((props, ref) => 
   });
 
   const submitButtonText = () => {
-    switch (schoolFormOperationState) {
-      case SCHOOL_FORM_OPERATION_STATES.ADD:
+    switch (schoolScreenDBOperation) {
+      case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         return _.upperFirst(
           t("organizationMembersFormSaveButtonLabel", {
             defaultValue: organizationMembersFormSaveButtonLabel,
           }),
         );
-      case SCHOOL_FORM_OPERATION_STATES.EDIT:
+      case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
         return _.upperFirst(
           t("organizationMembersFormEditButtonLabel", {
             defaultValue: organizationMembersFormEditButtonLabel,

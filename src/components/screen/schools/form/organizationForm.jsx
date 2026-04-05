@@ -11,7 +11,7 @@ import { phoneNumberRegex } from "@MEHelpers/regex";
 import { setOrganizationFormValues } from "@MERedux/schools/schoolsSlice";
 import {
   SELECTION_COMPONENT_VARIANTS,
-  SCHOOL_FORM_OPERATION_STATES,
+  SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
 import {
   emailMaxChar,
@@ -88,7 +88,7 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { organizationFormValues, schoolFormOperationState } = useSelector(
+  const { organizationFormValues, schoolScreenDBOperation } = useSelector(
     (state) => state.schools,
   );
 
@@ -96,11 +96,11 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
     initialValues: organizationFormValues,
     validationSchema,
     onSubmit: (values) => {
-      switch (schoolFormOperationState) {
-        case SCHOOL_FORM_OPERATION_STATES.ADD:
+      switch (schoolScreenDBOperation) {
+        case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
           dispatch(setOrganizationFormValues(values));
           break;
-        case SCHOOL_FORM_OPERATION_STATES.EDIT:
+        case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
           // Dispatch edit organization action
           break;
         default:
@@ -119,14 +119,14 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
   }));
 
   const submitButtonText = () => {
-    switch (schoolFormOperationState) {
-      case SCHOOL_FORM_OPERATION_STATES.ADD:
+    switch (schoolScreenDBOperation) {
+      case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         return _.upperFirst(
           t("organizationFormSaveButtonLabel", {
             defaultValue: organizationFormSaveButtonLabel,
           }),
         );
-      case SCHOOL_FORM_OPERATION_STATES.EDIT:
+      case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
         return _.upperFirst(
           t("organizationFormEditButtonLabel", {
             defaultValue: organizationFormEditButtonLabel,

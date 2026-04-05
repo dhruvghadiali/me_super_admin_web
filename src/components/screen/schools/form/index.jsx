@@ -12,8 +12,16 @@ import {
 import _ from "lodash";
 
 import { Button } from "@MEShadcnComponents/button";
-import { SCHOOL_FORM_ACCORDION_ITEMS } from "@MEHelpers/enums";
-import { setAddSchoolFormHasError } from "@MERedux/schools/schoolsSlice";
+import {
+  SCHOOL_INFORMATION_VIEW,
+  SCHOOL_SCREEN_DB_OPERATIONS,
+  SCHOOL_FORM_ACCORDION_ITEMS,
+} from "@MEHelpers/enums";
+import {
+  setAddSchoolFormHasError,
+  setSchoolInformationView,
+  setSchoolScreenDBOperation,
+} from "@MERedux/schools/schoolsSlice";
 import {
   Accordion,
   AccordionItem,
@@ -33,6 +41,7 @@ import {
   schoolAdminsAccordionSubtitle,
 } from "@MELocalization/en";
 
+import MEScreenHeaderComponent from "@MECommonComponents/header/meScreenHeader";
 import SchoolScreenSchoolFormComponent from "@MEScreenComponents/schools/form/schoolForm";
 import SchoolScreenOrganizationFormComponent from "@MEScreenComponents/schools/form/organizationForm";
 import SchoolScreenSchoolAdminsFormComponent from "@MEScreenComponents/schools/form/schoolAdminsForm";
@@ -43,7 +52,9 @@ const SchoolScreenFormComponent = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { addSchoolFormHasError } = useSelector((state) => state.schools);
+  const { addSchoolFormHasError, schoolScreenDBOperation } = useSelector(
+    (state) => state.schools,
+  );
 
   useEffect(() => {
     return () => {
@@ -166,6 +177,12 @@ const SchoolScreenFormComponent = () => {
 
     return result;
   };
+
+  const handleClose = () => {
+    dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
+    dispatch(setSchoolScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.VIEW));
+  };
+
   const items = [
     {
       value: SCHOOL_FORM_ACCORDION_ITEMS.ORGANIZATION,
@@ -270,19 +287,45 @@ const SchoolScreenFormComponent = () => {
         <SchoolScreenSchoolAdminsFormComponent ref={schoolAdminsFormRef} />
       </div>
       <div
-        className={`flex items-center mb-4 ${addSchoolFormHasError ? "justify-between" : "justify-end"}`}
+        className={`flex items-center mb-4 justify-between`} // ${addSchoolFormHasError ? "justify-between" : "justify-end"}
       >
-        {addSchoolFormHasError && (
-          <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
-            <p className="text-sm text-destructive">
-              {"Please fill out all required fields."}
-            </p>
-          </div>
-        )}
-        <Button onClick={handleSubmit} className={"hover:cursor-pointer"}>
-          Submit
-        </Button>
+        <MEScreenHeaderComponent
+          title={
+            schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD
+              ? "New School"
+              : "Update School Details"
+          }
+          subtitle={
+            schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD
+              ? "Complete the form to register a new school"
+              : "Make changes and keep information up to date"
+          }
+        />
+        <div>
+          {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+            <Button
+              onClick={() => handleSubmit()}
+              className={"hover:cursor-pointer"}
+            >
+              Submit
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            onClick={() => handleClose()}
+            className={"hover:cursor-pointer ml-2"}
+          >
+            Close
+          </Button>
+        </div>
       </div>
+      {addSchoolFormHasError && (
+        <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
+          <p className="text-sm text-destructive">
+            {"Please fill out all required fields."}
+          </p>
+        </div>
+      )}
       <Accordion
         type="single"
         className=""

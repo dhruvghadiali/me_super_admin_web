@@ -16,7 +16,7 @@ import {
 } from "@MEShadcnComponents/card";
 import {
   SELECTION_COMPONENT_VARIANTS,
-  SCHOOL_FORM_OPERATION_STATES,
+  SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
 import {
   addSchoolAddress,
@@ -69,7 +69,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { schoolAddressesFormValues, schoolFormOperationState } = useSelector(
+  const { schoolAddressesFormValues, schoolScreenDBOperation } = useSelector(
     (state) => state.schools,
   );
 
@@ -80,11 +80,11 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
     validationSchema,
     enableReinitialize: true,
     onSubmit: (values) => {
-      switch (schoolFormOperationState) {
-        case SCHOOL_FORM_OPERATION_STATES.ADD:
+      switch (schoolScreenDBOperation) {
+        case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
           dispatch(setSchoolAddressesFormValues(values.schoolAddresses));
           break;
-        case SCHOOL_FORM_OPERATION_STATES.EDIT:
+        case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
           break;
         default:
           break;
@@ -93,14 +93,14 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   });
 
   const submitButtonText = () => {
-    switch (schoolFormOperationState) {
-      case SCHOOL_FORM_OPERATION_STATES.ADD:
+    switch (schoolScreenDBOperation) {
+      case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         return _.upperFirst(
           t("schoolAddressesFormSaveButtonLabel", {
             defaultValue: schoolAddressesFormSaveButtonLabel,
           }),
         );
-      case SCHOOL_FORM_OPERATION_STATES.EDIT:
+      case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
         return _.upperFirst(
           t("schoolAddressesFormEditButtonLabel", {
             defaultValue: schoolAddressesFormEditButtonLabel,

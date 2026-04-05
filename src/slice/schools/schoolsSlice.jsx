@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getschools } from "@MERedux/schools/schoolsAction";
 import {
   SCHOOL_INFORMATION_VIEW,
-  SCHOOL_FORM_OPERATION_STATES,
+  SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
 
 const organizationFormInitialValues = {
@@ -70,12 +70,13 @@ export const schoolsSlice = createSlice({
     organizationMembersFormValues: [organizationMembersInitialValues],
     schoolAddressesFormValues: [schoolAddressesInitialValues],
     schoolAdminsFormValues: [schoolAdminsInitialValues],
-    schoolFormOperationState: SCHOOL_FORM_OPERATION_STATES.ADD,
-    addSchoolFormHasError: false,
     schoolInformationView: SCHOOL_INFORMATION_VIEW.TABLE,
+    schoolScreenDBOperation: SCHOOL_SCREEN_DB_OPERATIONS.VIEW,
     schools: [],
+    tableRows: [],
     schoolListError: "",
     schoolListLoader: false,
+    addSchoolFormHasError: false,
   },
   reducers: {
     setOrganizationFormValues: (state, action) => {
@@ -83,9 +84,6 @@ export const schoolsSlice = createSlice({
     },
     setSchoolFormValues: (state, action) => {
       state.schoolFormValues = action.payload;
-    },
-    setSchoolFormOperationState: (state, action) => {
-      state.schoolFormOperationState = action.payload;
     },
     setOrganizationMembersFormValues: (state, action) => {
       state.organizationMembersFormValues = action.payload;
@@ -153,22 +151,29 @@ export const schoolsSlice = createSlice({
     },
     setSchoolInformationView: (state, action) => {
       state.schoolInformationView = action.payload;
-    }
+    },
+    setSchoolScreenDBOperation: (state, action) => {
+      state.schoolScreenDBOperation = action.payload;
+    },
+
   },
   extraReducers: (builder) => {
     builder
       .addCase(getschools.pending, (state) => {
         state.schools = [];
+        state.tableRows = [];
         state.schoolListError = "";
         state.schoolListLoader = true;
       })
       .addCase(getschools.fulfilled, (state, action) => {
         state.schools = action.payload.schools;
+        state.tableRows = action.payload.tableRows;
         state.schoolListError = action.payload.error;
         state.schoolListLoader = false;
       })
       .addCase(getschools.rejected, (state, action) => {
         state.schools = [];
+        state.tableRows = [];
         state.schoolListLoader = false;
         state.schoolListError = action.payload.error;
       });
@@ -187,7 +192,7 @@ export const {
   removeOrganizationMember,
   setSchoolAdminsFormValues,
   setOrganizationFormValues,
-  setSchoolFormOperationState,
+  setSchoolScreenDBOperation,
   setSchoolAddressesFormValues,
   setOrganizationMembersFormValues,
 } = schoolsSlice.actions;

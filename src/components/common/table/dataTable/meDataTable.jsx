@@ -126,7 +126,7 @@ const MEDataTableComponent = (props) => {
                                           col.onActionSelect(action, row)
                                         }
                                       >
-                                        {action}
+                                        {action.label}
                                       </DropdownMenuItem>
                                     );
                                   },

@@ -181,4 +181,13 @@ const setSchoolsInformation = (schools) => {
   }));
 };
 
-export { setSchoolsInformation };
+const setSchoolsTableRows = (schools) =>
+  _.map(schools, (school) => ({
+    id: _.get(school, "id", null),
+    name: _.upperCase(_.get(school, "name", "")),
+    email: _.toLower(_.get(school, "email", "")),
+    phoneNumber: _.toLower(_.get(school, "phone_number", "")),
+    createdAt: setDateTimeFormat(_.get(school, "created_at", "")),
+  }));
+
+export { setSchoolsInformation, setSchoolsTableRows };
