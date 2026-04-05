@@ -176,7 +176,7 @@ const setSchoolsInformation = (schools) => {
     updatedAt: setDateTimeFormat(_.get(school, "updated_at", "")),
     schoolType: setSchoolType(_.get(school, "school_type", {})),
     educationBoards: setEducationBoards(_.get(school, "education_boards", [])),
-    schoolAddress: setSchoolAddresses(_.get(school, "school_addresses", [])),
+    schoolAddresses: setSchoolAddresses(_.get(school, "school_address", [])),
     organization: setOrganization(_.get(school, "organization", {})),
   }));
 };
@@ -189,6 +189,19 @@ const setSchoolsTableRows = (schools) =>
     phoneNumber: _.toLower(_.get(school, "phone_number", "")),
     createdAt: setDateTimeFormat(_.get(school, "created_at", "")),
     organization: setOrganization(_.get(school, "organization", {})),
+    schoolAddresses: setSchoolAddresses(_.get(school, "school_address", [])),
+    school: {
+      name: _.get(school, "name", ""),
+      shortName: _.get(school, "short_name", ""),
+      email: _.get(school, "email", ""),
+      phoneNumber: _.get(school, "phone_number", ""),
+      affiliateNumber: _.get(school, "affiliate_number", ""),
+      establishedYear: _.get(school, "established_year", null),
+      schoolType: setSchoolType(_.get(school, "school_type", {})),
+      educationBoards: setEducationBoards(
+        _.get(school, "education_boards", []),
+      ),
+    },
   }));
 
 export { setSchoolsInformation, setSchoolsTableRows };

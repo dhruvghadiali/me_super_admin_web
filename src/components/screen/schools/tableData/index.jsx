@@ -13,6 +13,10 @@ import {
   setSchoolInformationView,
   setSchoolScreenDBOperation,
   setOrganizationFormValues,
+  setOrganizationMembersFormValues,
+  setSchoolFormValues,
+  setSchoolAddressesFormValues,
+  setSchoolAdminsFormValues,
 } from "@MERedux/schools/schoolsSlice";
 import {
   AlertDialog,
@@ -74,7 +78,26 @@ const SchoolScreenTableDataComponet = () => {
       case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
         dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.FORM));
         dispatch(setSchoolScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.EDIT));
-        dispatch(setOrganizationFormValues(row.organization || {}));
+        dispatch(
+          setOrganizationFormValues(
+            row.organization
+              ? {
+                  ...row.organization,
+                  state: _.get(row.organization, "state.id", {}),
+                  district: _.get(row.organization, "district.id", {}),
+                  city: _.get(row.organization, "city.id", {}),
+                  areaName: _.get(row.organization, "areaName.id", {}),
+                  zipcode: _.get(row.organization, "zipcode.id", {}),
+                }
+              : {},
+          ),
+        );
+        dispatch(
+          setOrganizationMembersFormValues(row.organization?.members || []),
+        );
+        dispatch(setSchoolFormValues(row.school || {}));
+        dispatch(setSchoolAddressesFormValues(row.schoolAddresses || []));
+        dispatch(setSchoolAdminsFormValues([]));
         break;
       case SCHOOL_SCREEN_DB_OPERATIONS.DELETE:
         setAlertDialog({

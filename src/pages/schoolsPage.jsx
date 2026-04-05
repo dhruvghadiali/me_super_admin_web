@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import { SCHOOL_INFORMATION_VIEW } from "@MEHelpers/enums";
-import { getschools } from "@MERedux/schools/schoolsAction";
+import { getschools, getStates } from "@MERedux/schools/schoolsAction";
 import { setSchoolInformationView } from "@MERedux/schools/schoolsSlice";
 import {
   schoolDataLoaderHeader,
   schoolDataLoaderMessage,
   schoolListNotFoundTitle,
-  schoolListNotFoundMessage,
   addNewSchoolButtonLabel,
+  schoolListNotFoundMessage,
 } from "@MELocalization/en";
 
 import SchoolScreenFormComponent from "@MEScreenComponents/schools/form";
@@ -30,8 +30,9 @@ const SchoolsPage = () => {
   );
 
   useEffect(() => {
-    dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
+    dispatch(getStates());
     dispatch(getschools());
+    dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
   }, [dispatch]);
 
   const handleTryAgain = () => {

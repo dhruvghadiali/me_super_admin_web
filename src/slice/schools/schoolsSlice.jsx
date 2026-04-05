@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getschools } from "@MERedux/schools/schoolsAction";
+import { getschools, getStates } from "@MERedux/schools/schoolsAction";
 import {
   SCHOOL_INFORMATION_VIEW,
   SCHOOL_SCREEN_DB_OPERATIONS,
@@ -74,11 +74,19 @@ export const schoolsSlice = createSlice({
     schoolScreenDBOperation: SCHOOL_SCREEN_DB_OPERATIONS.VIEW,
     schools: [],
     tableRows: [],
+    states: [],
     schoolListError: "",
     schoolListLoader: false,
     addSchoolFormHasError: false,
   },
   reducers: {
+    resetFormValues: (state) => {
+      state.schoolFormValues = schoolFormInitialValues;
+      state.organizationFormValues = organizationFormInitialValues;
+      state.organizationMembersFormValues = [organizationMembersInitialValues];
+      state.schoolAddressesFormValues = [schoolAddressesInitialValues];
+      state.schoolAdminsFormValues = [schoolAdminsInitialValues];
+    },
     setOrganizationFormValues: (state, action) => {
       state.organizationFormValues = action.payload;
     },
@@ -176,12 +184,22 @@ export const schoolsSlice = createSlice({
         state.tableRows = [];
         state.schoolListLoader = false;
         state.schoolListError = action.payload.error;
+      })
+      .addCase(getStates.pending, (state) => {
+        state.states = [];
+      })
+      .addCase(getStates.fulfilled, (state, action) => {
+        state.states = action.payload.states;
+      })
+      .addCase(getStates.rejected, (state, action) => {
+        state.states = [];
       });
   },
 });
 
 export const {
   addSchoolAdmin,
+  resetFormValues,
   addSchoolAddress,
   removeSchoolAdmin,
   setSchoolFormValues,

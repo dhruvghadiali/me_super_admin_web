@@ -88,7 +88,7 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { organizationFormValues, schoolScreenDBOperation } = useSelector(
+  const { organizationFormValues, schoolScreenDBOperation, states } = useSelector(
     (state) => state.schools,
   );
 
@@ -291,11 +291,7 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
             }),
           )}
           name={"state"}
-          items={[
-            { value: "active", label: "Active" },
-            { value: "inactive", label: "Inactive" },
-            { value: "pending", label: "Pending" },
-          ]}
+          items={states}
           message={
             formik.touched.state && formik.errors.state
               ? formik.errors.state
@@ -324,11 +320,7 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
             }),
           )}
           name={"district"}
-          items={[
-            { value: "active", label: "Active" },
-            { value: "inactive", label: "Inactive" },
-            { value: "pending", label: "Pending" },
-          ]}
+          items={_.find(states, { value: formik.values.state })?.districts || []}
           message={
             formik.touched.district && formik.errors.district
               ? formik.errors.district
@@ -357,11 +349,10 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
             }),
           )}
           name={"city"}
-          items={[
-            { value: "active", label: "Active" },
-            { value: "inactive", label: "Inactive" },
-            { value: "pending", label: "Pending" },
-          ]}
+          items={_.find(
+            _.find(states, { value: formik.values.state })?.districts || [],
+            { value: formik.values.district },
+          )?.cities || []}
           message={
             formik.touched.city && formik.errors.city ? formik.errors.city : ""
           }
@@ -388,11 +379,13 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
             }),
           )}
           name={"areaName"}
-          items={[
-            { value: "active", label: "Active" },
-            { value: "inactive", label: "Inactive" },
-            { value: "pending", label: "Pending" },
-          ]}
+          items={_.find(
+            _.find(
+              _.find(states, { value: formik.values.state })?.districts || [],
+              { value: formik.values.district },
+            )?.cities || [],
+            { value: formik.values.city },
+          )?.areaNames || []}
           message={
             formik.touched.areaName && formik.errors.areaName
               ? formik.errors.areaName
@@ -421,11 +414,16 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
             }),
           )}
           name={"zipCode"}
-          items={[
-            { value: "active", label: "Active" },
-            { value: "inactive", label: "Inactive" },
-            { value: "pending", label: "Pending" },
-          ]}
+          items={_.find(
+            _.find(
+              _.find(
+                _.find(states, { value: formik.values.state })?.districts || [],
+                { value: formik.values.district },
+              )?.cities || [],
+              { value: formik.values.city },
+            )?.areaNames || [],
+            { value: formik.values.areaName },
+          )?.zipcodes || []}
           message={
             formik.touched.zipCode && formik.errors.zipCode
               ? formik.errors.zipCode

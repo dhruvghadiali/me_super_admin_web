@@ -18,6 +18,7 @@ import {
   SCHOOL_FORM_ACCORDION_ITEMS,
 } from "@MEHelpers/enums";
 import {
+  resetFormValues,
   setAddSchoolFormHasError,
   setSchoolInformationView,
   setSchoolScreenDBOperation,
@@ -179,6 +180,7 @@ const SchoolScreenFormComponent = () => {
   };
 
   const handleClose = () => {
+    dispatch(resetFormValues());
     dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
     dispatch(setSchoolScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.VIEW));
   };
