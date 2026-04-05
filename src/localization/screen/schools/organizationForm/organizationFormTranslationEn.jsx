@@ -11,8 +11,8 @@ const organizationFormEmailInputPlaceholder = `enter organization email`;
 const organizationFormPhoneNumberInputLabel = `phone number`;
 const organizationFormPhoneNumberInputPlaceholder = `enter organization phone number`;
 
-const organizationFormGovernmentRegisterNumberInputLabel = `government register number`;
-const organizationFormGovernmentRegisterNumberInputPlaceholder = `enter organization government register number`;
+const organizationFormGovernmentRegistrationNumberInputLabel = `government registration number`;
+const organizationFormGovernmentRegistrationNumberInputPlaceholder = `enter organization government registration number`;
 
 const organizationFormAddressInputLabel = `address`;
 const organizationFormAddressInputPlaceholder = `enter organization address`;
@@ -46,8 +46,8 @@ export {
   organizationFormEmailInputPlaceholder,
   organizationFormPhoneNumberInputLabel,
   organizationFormPhoneNumberInputPlaceholder,
-  organizationFormGovernmentRegisterNumberInputLabel,
-  organizationFormGovernmentRegisterNumberInputPlaceholder,
+  organizationFormGovernmentRegistrationNumberInputLabel,
+  organizationFormGovernmentRegistrationNumberInputPlaceholder,
   organizationFormAddressInputLabel,
   organizationFormAddressInputPlaceholder,
   organizationFormStateSelectionLabel,

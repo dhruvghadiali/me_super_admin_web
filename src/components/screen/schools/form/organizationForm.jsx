@@ -61,8 +61,8 @@ import {
   organizationFormEmailInputPlaceholder,
   organizationFormPhoneNumberInputLabel,
   organizationFormPhoneNumberInputPlaceholder,
-  organizationFormGovernmentRegisterNumberInputLabel,
-  organizationFormGovernmentRegisterNumberInputPlaceholder,
+  organizationFormGovernmentRegistrationNumberInputLabel,
+  organizationFormGovernmentRegistrationNumberInputPlaceholder,
   organizationFormAddressInputLabel,
   organizationFormAddressInputPlaceholder,
   organizationFormStateSelectionLabel,
@@ -233,24 +233,24 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
         <MEInputComponent
           required={true}
           label={_.upperFirst(
-            t("organizationFormGovernmentRegisterNumberInputLabel", {
-              defaultValue: organizationFormGovernmentRegisterNumberInputLabel,
+            t("organizationFormGovernmentRegistrationNumberInputLabel", {
+              defaultValue: organizationFormGovernmentRegistrationNumberInputLabel,
             }),
           )}
           placeholder={_.upperFirst(
-            t("organizationFormGovernmentRegisterNumberInputPlaceholder", {
+            t("organizationFormGovernmentRegistrationNumberInputPlaceholder", {
               defaultValue:
-                organizationFormGovernmentRegisterNumberInputPlaceholder,
+                organizationFormGovernmentRegistrationNumberInputPlaceholder,
             }),
           )}
-          name={"governmentRegisterNumber"}
-          value={formik.values.governmentRegisterNumber}
+          name={"governmentRegistrationNumber"}
+          value={formik.values.governmentRegistrationNumber}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           errorMessage={
-            formik.touched.governmentRegisterNumber &&
-            formik.errors.governmentRegisterNumber
-              ? formik.errors.governmentRegisterNumber
+            formik.touched.governmentRegistrationNumber &&
+            formik.errors.governmentRegistrationNumber
+              ? formik.errors.governmentRegistrationNumber
               : ""
           }
         />
@@ -493,7 +493,7 @@ const validationSchema = Yup.object({
     .min(phoneNumberChar, phoneNumberLength)
     .max(phoneNumberChar, phoneNumberLength)
     .required(phoneNumberRequired),
-  governmentRegisterNumber: Yup.string()
+  governmentRegistrationNumber: Yup.string()
     .trim()
     .min(
       governmentRegistrationNumberMinChar,

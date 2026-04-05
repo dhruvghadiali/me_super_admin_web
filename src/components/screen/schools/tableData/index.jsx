@@ -12,6 +12,7 @@ import {
 import {
   setSchoolInformationView,
   setSchoolScreenDBOperation,
+  setOrganizationFormValues,
 } from "@MERedux/schools/schoolsSlice";
 import {
   AlertDialog,
@@ -73,6 +74,7 @@ const SchoolScreenTableDataComponet = () => {
       case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
         dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.FORM));
         dispatch(setSchoolScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.EDIT));
+        dispatch(setOrganizationFormValues(row.organization || {}));
         break;
       case SCHOOL_SCREEN_DB_OPERATIONS.DELETE:
         setAlertDialog({

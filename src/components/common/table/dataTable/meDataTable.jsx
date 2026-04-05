@@ -170,7 +170,7 @@ const MEDataTableComponent = (props) => {
           {/* Left: Page Size Dropdown */}
           <div className="flex items-center gap-2">
             <select
-              className="rounded border border-input bg-background px-2 py-1 text-xs sm:text-sm focus:ring-2 focus:ring-ring focus:outline-none min-w-[50px] sm:min-w-[60px]"
+              className="rounded border border-input bg-background px-2 py-1 text-xs sm:text-sm focus:ring-2 focus:ring-ring focus:outline-none min-w-12.5 sm:min-w-15"
               value={pageSize}
               onChange={(e) => handlePageSizeChange(Number(e.target.value))}
             >

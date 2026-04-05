@@ -11,7 +11,7 @@ const organizationFormInitialValues = {
   shortName: "",
   email: "",
   phoneNumber: "",
-  governmentRegisterNumber: "",
+  governmentRegistrationNumber: "",
   address: "",
   state: "",
   district: "",

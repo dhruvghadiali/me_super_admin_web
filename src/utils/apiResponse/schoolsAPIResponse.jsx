@@ -188,6 +188,7 @@ const setSchoolsTableRows = (schools) =>
     email: _.toLower(_.get(school, "email", "")),
     phoneNumber: _.toLower(_.get(school, "phone_number", "")),
     createdAt: setDateTimeFormat(_.get(school, "created_at", "")),
+    organization: setOrganization(_.get(school, "organization", {})),
   }));
 
 export { setSchoolsInformation, setSchoolsTableRows };
