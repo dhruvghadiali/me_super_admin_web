@@ -7,7 +7,7 @@ import * as Yup from "yup";
 
 import { Button } from "@MEShadcnComponents/button";
 import { Spinner } from "@MEShadcnComponents/spinner";
-import { setSigninPayload } from "@MEUtils/apiPayload/authPayload";
+import { setSigninPayload } from "@MEUtils/apiPayload";
 import { signIn } from "@MERedux/authentication/authenticationAction";
 import {
   passwordRequired,
