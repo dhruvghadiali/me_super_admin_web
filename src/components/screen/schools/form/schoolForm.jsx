@@ -85,9 +85,12 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { schoolFormValues, schoolScreenDBOperation } = useSelector(
-    (state) => state.schools,
-  );
+  const {
+    schoolTypes,
+    educationBoards,
+    schoolFormValues,
+    schoolScreenDBOperation,
+  } = useSelector((state) => state.schools);
 
   const formik = useFormik({
     initialValues: schoolFormValues,
@@ -292,11 +295,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
             }),
           )}
           name={"schoolType"}
-          items={[
-            { value: "active", label: "Active" },
-            { value: "inactive", label: "Inactive" },
-            { value: "pending", label: "Pending" },
-          ]}
+          items={schoolTypes}
           message={
             formik.touched.schoolType && formik.errors.schoolType
               ? formik.errors.schoolType
@@ -326,11 +325,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
             }),
           )}
           name={"educationBoards"}
-          items={[
-            { value: "active", label: "Active" },
-            { value: "inactive", label: "Inactive" },
-            { value: "pending", label: "Pending" },
-          ]}
+          items={educationBoards}
           message={
             formik.touched.educationBoards && formik.errors.educationBoards
               ? formik.errors.educationBoards

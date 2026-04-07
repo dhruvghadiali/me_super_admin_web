@@ -47,9 +47,10 @@ const MEMultiSelectionComponent = (props) => {
 
   // Helper function to get item label (handle both 'label' and 'lable' typo)
   const getItemLabel = (value) => {
-    if (typeof value === "string") return value;
-    const item = items.find((i) => (i.value || i) === value);
-    return item ? item.label || item.lable || item.value || item : value;
+    const item = _.find(items, (item) => {
+      if (item.value === value) return true;
+    });
+    return item ? item.label || item.lable || value : value;
   };
 
   return (

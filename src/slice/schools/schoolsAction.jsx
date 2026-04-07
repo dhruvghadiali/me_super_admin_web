@@ -1,11 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
-import { schoolsAPIRoute, statesAPIRoute } from "@/utils/apiRoutes";
+import {
+  statesAPIRoute,
+  schoolsAPIRoute,
+  schoolTypesAPIRoute,
+  educationBoardsAPIRoute,
+} from "@/utils/apiRoutes";
 import {
   setSchoolsInformation,
   setSchoolsTableRows,
   setStatesInformation,
+  setSchoolTypesDropdownOptions,
+  setEducationBoardsDropdownOptions,
 } from "@MEUtils/apiResponse";
 import { axiosInstance, apiResponseHaveData } from "@MEHelpers/axiosHelpers";
 
@@ -41,6 +48,68 @@ const getStates = createAsyncThunk(
   },
 );
 
+const getSchoolTypes = createAsyncThunk(
+  "schools/getSchoolTypes",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const response = await axiosInstance.get(`${schoolTypesAPIRoute}`, {
+        state: getState(),
+      });
+
+      if (apiResponseHaveData(response)) {
+        return {
+          schoolTypes: setSchoolTypesDropdownOptions(response.data),
+          error: "",
+        };
+      } else {
+        return {
+          schoolTypes: [],
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to fetch school types information",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Failed to fetch school types information";
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
+const getEducationBoards = createAsyncThunk(
+  "schools/getEducationBoards",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const response = await axiosInstance.get(`${educationBoardsAPIRoute}`, {
+        state: getState(),
+      });
+
+      if (apiResponseHaveData(response)) {
+        return {
+          educationBoards: setEducationBoardsDropdownOptions(response.data),
+          error: "",
+        };
+      } else {
+        return {
+          educationBoards: [],
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to fetch education boards information",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Failed to fetch education boards information";
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
 const getschools = createAsyncThunk(
   "schools/getschools",
   async (payload, { getState, rejectWithValue }) => {
@@ -71,4 +140,27 @@ const getschools = createAsyncThunk(
   },
 );
 
-export { getschools, getStates };
+const addSchool = createAsyncThunk(
+  "schools/addSchool",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      // Use the pre-configured axios instance (baseURL + timeout + headers)
+      const response = await axiosInstance.post(schoolsAPIRoute, payload, {
+        state: getState(),
+      });
+
+      if (apiResponseHaveData(response)) {
+        return;
+      } else {
+        return;
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
+export { getschools, getStates, addSchool, getSchoolTypes, getEducationBoards };

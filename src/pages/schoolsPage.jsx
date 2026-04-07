@@ -5,8 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import { SCHOOL_INFORMATION_VIEW } from "@MEHelpers/enums";
-import { getschools, getStates } from "@MERedux/schools/schoolsAction";
 import { setSchoolInformationView } from "@MERedux/schools/schoolsSlice";
+import {
+  getStates,
+  getschools,
+  getSchoolTypes,
+  getEducationBoards,
+} from "@MERedux/schools/schoolsAction";
 import {
   schoolDataLoaderHeader,
   schoolDataLoaderMessage,
@@ -32,6 +37,8 @@ const SchoolsPage = () => {
   useEffect(() => {
     dispatch(getStates());
     dispatch(getschools());
+    dispatch(getSchoolTypes());
+    dispatch(getEducationBoards());
     dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
   }, [dispatch]);
 

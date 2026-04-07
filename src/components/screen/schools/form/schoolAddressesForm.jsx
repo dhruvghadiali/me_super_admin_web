@@ -69,9 +69,8 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { schoolAddressesFormValues, schoolScreenDBOperation } = useSelector(
-    (state) => state.schools,
-  );
+  const { schoolAddressesFormValues, schoolScreenDBOperation, states } =
+    useSelector((state) => state.schools);
 
   const formik = useFormik({
     initialValues: {
@@ -130,6 +129,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   const renderAddressForm = (addressIndex) => {
     const addressErrors = formik.errors.schoolAddresses?.[addressIndex] || {};
     const addressTouched = formik.touched.schoolAddresses?.[addressIndex] || {};
+    const addressValues = formik.values.schoolAddresses?.[addressIndex] || {};
 
     return (
       <Card key={addressIndex} className="mb-4">
@@ -173,7 +173,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                 }),
               )}
               name={`schoolAddresses[${addressIndex}].address`}
-              value={formik.values.schoolAddresses[addressIndex]?.address || ""}
+              value={addressValues.address || ""}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               errorMessage={
@@ -195,16 +195,8 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                   defaultValue: schoolAddressStateSelectionPlaceholder,
                 }),
               )}
-              items={[
-                { value: "Maharashtra", label: "Maharashtra" },
-                { value: "Gujarat", label: "Gujarat" },
-                { value: "Karnataka", label: "Karnataka" },
-                { value: "Tamil Nadu", label: "Tamil Nadu" },
-                { value: "Rajasthan", label: "Rajasthan" },
-              ]}
-              selectedValue={
-                formik.values.schoolAddresses[addressIndex]?.state || ""
-              }
+              items={states}
+              selectedValue={addressValues.state || ""}
               onValueChange={(value) =>
                 formik.setFieldValue(
                   `schoolAddresses[${addressIndex}].state`,
@@ -235,16 +227,12 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                   defaultValue: schoolAddressDistrictSelectionPlaceholder,
                 }),
               )}
-              items={[
-                { value: "Pune", label: "Pune" },
-                { value: "Mumbai", label: "Mumbai" },
-                { value: "Nashik", label: "Nashik" },
-                { value: "Nagpur", label: "Nagpur" },
-                { value: "Aurangabad", label: "Aurangabad" },
-              ]}
-              selectedValue={
-                formik.values.schoolAddresses[addressIndex]?.district || ""
+              items={
+                _.find(states, {
+                  value: addressValues.state,
+                })?.districts || []
               }
+              selectedValue={addressValues.district || ""}
               onValueChange={(value) =>
                 formik.setFieldValue(
                   `schoolAddresses[${addressIndex}].district`,
@@ -275,16 +263,17 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                   defaultValue: schoolAddressCitySelectionPlaceholder,
                 }),
               )}
-              items={[
-                { value: "Pune City", label: "Pune City" },
-                { value: "Pimpri-Chinchwad", label: "Pimpri-Chinchwad" },
-                { value: "Wagholi", label: "Wagholi" },
-                { value: "Hadapsar", label: "Hadapsar" },
-                { value: "Kothrud", label: "Kothrud" },
-              ]}
-              selectedValue={
-                formik.values.schoolAddresses[addressIndex]?.city || ""
+              items={
+                _.find(
+                  _.find(states, {
+                    value: addressValues.state,
+                  })?.districts || [],
+                  {
+                    value: addressValues.district,
+                  },
+                )?.cities || []
               }
+              selectedValue={addressValues.city || ""}
               onValueChange={(value) =>
                 formik.setFieldValue(
                   `schoolAddresses[${addressIndex}].city`,
@@ -315,16 +304,22 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                   defaultValue: schoolAddressAreaNameSelectionPlaceholder,
                 }),
               )}
-              items={[
-                { value: "Baner", label: "Baner" },
-                { value: "Aundh", label: "Aundh" },
-                { value: "Hinjewadi", label: "Hinjewadi" },
-                { value: "Koregaon Park", label: "Koregaon Park" },
-                { value: "Viman Nagar", label: "Viman Nagar" },
-              ]}
-              selectedValue={
-                formik.values.schoolAddresses[addressIndex]?.area_name || ""
+              items={
+                _.find(
+                  _.find(
+                    _.find(states, {
+                      value: addressValues?.state,
+                    })?.districts || [],
+                    {
+                      value: addressValues?.district,
+                    },
+                  )?.cities || [],
+                  {
+                    value: addressValues?.city,
+                  },
+                )?.areaNames || []
               }
+              selectedValue={addressValues?.area_name || ""}
               onValueChange={(value) =>
                 formik.setFieldValue(
                   `schoolAddresses[${addressIndex}].area_name`,
@@ -355,15 +350,21 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                   defaultValue: schoolAddressZipCodeInputPlaceholder,
                 }),
               )}
-              items={[
-                { value: "411001", label: "411001" },
-                { value: "411002", label: "411002" },
-                { value: "411003", label: "411003" },
-                { value: "411004", label: "411004" },
-                { value: "411005", label: "411005" },
-              ]}
+              items={
+                _.find(
+                  _.find(
+                    _.find(
+                      _.find(states, { value: addressValues?.state })
+                        ?.districts || [],
+                      { value: addressValues?.district },
+                    )?.cities || [],
+                    { value: addressValues?.city },
+                  )?.areaNames || [],
+                  { value: addressValues?.area_name },
+                )?.zipcodes || []
+              }
               selectedValue={
-                formik.values.schoolAddresses[addressIndex]?.zipcode || ""
+                addressValues?.zipcode || ""
               }
               onValueChange={(value) =>
                 formik.setFieldValue(
