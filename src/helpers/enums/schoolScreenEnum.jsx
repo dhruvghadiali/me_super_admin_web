@@ -41,9 +41,24 @@ const SCHOOL_SCREEN_DB_OPERATIONS = Object.freeze({
   VIEW: "VIEW",
 });
 
+/**
+ * organization member position enumeration
+ */
+const ORGANIZATION_MEMBER_POSITION = Object.freeze({
+  PRESIDENT: "president",
+  VICE_PRESIDENT: "vice president",
+  SECRETARY: "secretary",
+  JOINT_SECRETARY: "joint secretary",
+  TREASURER: "treasurer",
+  MEMBER: "member",
+  PRINCIPAL: "principal",
+  OTHER: "other",
+});
+
 export {
   SCHOOL_WEEK_DAYS,
   SCHOOL_INFORMATION_VIEW,
   SCHOOL_FORM_ACCORDION_ITEMS,
   SCHOOL_SCREEN_DB_OPERATIONS,
+  ORGANIZATION_MEMBER_POSITION,
 };
