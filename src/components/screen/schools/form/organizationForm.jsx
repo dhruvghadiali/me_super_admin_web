@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from "react";
+import React, { forwardRef, useImperativeHandle, useEffect, use } from "react";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,7 +8,10 @@ import * as Yup from "yup";
 
 import { Button } from "@MEShadcnComponents/button";
 import { phoneNumberRegex } from "@MEHelpers/regex";
-import { setOrganizationFormValues } from "@MERedux/schools/schoolsSlice";
+import {
+  setOrganizationFormValues,
+  setOrganizationFormValidationStatus,
+} from "@MERedux/schools/schoolsSlice";
 import {
   SELECTION_COMPONENT_VARIANTS,
   SCHOOL_SCREEN_DB_OPERATIONS,
@@ -88,26 +91,82 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { organizationFormValues, schoolScreenDBOperation, states } = useSelector(
-    (state) => state.schools,
-  );
+  const {
+    organizationFormValues,
+    schoolScreenDBOperation,
+    states,
+  } = useSelector((state) => state.schools);
+
+  const changeOrganizationFormValidationStatus = (status) =>
+    dispatch(setOrganizationFormValidationStatus(status));
+
+  // Helper function to check if form is valid
+  const checkFormValidation = async () => {
+    try {
+      const errors = await formik.validateForm();
+      const hasErrors = Object.keys(errors).length > 0;
+      const hasValues = Object.values(formik.values).some(value => 
+        value !== null && value !== undefined && value !== ""
+      );
+      
+      // Form is valid if no errors and has some values
+      const isValid = !hasErrors && hasValues;
+      changeOrganizationFormValidationStatus(isValid);
+      return isValid;
+    } catch (error) {
+      console.error("Validation check failed:", error);
+      changeOrganizationFormValidationStatus(false);
+      return false;
+    }
+  };
 
   const formik = useFormik({
     initialValues: organizationFormValues,
     validationSchema,
-    onSubmit: (values) => {
-      switch (schoolScreenDBOperation) {
-        case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
-          dispatch(setOrganizationFormValues(values));
-          break;
-        case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
-          // Dispatch edit organization action
-          break;
-        default:
-          break;
+    onSubmit: async (values) => {
+      const isValid = await checkFormValidation();
+      
+      if (isValid) {
+        switch (schoolScreenDBOperation) {
+          case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+            changeOrganizationFormValidationStatus(true);
+            dispatch(setOrganizationFormValues(values));
+            break;
+          case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
+            // Dispatch edit organization action
+            changeOrganizationFormValidationStatus(true);
+            break;
+          default:
+            break;
+        }
+      } else {
+        changeOrganizationFormValidationStatus(false);
       }
     },
   });
+
+  // Check validation status on initial mount
+  useEffect(() => {
+    switch (schoolScreenDBOperation) {
+      case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+        // Check initial validation status
+        checkFormValidation();
+        break;
+      default:
+        break;
+    }
+  }, [dispatch]);
+
+  // Check validation status when form values, errors, or touched state changes
+  useEffect(() => {
+    switch (schoolScreenDBOperation) {
+      case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+        checkFormValidation();
+        break;
+      default:
+        break;
+    }
+  }, [formik.values, formik.errors, formik.touched]);
 
   // Expose formik methods to parent component
   useImperativeHandle(ref, () => ({
@@ -117,6 +176,15 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
     isValid: formik.isValid,
     errors: formik.errors,
   }));
+
+  // Handle cancel/reset with validation check
+  const handleCancel = async () => {
+    formik.handleReset();
+    // After reset, check validation status
+    setTimeout(() => {
+      checkFormValidation();
+    }, 100); // Small delay to ensure reset is complete
+  };
 
   const submitButtonText = () => {
     switch (schoolScreenDBOperation) {
@@ -234,7 +302,8 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
           required={true}
           label={_.upperFirst(
             t("organizationFormGovernmentRegistrationNumberInputLabel", {
-              defaultValue: organizationFormGovernmentRegistrationNumberInputLabel,
+              defaultValue:
+                organizationFormGovernmentRegistrationNumberInputLabel,
             }),
           )}
           placeholder={_.upperFirst(
@@ -320,7 +389,9 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
             }),
           )}
           name={"district"}
-          items={_.find(states, { value: formik.values.state })?.districts || []}
+          items={
+            _.find(states, { value: formik.values.state })?.districts || []
+          }
           message={
             formik.touched.district && formik.errors.district
               ? formik.errors.district
@@ -349,10 +420,12 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
             }),
           )}
           name={"city"}
-          items={_.find(
-            _.find(states, { value: formik.values.state })?.districts || [],
-            { value: formik.values.district },
-          )?.cities || []}
+          items={
+            _.find(
+              _.find(states, { value: formik.values.state })?.districts || [],
+              { value: formik.values.district },
+            )?.cities || []
+          }
           message={
             formik.touched.city && formik.errors.city ? formik.errors.city : ""
           }
@@ -379,13 +452,15 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
             }),
           )}
           name={"areaName"}
-          items={_.find(
+          items={
             _.find(
-              _.find(states, { value: formik.values.state })?.districts || [],
-              { value: formik.values.district },
-            )?.cities || [],
-            { value: formik.values.city },
-          )?.areaNames || []}
+              _.find(
+                _.find(states, { value: formik.values.state })?.districts || [],
+                { value: formik.values.district },
+              )?.cities || [],
+              { value: formik.values.city },
+            )?.areaNames || []
+          }
           message={
             formik.touched.areaName && formik.errors.areaName
               ? formik.errors.areaName
@@ -413,28 +488,31 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
               defaultValue: organizationFormZipCodeSelectionPlaceholder,
             }),
           )}
-          name={"zipCode"}
-          items={_.find(
+          name={"zipcode"}
+          items={
             _.find(
               _.find(
-                _.find(states, { value: formik.values.state })?.districts || [],
-                { value: formik.values.district },
-              )?.cities || [],
-              { value: formik.values.city },
-            )?.areaNames || [],
-            { value: formik.values.areaName },
-          )?.zipcodes || []}
+                _.find(
+                  _.find(states, { value: formik.values.state })?.districts ||
+                    [],
+                  { value: formik.values.district },
+                )?.cities || [],
+                { value: formik.values.city },
+              )?.areaNames || [],
+              { value: formik.values.areaName },
+            )?.zipcodes || []
+          }
           message={
-            formik.touched.zipCode && formik.errors.zipCode
-              ? formik.errors.zipCode
+            formik.touched.zipcode && formik.errors.zipcode
+              ? formik.errors.zipcode
               : ""
           }
-          selectedValue={formik.values.zipCode}
+          selectedValue={formik.values.zipcode}
           labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
           selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
           messagevariant={SELECTION_COMPONENT_VARIANTS.DESTRUCTIVE}
           selectedVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
-          onValueChange={(value) => formik.setFieldValue("zipCode", value)}
+          onValueChange={(value) => formik.setFieldValue("zipcode", value)}
           onBlur={formik.handleBlur}
         />
       </div>
@@ -454,7 +532,7 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
             type="button"
             variant="outline"
             className="hover:cursor-pointer"
-            onClick={formik.handleReset}
+            onClick={handleCancel}
           >
             {_.upperFirst(
               t("organizationFormCancelButtonLabel", {
@@ -510,7 +588,7 @@ const validationSchema = Yup.object({
   district: Yup.string().trim().required(districtRequired),
   city: Yup.string().trim().required(cityRequired),
   areaName: Yup.string().trim().required(areaNameRequired),
-  zipCode: Yup.string().trim().required(zipCodeRequired),
+  zipcode: Yup.string().trim().required(zipCodeRequired),
 });
 
 export default SchoolScreenOrganizationFormComponent;

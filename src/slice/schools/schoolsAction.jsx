@@ -150,9 +150,14 @@ const addSchool = createAsyncThunk(
       });
 
       if (apiResponseHaveData(response)) {
-        return;
+        dispatch(getschools());
       } else {
-        return;
+        return{
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to add school. Please try again.",
+        }
       }
     } catch (error) {
       const errMsg =

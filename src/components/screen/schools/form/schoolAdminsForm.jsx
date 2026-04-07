@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from "react";
+import React, { forwardRef, useImperativeHandle, useEffect } from "react";
 import { useFormik } from "formik";
 import { Plus, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,7 @@ import {
   addSchoolAdmin,
   removeSchoolAdmin,
   setSchoolAdminsFormValues,
+  setSchoolAdminsFormValidationStatus,
 } from "@MERedux/schools/schoolsSlice";
 import {
   emailMaxChar,
@@ -72,9 +73,35 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { schoolAdminsFormValues, schoolScreenDBOperation } = useSelector(
+  const { schoolAdminsFormValues, schoolScreenDBOperation, isSchoolAdminsFormValidated } = useSelector(
     (state) => state.schools,
   );
+
+  const changeSchoolAdminsFormValidationStatus = (status) =>
+    dispatch(setSchoolAdminsFormValidationStatus(status));
+
+  // Helper function to check if form is valid
+  const checkFormValidation = async () => {
+    try {
+      const errors = await formik.validateForm();
+      const hasErrors = Object.keys(errors).length > 0;
+      const hasValues = schoolAdminsFormValues.length > 0 && 
+        schoolAdminsFormValues.some(admin => 
+          Object.values(admin).some(value => 
+            value !== null && value !== undefined && value !== ""
+          )
+        );
+      
+      // Form is valid if no errors and has some values
+      const isValid = !hasErrors && hasValues;
+      changeSchoolAdminsFormValidationStatus(isValid);
+      return isValid;
+    } catch (error) {
+      console.error("Validation check failed:", error);
+      changeSchoolAdminsFormValidationStatus(false);
+      return false;
+    }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -82,18 +109,58 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     },
     validationSchema,
     enableReinitialize: true,
-    onSubmit: (values) => {
-      switch (schoolScreenDBOperation) {
-        case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
-          dispatch(setSchoolAdminsFormValues(values.schoolAdmins));
-          break;
-        case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
-          break;
-        default:
-          break;
+    onSubmit: async (values) => {
+      const isValid = await checkFormValidation();
+      
+      if (isValid) {
+        switch (schoolScreenDBOperation) {
+          case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+            changeSchoolAdminsFormValidationStatus(true);
+            dispatch(setSchoolAdminsFormValues(values.schoolAdmins));
+            break;
+          case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
+            changeSchoolAdminsFormValidationStatus(true);
+            break;
+          default:
+            break;
+        }
+      } else {
+        changeSchoolAdminsFormValidationStatus(false);
       }
     },
   });
+
+  // Check validation status on initial mount
+  useEffect(() => {
+    switch (schoolScreenDBOperation) {
+      case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+        // Check initial validation status
+        checkFormValidation();
+        break;
+      default:
+        break;
+    }
+  }, [dispatch]);
+
+  // Check validation status when form values, errors, or touched state changes
+  useEffect(() => {
+    switch (schoolScreenDBOperation) {
+      case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+        checkFormValidation();
+        break;
+      default:
+        break;
+    }
+  }, [formik.values, formik.errors, formik.touched, schoolAdminsFormValues]);
+
+  // Handle cancel/reset with validation check
+  const handleCancel = async () => {
+    formik.handleReset();
+    // After reset, check validation status
+    setTimeout(() => {
+      checkFormValidation();
+    }, 100); // Small delay to ensure reset is complete
+  };
 
   const submitButtonText = () => {
     switch (schoolScreenDBOperation) {
@@ -304,7 +371,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
               type="button"
               variant="outline"
               className="hover:cursor-pointer"
-              onClick={formik.handleReset}
+              onClick={handleCancel}
             >
               {_.upperFirst(
                 t("schoolAdminsFormCancelButtonLabel", {

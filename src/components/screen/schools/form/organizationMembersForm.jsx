@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle } from "react";
+import React, { forwardRef, useImperativeHandle, useEffect } from "react";
 import { useFormik } from "formik";
 import { Plus, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -24,6 +24,7 @@ import {
   addOrganizationMember,
   removeOrganizationMember,
   setOrganizationMembersFormValues,
+  setOrganizationMembersFormValidationStatus,
 } from "@MERedux/schools/schoolsSlice";
 import {
   emailMaxChar,
@@ -115,26 +116,92 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
     const { organizationMembersFormValues, schoolScreenDBOperation, states } =
       useSelector((state) => state.schools);
 
+    const changeOrganizationMembersFormValidationStatus = (status) =>
+      dispatch(setOrganizationMembersFormValidationStatus(status));
+
+    // Helper function to check if form is valid
+    const checkFormValidation = async () => {
+      try {
+        const errors = await formik.validateForm();
+        const hasErrors = Object.keys(errors).length > 0;
+        const hasValues = organizationMembersFormValues.length > 0 && 
+          organizationMembersFormValues.some(member => 
+            Object.values(member).some(value => 
+              value !== null && value !== undefined && value !== ""
+            )
+          );
+        
+        // Form is valid if no errors and has some values
+        const isValid = !hasErrors && hasValues;
+        changeOrganizationMembersFormValidationStatus(isValid);
+        return isValid;
+      } catch (error) {
+        console.error("Validation check failed:", error);
+        changeOrganizationMembersFormValidationStatus(false);
+        return false;
+      }
+    };
+
     const formik = useFormik({
       initialValues: {
         organizationMembers: organizationMembersFormValues,
       },
       validationSchema,
       enableReinitialize: true,
-      onSubmit: (values) => {
-        switch (schoolScreenDBOperation) {
-          case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
-            dispatch(
-              setOrganizationMembersFormValues(values.organizationMembers),
-            );
-            break;
-          case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
-            break;
-          default:
-            break;
+      onSubmit: async (values) => {
+        const isValid = await checkFormValidation();
+        
+        if (isValid) {
+          switch (schoolScreenDBOperation) {
+            case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+              changeOrganizationMembersFormValidationStatus(true);
+              dispatch(
+                setOrganizationMembersFormValues(values.organizationMembers),
+              );
+              break;
+            case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
+              changeOrganizationMembersFormValidationStatus(true);
+              break;
+            default:
+              break;
+          }
+        } else {
+          changeOrganizationMembersFormValidationStatus(false);
         }
       },
     });
+
+    // Check validation status on initial mount
+    useEffect(() => {
+      switch (schoolScreenDBOperation) {
+        case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+          // Check initial validation status
+          checkFormValidation();
+          break;
+        default:
+          break;
+      }
+    }, [dispatch]);
+
+    // Check validation status when form values, errors, or touched state changes
+    useEffect(() => {
+      switch (schoolScreenDBOperation) {
+        case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+          checkFormValidation();
+          break;
+        default:
+          break;
+      }
+    }, [formik.values, formik.errors, formik.touched, organizationMembersFormValues]);
+
+    // Handle cancel/reset with validation check
+    const handleCancel = async () => {
+      formik.handleReset();
+      // After reset, check validation status
+      setTimeout(() => {
+        checkFormValidation();
+      }, 100); // Small delay to ensure reset is complete
+    };
 
     const submitButtonText = () => {
       switch (schoolScreenDBOperation) {
@@ -630,7 +697,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                 type="button"
                 variant="outline"
                 className="hover:cursor-pointer"
-                onClick={formik.handleReset}
+                onClick={handleCancel}
               >
                 {_.upperFirst(
                   t("organizationMembersFormCancelButtonLabel", {

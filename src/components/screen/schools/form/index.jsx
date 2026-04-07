@@ -12,6 +12,8 @@ import {
 import _ from "lodash";
 
 import { Button } from "@MEShadcnComponents/button";
+import { addSchool } from "@MERedux/schools/schoolsAction";
+import { setAddSchoolAPIPayload } from "@MEUtils/apiPayload";
 import {
   SCHOOL_INFORMATION_VIEW,
   SCHOOL_SCREEN_DB_OPERATIONS,
@@ -53,9 +55,20 @@ const SchoolScreenFormComponent = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { addSchoolFormHasError, schoolScreenDBOperation } = useSelector(
-    (state) => state.schools,
-  );
+  const {
+    addSchoolFormHasError,
+    schoolScreenDBOperation,
+    isOrganizationFormValidated,
+    isOrganizationMembersFormValidated,
+    isSchoolFormValidated,
+    isSchoolAddressesFormValidated,
+    isSchoolAdminsFormValidated,
+    schoolFormValues,
+    organizationFormValues,
+    organizationMembersFormValues,
+    schoolAddressesFormValues,
+    schoolAdminsFormValues,
+  } = useSelector((state) => state.schools);
 
   useEffect(() => {
     return () => {
@@ -79,66 +92,41 @@ const SchoolScreenFormComponent = () => {
 
   const handleSubmit = async () => {
     try {
-      const formValidations = await Promise.all([
-        organizationFormRef.current?.validateForm().catch(() => ({})) || {},
-        organizationMembersFormRef.current?.validateForm().catch(() => ({})) ||
-          {},
-        schoolFormRef.current?.validateForm().catch(() => ({})) || {},
-        schoolAddressesFormRef.current?.validateForm().catch(() => ({})) || {},
-        schoolAdminsFormRef.current?.validateForm().catch(() => ({})) || {},
-      ]);
+      if (
+        isSchoolFormValidated &&
+        isOrganizationFormValidated &&
+        isOrganizationMembersFormValidated &&
+        isSchoolAddressesFormValidated &&
+        isSchoolAdminsFormValidated &&
+        _.size(schoolAddressesFormValues) === _.size(schoolAdminsFormValues)
+      ) {
+        if (errorTimeoutRef.current) {
+          clearTimeout(errorTimeoutRef.current);
+        }
 
-      const hasErrors = formValidations.some(
-        (errors) => errors && Object.keys(errors).length > 0,
-      );
+        dispatch(setAddSchoolFormHasError(false));
+        dispatch(
+          addSchool(
+            setAddSchoolAPIPayload({
+              school: schoolFormValues,
+              organization: organizationFormValues,
+              members: organizationMembersFormValues,
+              addresses: schoolAddressesFormValues,
+              admins: schoolAdminsFormValues,
+            }),
+          ),
+        );
+      } else {
+        if (errorTimeoutRef.current) {
+          clearTimeout(errorTimeoutRef.current);
+        }
 
-      if (hasErrors) {
-        setTimeout(() => {
-          // Clear any existing timeout
-          if (errorTimeoutRef.current) {
-            clearTimeout(errorTimeoutRef.current);
-          }
+        errorTimeoutRef.current = setTimeout(() => {
+          dispatch(setAddSchoolFormHasError(false));
+        }, 5000);
 
-          dispatch(setAddSchoolFormHasError(true));
-
-          // Auto-clear error after 5 seconds
-          errorTimeoutRef.current = setTimeout(() => {
-            dispatch(setAddSchoolFormHasError(false));
-          }, 5000);
-
-          organizationFormRef.current?.setTouched(
-            setNestedObjectValues(formValidations[0], true),
-          );
-          organizationMembersFormRef.current?.setTouched(
-            setNestedObjectValues(formValidations[1], true),
-          );
-          schoolFormRef.current?.setTouched(
-            setNestedObjectValues(formValidations[2], true),
-          );
-          schoolAddressesFormRef.current?.setTouched(
-            setNestedObjectValues(formValidations[3], true),
-          );
-          schoolAdminsFormRef.current?.setTouched(
-            setNestedObjectValues(formValidations[4], true),
-          );
-        }, 100);
-        return;
+        dispatch(setAddSchoolFormHasError(true));
       }
-
-      await Promise.all([
-        organizationFormRef.current?.submitForm(),
-        organizationMembersFormRef.current?.submitForm(),
-        schoolFormRef.current?.submitForm(),
-        schoolAddressesFormRef.current?.submitForm(),
-        schoolAdminsFormRef.current?.submitForm(),
-      ]);
-
-      // Clear any existing timeout and reset error state on success
-      if (errorTimeoutRef.current) {
-        clearTimeout(errorTimeoutRef.current);
-      }
-      dispatch(setAddSchoolFormHasError(false));
-      return;
     } catch (error) {
       // Clear any existing timeout
       if (errorTimeoutRef.current) {
@@ -152,31 +140,6 @@ const SchoolScreenFormComponent = () => {
         dispatch(setAddSchoolFormHasError(false));
       }, 5000);
     }
-  };
-
-  // Helper function to set nested object values (for touched fields)
-  const setNestedObjectValues = (object, value) => {
-    if (!object || typeof object !== "object") return {};
-
-    const result = {};
-
-    Object.keys(object).forEach((key) => {
-      if (
-        typeof object[key] === "object" &&
-        object[key] !== null &&
-        !Array.isArray(object[key])
-      ) {
-        result[key] = setNestedObjectValues(object[key], value);
-      } else if (Array.isArray(object[key])) {
-        result[key] = object[key].map((item, index) =>
-          typeof item === "object" ? setNestedObjectValues(item, value) : value,
-        );
-      } else {
-        result[key] = value;
-      }
-    });
-
-    return result;
   };
 
   const handleClose = () => {
@@ -277,17 +240,6 @@ const SchoolScreenFormComponent = () => {
 
   return (
     <>
-      <div className="hidden">
-        <SchoolScreenOrganizationFormComponent ref={organizationFormRef} />
-        <SchoolScreenOrganizationMembersFormComponent
-          ref={organizationMembersFormRef}
-        />
-        <SchoolScreenSchoolFormComponent ref={schoolFormRef} />
-        <SchoolScreenSchoolAddressesFormComponent
-          ref={schoolAddressesFormRef}
-        />
-        <SchoolScreenSchoolAdminsFormComponent ref={schoolAdminsFormRef} />
-      </div>
       <div
         className={`flex items-center mb-4 justify-between`} // ${addSchoolFormHasError ? "justify-between" : "justify-end"}
       >

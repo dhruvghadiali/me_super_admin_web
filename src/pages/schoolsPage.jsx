@@ -4,8 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import _ from "lodash";
 
-import { SCHOOL_INFORMATION_VIEW } from "@MEHelpers/enums";
-import { setSchoolInformationView } from "@MERedux/schools/schoolsSlice";
+import {
+  SCHOOL_INFORMATION_VIEW,
+  SCHOOL_SCREEN_DB_OPERATIONS,
+} from "@MEHelpers/enums";
+import {
+  setSchoolInformationView,
+  setSchoolScreenDBOperation,
+} from "@MERedux/schools/schoolsSlice";
 import {
   getStates,
   getschools,
@@ -47,8 +53,8 @@ const SchoolsPage = () => {
   };
 
   const handleNewRecord = () => {
-    // TODO: Navigate to add new school form or open modal
-    console.log("Add new school clicked");
+    dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.FORM));
+    dispatch(setSchoolScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
   };
 
   if (schoolListLoader) {

@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getschools, getStates } from "@MERedux/schools/schoolsAction";
+import {
+  getStates,
+  addSchool,
+  getschools,
+  getSchoolTypes,
+  getEducationBoards,
+} from "@MERedux/schools/schoolsAction";
 import {
   SCHOOL_INFORMATION_VIEW,
   SCHOOL_SCREEN_DB_OPERATIONS,
@@ -66,35 +72,60 @@ export const schoolsSlice = createSlice({
   name: "schools",
   initialState: {
     schoolFormValues: schoolFormInitialValues,
+    isSchoolFormValidated: false,
     organizationFormValues: organizationFormInitialValues,
+    isOrganizationFormValidated: false,
     organizationMembersFormValues: [organizationMembersInitialValues],
+    isOrganizationMembersFormValidated: false,
     schoolAddressesFormValues: [schoolAddressesInitialValues],
+    isSchoolAddressesFormValidated: false,
     schoolAdminsFormValues: [schoolAdminsInitialValues],
+    isSchoolAdminsFormValidated: false,
     schoolInformationView: SCHOOL_INFORMATION_VIEW.TABLE,
     schoolScreenDBOperation: SCHOOL_SCREEN_DB_OPERATIONS.VIEW,
-    schools: [],
-    tableRows: [],
     states: [],
-    schoolListError: "",
+    stateListLoader: false,
+    schools: [],
     schoolListLoader: false,
+    schoolListError: "",
+    tableRows: [],
+    schoolTypes: [],
+    schoolTypeListLoader: false,
+    educationBoards: [],
+    educationBoardsLoader: false,
     addSchoolFormHasError: false,
+    addSchoolError: "",
   },
   reducers: {
     resetFormValues: (state) => {
       state.schoolFormValues = schoolFormInitialValues;
+      state.isSchoolFormValidated = false;
       state.organizationFormValues = organizationFormInitialValues;
+      state.isOrganizationFormValidated = false;
       state.organizationMembersFormValues = [organizationMembersInitialValues];
+      state.isOrganizationMembersFormValidated = false;
       state.schoolAddressesFormValues = [schoolAddressesInitialValues];
+      state.isSchoolAddressesFormValidated = false;
       state.schoolAdminsFormValues = [schoolAdminsInitialValues];
+      state.isSchoolAdminsFormValidated = false;
     },
     setOrganizationFormValues: (state, action) => {
       state.organizationFormValues = action.payload;
     },
+    setOrganizationFormValidationStatus: (state, action) => {
+      state.isOrganizationFormValidated = action.payload;
+    },
     setSchoolFormValues: (state, action) => {
       state.schoolFormValues = action.payload;
     },
+    setSchoolFormValidationStatus: (state, action) => {
+      state.isSchoolFormValidated = action.payload;
+    },
     setOrganizationMembersFormValues: (state, action) => {
       state.organizationMembersFormValues = action.payload;
+    },
+    setOrganizationMembersFormValidationStatus: (state, action) => {
+      state.isOrganizationMembersFormValidated = action.payload;
     },
     addOrganizationMember: (state) => {
       if (state.organizationMembersFormValues.length < 5) {
@@ -116,6 +147,9 @@ export const schoolsSlice = createSlice({
     setSchoolAddressesFormValues: (state, action) => {
       state.schoolAddressesFormValues = action.payload;
     },
+    setSchoolAddressesFormValidationStatus: (state, action) => {
+      state.isSchoolAddressesFormValidated = action.payload;
+    },
     addSchoolAddress: (state) => {
       if (state.schoolAddressesFormValues.length < 5) {
         state.schoolAddressesFormValues.push(schoolAddressesInitialValues);
@@ -133,6 +167,9 @@ export const schoolsSlice = createSlice({
     },
     setSchoolAdminsFormValues: (state, action) => {
       state.schoolAdminsFormValues = action.payload;
+    },
+    setSchoolAdminsFormValidationStatus: (state, action) => {
+      state.isSchoolAdminsFormValidated = action.payload;
     },
     addSchoolAdmin: (state) => {
       if (state.schoolAdminsFormValues.length < 5) {
@@ -163,7 +200,6 @@ export const schoolsSlice = createSlice({
     setSchoolScreenDBOperation: (state, action) => {
       state.schoolScreenDBOperation = action.payload;
     },
-
   },
   extraReducers: (builder) => {
     builder
@@ -186,13 +222,52 @@ export const schoolsSlice = createSlice({
         state.schoolListError = action.payload.error;
       })
       .addCase(getStates.pending, (state) => {
+        state.stateListLoader = true;
         state.states = [];
       })
       .addCase(getStates.fulfilled, (state, action) => {
+        state.stateListLoader = false;
         state.states = action.payload.states;
       })
       .addCase(getStates.rejected, (state, action) => {
+        state.stateListLoader = false;
         state.states = [];
+      })
+      .addCase(getSchoolTypes.pending, (state) => {
+        state.schoolTypeListLoader = true;
+        state.schoolTypes = [];
+      })
+      .addCase(getSchoolTypes.fulfilled, (state, action) => {
+        state.schoolTypeListLoader = false;
+        state.schoolTypes = action.payload.schoolTypes;
+      })
+      .addCase(getSchoolTypes.rejected, (state, action) => {
+        state.schoolTypeListLoader = false;
+        state.schoolTypes = [];
+      })
+      .addCase(getEducationBoards.pending, (state) => {
+        state.educationBoardsLoader = true;
+        state.educationBoards = [];
+      })
+      .addCase(getEducationBoards.fulfilled, (state, action) => {
+        state.educationBoardsLoader = false;
+        state.educationBoards = action.payload.educationBoards;
+      })
+      .addCase(getEducationBoards.rejected, (state, action) => {
+        state.educationBoardsLoader = false;
+        state.educationBoards = [];
+      })
+      .addCase(addSchool.pending, (state) => {
+        state.addSchoolFormHasError = false;
+        state.addSchoolError = "";
+      })
+      .addCase(addSchool.fulfilled, (state, action) => {
+        state.addSchoolFormHasError = false;
+        state.addSchoolError = "";
+      })
+      .addCase(addSchool.rejected, (state, action) => {
+        state.addSchoolFormHasError = true;
+        state.addSchoolError = action.payload.error;
       });
   },
 });
@@ -212,7 +287,12 @@ export const {
   setOrganizationFormValues,
   setSchoolScreenDBOperation,
   setSchoolAddressesFormValues,
+  setSchoolFormValidationStatus,
   setOrganizationMembersFormValues,
+  setOrganizationFormValidationStatus,
+  setSchoolAdminsFormValidationStatus,
+  setSchoolAddressesFormValidationStatus,
+  setOrganizationMembersFormValidationStatus,
 } = schoolsSlice.actions;
 
 export default schoolsSlice.reducer;
