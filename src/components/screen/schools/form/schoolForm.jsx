@@ -8,8 +8,14 @@ import moment from "moment";
 import * as Yup from "yup";
 
 import { Button } from "@MEShadcnComponents/button";
-import { setSchoolFormValues, setSchoolFormValidationStatus } from "@MERedux/schools/schoolsSlice";
-import { phoneNumberRegex, yearDigitRegex } from "@MEHelpers/regex";
+import { phoneNumberRegex } from "@MEHelpers/regex";
+import { Spinner } from "@MEShadcnComponents/spinner";
+import { editSchool } from "@MERedux/schools/schoolsAction";
+import { setEditSchoolInformation } from "@MEUtils/apiPayload";
+import {
+  setSchoolFormValues,
+  setSchoolFormValidationStatus,
+} from "@MERedux/schools/schoolsSlice";
 import {
   SELECTION_COMPONENT_VARIANTS,
   SCHOOL_SCREEN_DB_OPERATIONS,
@@ -91,6 +97,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
     schoolFormValues,
     schoolScreenDBOperation,
     isSchoolFormValidated,
+    schoolScreenDBOperationLoader,
   } = useSelector((state) => state.schools);
 
   const changeSchoolFormValidationStatus = (status) =>
@@ -101,14 +108,17 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
     try {
       const errors = await formik.validateForm();
       const hasErrors = Object.keys(errors).length > 0;
-      
+
       // Check if form has values using formik state (not Redux state)
       const currentFormValues = formik.values || {};
-      const hasValues = Object.values(currentFormValues).some(value => 
-        value !== null && value !== undefined && value !== "" && 
-        (Array.isArray(value) ? value.length > 0 : true)
+      const hasValues = Object.values(currentFormValues).some(
+        (value) =>
+          value !== null &&
+          value !== undefined &&
+          value !== "" &&
+          (Array.isArray(value) ? value.length > 0 : true),
       );
-      
+
       // Form is valid if no errors and has some values
       const isValid = !hasErrors && hasValues;
       changeSchoolFormValidationStatus(isValid);
@@ -125,7 +135,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
     validationSchema,
     onSubmit: async (values) => {
       const isValid = await checkFormValidation();
-      
+
       if (isValid) {
         switch (schoolScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
@@ -134,7 +144,8 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
             break;
           case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
             changeSchoolFormValidationStatus(true);
-            // Dispatch edit school action
+            console.log("Submitting edited school with values:", values, setEditSchoolInformation(values));
+            dispatch(editSchool(setEditSchoolInformation(values)));
             break;
           default:
             break;
@@ -421,19 +432,23 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
         <div className="flex items-center gap-3">
           <Button type="submit" className="hover:cursor-pointer">
             {submitButtonText()}
+            {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT &&
+              schoolScreenDBOperationLoader && <Spinner />}
           </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="hover:cursor-pointer"
-            onClick={handleCancel}
-          >
-            {_.upperFirst(
-              t("schoolFormCancelButtonLabel", {
-                defaultValue: schoolFormCancelButtonLabel,
-              }),
-            )}
-          </Button>
+          {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+            <Button
+              type="button"
+              variant="outline"
+              className="hover:cursor-pointer"
+              onClick={handleCancel}
+            >
+              {_.upperFirst(
+                t("schoolFormCancelButtonLabel", {
+                  defaultValue: schoolFormCancelButtonLabel,
+                }),
+              )}
+            </Button>
+          )}
         </div>
       </div>
     </form>

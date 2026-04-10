@@ -104,4 +104,21 @@ const setEditOrganizationInformation = (organization) => ({
   },
 });
 
-export { setAddSchoolAPIPayload, setEditOrganizationInformation };
+const setEditSchoolInformation = (school) => ({
+  id: _.get(school, "id", ""),
+  data: {
+    name: _.get(school, "name", ""),
+    short_name: _.get(school, "shortName", ""),
+    email: _.get(school, "email", ""),
+    phone_number: _.get(school, "phoneNumber", ""),
+    established_year: _.get(school, "establishedYear", ""),
+    school_type: _.get(school, "schoolType", ""),
+    education_boards: _.get(school, "educationBoards", []),
+  },
+});
+
+export {
+  setAddSchoolAPIPayload,
+  setEditOrganizationInformation,
+  setEditSchoolInformation,
+};

@@ -191,6 +191,7 @@ const setSchoolsTableRows = (schools) =>
     organization: setOrganization(_.get(school, "organization", {})),
     schoolAddresses: setSchoolAddresses(_.get(school, "school_address", [])),
     school: {
+      id: _.get(school, "id", null),
       name: _.get(school, "name", ""),
       shortName: _.get(school, "short_name", ""),
       email: _.get(school, "email", ""),

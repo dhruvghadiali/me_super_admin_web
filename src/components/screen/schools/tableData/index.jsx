@@ -107,7 +107,11 @@ const SchoolScreenTableDataComponet = () => {
             ),
           ),
         );
-        dispatch(setSchoolFormValues(row.school || {}));
+        dispatch(setSchoolFormValues(row.school ? {
+          ...row.school,
+          schoolType: _.get(row.school, "schoolType.id", {}),
+          educationBoards: _.map(_.get(row.school, "educationBoards", []), (board) => board.id),
+        } : {}));
         // dispatch(setSchoolAddressesFormValues(row.schoolAddresses || []));
         // dispatch(setSchoolAdminsFormValues([]));
         break;

@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getStates,
   addSchool,
+  editSchool,
   getschools,
   getSchoolTypes,
   editOrganization,
@@ -111,6 +112,9 @@ export const schoolsSlice = createSlice({
       state.isSchoolAddressesFormValidated = false;
       state.schoolAdminsFormValues = [schoolAdminsInitialValues];
       state.isSchoolAdminsFormValidated = false;
+      state.addSchoolFormHasError = false;
+      state.addSchoolError = "";
+      state.schoolScreenDBOperationError = "";
     },
     setOrganizationFormValues: (state, action) => {
       state.organizationFormValues = action.payload;
@@ -289,6 +293,23 @@ export const schoolsSlice = createSlice({
         }
       })
       .addCase(editOrganization.rejected, (state, action) => {
+        state.schoolScreenDBOperationLoader = false;
+        state.schoolScreenDBOperationError = action.payload.error;
+      })
+      .addCase(editSchool.pending, (state) => {
+        state.schoolScreenDBOperationLoader = true;
+        state.schoolScreenDBOperationError = "";
+      })
+      .addCase(editSchool.fulfilled, (state, action) => {
+        state.schoolScreenDBOperationLoader = false;
+        state.schoolScreenDBOperationError = action.payload.error;
+
+        if (!action.payload.error) {
+          state.schoolInformationView = SCHOOL_INFORMATION_VIEW.TABLE;
+          state.schoolScreenDBOperation = SCHOOL_SCREEN_DB_OPERATIONS.VIEW;
+        }
+      })
+      .addCase(editSchool.rejected, (state, action) => {
         state.schoolScreenDBOperationLoader = false;
         state.schoolScreenDBOperationError = action.payload.error;
       });

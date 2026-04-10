@@ -201,9 +201,42 @@ const editOrganization = createAsyncThunk(
   },
 );
 
+const editSchool = createAsyncThunk(
+  "schools/editSchool",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const response = await axiosInstance.put(
+        `${schoolsAPIRoute}/${payload.id}`,
+        payload.data,
+        {
+          state: getState(),
+        },
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getschools());
+        return { error: "" };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to edit school. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
 export {
   getStates,
   addSchool,
+  editSchool,
   getschools,
   getSchoolTypes,
   editOrganization,
