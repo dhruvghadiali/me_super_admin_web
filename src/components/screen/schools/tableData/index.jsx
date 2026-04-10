@@ -93,11 +93,23 @@ const SchoolScreenTableDataComponet = () => {
           ),
         );
         dispatch(
-          setOrganizationMembersFormValues(row.organization?.members || []),
+          setOrganizationMembersFormValues(
+            _.map(
+              _.get(row.organization, "members", []),
+              (member) => ({
+                ...member,
+                state: _.get(member, "state.id", {}),
+                district: _.get(member, "district.id", {}),
+                city: _.get(member, "city.id", {}),
+                areaName: _.get(member, "areaName.id", {}),
+                zipcode: _.get(member, "zipcode.id", {}),
+              }),
+            ),
+          ),
         );
         dispatch(setSchoolFormValues(row.school || {}));
-        dispatch(setSchoolAddressesFormValues(row.schoolAddresses || []));
-        dispatch(setSchoolAdminsFormValues([]));
+        // dispatch(setSchoolAddressesFormValues(row.schoolAddresses || []));
+        // dispatch(setSchoolAdminsFormValues([]));
         break;
       case SCHOOL_SCREEN_DB_OPERATIONS.DELETE:
         setAlertDialog({

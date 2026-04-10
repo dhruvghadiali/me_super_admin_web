@@ -5,6 +5,7 @@ import {
   statesAPIRoute,
   schoolsAPIRoute,
   schoolTypesAPIRoute,
+  organizationsAPIRoute,
   educationBoardsAPIRoute,
 } from "@/utils/apiRoutes";
 import {
@@ -14,7 +15,7 @@ import {
   setSchoolTypesDropdownOptions,
   setEducationBoardsDropdownOptions,
 } from "@MEUtils/apiResponse";
-import { axiosInstance, apiResponseHaveData } from "@MEHelpers/axiosHelpers";
+import { axiosInstance, apiResponseHaveData, isAPIServedSuccessfully } from "@MEHelpers/axiosHelpers";
 
 const getStates = createAsyncThunk(
   "schools/getStates",
@@ -152,12 +153,12 @@ const addSchool = createAsyncThunk(
       if (apiResponseHaveData(response)) {
         dispatch(getschools());
       } else {
-        return{
+        return {
           error:
             response && response.message
               ? response.message
               : "Failed to add school. Please try again.",
-        }
+        };
       }
     } catch (error) {
       const errMsg =
@@ -168,4 +169,43 @@ const addSchool = createAsyncThunk(
   },
 );
 
-export { getschools, getStates, addSchool, getSchoolTypes, getEducationBoards };
+const editOrganization = createAsyncThunk(
+  "schools/editOrganization",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const response = await axiosInstance.put(
+        `${organizationsAPIRoute}/${payload.id}`,
+        payload.data,
+        {
+          state: getState(),
+        },
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getschools());
+        return { error: "" };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to edit organization. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
+export {
+  getStates,
+  addSchool,
+  getschools,
+  getSchoolTypes,
+  editOrganization,
+  getEducationBoards,
+};

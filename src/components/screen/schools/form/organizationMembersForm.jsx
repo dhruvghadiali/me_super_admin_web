@@ -124,16 +124,17 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
       try {
         const errors = await formik.validateForm();
         const hasErrors = Object.keys(errors).length > 0;
-        
+
         // Check if form has values using formik state (not Redux state)
         const currentFormValues = formik.values.organizationMembers || [];
-        const hasValues = currentFormValues.length > 0 && 
-          currentFormValues.some(member => 
-            Object.values(member || {}).some(value => 
-              value !== null && value !== undefined && value !== ""
-            )
+        const hasValues =
+          currentFormValues.length > 0 &&
+          currentFormValues.some((member) =>
+            Object.values(member || {}).some(
+              (value) => value !== null && value !== undefined && value !== "",
+            ),
           );
-        
+
         // Form is valid if no errors and has some values
         const isValid = !hasErrors && hasValues;
         changeOrganizationMembersFormValidationStatus(isValid);
@@ -154,7 +155,6 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
       onSubmit: async (values) => {
         const isValid = await checkFormValidation();
 
-        
         if (isValid) {
           switch (schoolScreenDBOperation) {
             case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
@@ -196,7 +196,12 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
         default:
           break;
       }
-    }, [formik.values, formik.errors, formik.touched, organizationMembersFormValues]);
+    }, [
+      formik.values,
+      formik.errors,
+      formik.touched,
+      organizationMembersFormValues,
+    ]);
 
     // Handle cancel/reset with validation check
     const handleCancel = async () => {
@@ -664,53 +669,58 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
     return (
       <>
         <div className="flex justify-end items-center mb-5">
-          {organizationMembersFormValues.length <
-            organizationMembersMaxLimit && (
-            <Button
-              type="button"
-              onClick={addMember}
-              className="flex items-center gap-2 hover:cursor-pointer"
-            >
-              <Plus className="w-4 h-4" />
-              {_.upperFirst(
-                t("organizationMembersFormAddMemberButtonLabel", {
-                  defaultValue: organizationMembersFormAddMemberButtonLabel,
-                }),
-              )}
-            </Button>
-          )}
+          {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD
+            ? organizationMembersFormValues.length <
+                organizationMembersMaxLimit && (
+                <Button
+                  type="button"
+                  onClick={addMember}
+                  className="flex items-center gap-2 hover:cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  {_.upperFirst(
+                    t("organizationMembersFormAddMemberButtonLabel", {
+                      defaultValue: organizationMembersFormAddMemberButtonLabel,
+                    }),
+                  )}
+                </Button>
+              )
+            : null}
         </div>
         <form onSubmit={formik.handleSubmit} className="space-y-6">
           {organizationMembersFormValues.map((_, index) =>
             renderMemberForm(index),
           )}
 
-          <div className="flex flex-col gap-3 pt-5 mt-5 border-t border-primary/20">
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              {_.upperFirst(
-                t("organizationMembersFormSubmitMessage", {
-                  defaultValue: organizationMembersFormSubmitMessage,
-                }),
-              )}
-            </p>
-            <div className="flex items-center gap-3">
-              <Button type="submit" className="hover:cursor-pointer">
-                {submitButtonText()}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="hover:cursor-pointer"
-                onClick={handleCancel}
-              >
+          {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+            <div className="flex flex-col gap-3 pt-5 mt-5 border-t border-primary/20">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 {_.upperFirst(
-                  t("organizationMembersFormCancelButtonLabel", {
-                    defaultValue: organizationMembersFormCancelButtonLabel,
+                  t("organizationMembersFormSubmitMessage", {
+                    defaultValue: organizationMembersFormSubmitMessage,
                   }),
                 )}
-              </Button>
+              </p>
+
+              <div className="flex items-center gap-3">
+                <Button type="submit" className="hover:cursor-pointer">
+                  {submitButtonText()}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="hover:cursor-pointer"
+                  onClick={handleCancel}
+                >
+                  {_.upperFirst(
+                    t("organizationMembersFormCancelButtonLabel", {
+                      defaultValue: organizationMembersFormCancelButtonLabel,
+                    }),
+                  )}
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </form>
       </>
     );

@@ -8,6 +8,9 @@ import * as Yup from "yup";
 
 import { Button } from "@MEShadcnComponents/button";
 import { phoneNumberRegex } from "@MEHelpers/regex";
+import { Spinner } from "@MEShadcnComponents/spinner";
+import { editOrganization } from "@MERedux/schools/schoolsAction";
+import { setEditOrganizationInformation } from "@MEUtils/apiPayload";
 import {
   setOrganizationFormValues,
   setOrganizationFormValidationStatus,
@@ -92,9 +95,10 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
 
   const { t } = useTranslation();
   const {
+    states,
     organizationFormValues,
     schoolScreenDBOperation,
-    states,
+    schoolScreenDBOperationLoader,
   } = useSelector((state) => state.schools);
 
   const changeOrganizationFormValidationStatus = (status) =>
@@ -105,13 +109,13 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
     try {
       const errors = await formik.validateForm();
       const hasErrors = Object.keys(errors).length > 0;
-      
+
       // Check if form has values using formik state (not Redux state)
       const currentFormValues = formik.values || {};
-      const hasValues = Object.values(currentFormValues).some(value => 
-        value !== null && value !== undefined && value !== ""
+      const hasValues = Object.values(currentFormValues).some(
+        (value) => value !== null && value !== undefined && value !== "",
       );
-      
+
       // Form is valid if no errors and has some values
       const isValid = !hasErrors && hasValues;
       changeOrganizationFormValidationStatus(isValid);
@@ -128,7 +132,7 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
     validationSchema,
     onSubmit: async (values) => {
       const isValid = await checkFormValidation();
-      
+
       if (isValid) {
         switch (schoolScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
@@ -136,8 +140,8 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
             dispatch(setOrganizationFormValues(values));
             break;
           case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
-            // Dispatch edit organization action
             changeOrganizationFormValidationStatus(true);
+            dispatch(editOrganization(setEditOrganizationInformation(values)));
             break;
           default:
             break;
@@ -528,21 +532,30 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
           )}
         </p>
         <div className="flex items-center gap-3">
-          <Button type="submit" className="hover:cursor-pointer">
-            {submitButtonText()}
-          </Button>
           <Button
-            type="button"
-            variant="outline"
+            type="submit"
             className="hover:cursor-pointer"
-            onClick={handleCancel}
+            disabled={schoolScreenDBOperationLoader}
           >
-            {_.upperFirst(
-              t("organizationFormCancelButtonLabel", {
-                defaultValue: organizationFormCancelButtonLabel,
-              }),
-            )}
+            {submitButtonText()}
+            {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT &&
+              schoolScreenDBOperationLoader && <Spinner />}
           </Button>
+          {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+            <Button
+              type="button"
+              variant="outline"
+              className="hover:cursor-pointer"
+              disabled={schoolScreenDBOperationLoader}
+              onClick={handleCancel}
+            >
+              {_.upperFirst(
+                t("organizationFormCancelButtonLabel", {
+                  defaultValue: organizationFormCancelButtonLabel,
+                }),
+              )}
+            </Button>
+          )}
         </div>
       </div>
     </form>

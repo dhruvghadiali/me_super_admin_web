@@ -77,8 +77,31 @@ const setAddSchoolAPIPayload = (formValues) => {
       _.get(formValues, "addresses", []),
       _.get(formValues, "admins", []),
     ),
-    school_admins: setAddSchoolAdminsInformation(_.get(formValues, "admins", [])),
+    school_admins: setAddSchoolAdminsInformation(
+      _.get(formValues, "admins", []),
+    ),
   };
 };
 
-export { setAddSchoolAPIPayload };
+const setEditOrganizationInformation = (organization) => ({
+  id: _.get(organization, "id", ""),
+  data: {
+    name: _.get(organization, "name", ""),
+    short_name: _.get(organization, "shortName", ""),
+    email: _.get(organization, "email", ""),
+    phone_number: _.get(organization, "phoneNumber", ""),
+    government_registration_number: _.get(
+      organization,
+      "governmentRegistrationNumber",
+      "",
+    ),
+    address: _.get(organization, "address", ""),
+    state: _.get(organization, "state", ""),
+    district: _.get(organization, "district", ""),
+    city: _.get(organization, "city", ""),
+    area_name: _.get(organization, "areaName", ""),
+    zipcode: _.get(organization, "zipcode", ""),
+  },
+});
+
+export { setAddSchoolAPIPayload, setEditOrganizationInformation };

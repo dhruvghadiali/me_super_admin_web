@@ -56,18 +56,20 @@ const SchoolScreenFormComponent = () => {
 
   const { t } = useTranslation();
   const {
-    addSchoolFormHasError,
-    schoolScreenDBOperation,
-    isOrganizationFormValidated,
-    isOrganizationMembersFormValidated,
-    isSchoolFormValidated,
-    isSchoolAddressesFormValidated,
-    isSchoolAdminsFormValidated,
     schoolFormValues,
+    addSchoolFormHasError,
+    isSchoolFormValidated,
     organizationFormValues,
-    organizationMembersFormValues,
-    schoolAddressesFormValues,
     schoolAdminsFormValues,
+    schoolScreenDBOperation,
+    schoolAddressesFormValues,
+    isOrganizationFormValidated,
+    isSchoolAdminsFormValidated,
+    schoolScreenDBOperationError,
+    organizationMembersFormValues,
+    schoolScreenDBOperationLoader,
+    isSchoolAddressesFormValidated,
+    isOrganizationMembersFormValidated,
   } = useSelector((state) => state.schools);
 
   useEffect(() => {
@@ -258,16 +260,18 @@ const SchoolScreenFormComponent = () => {
         <div>
           {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
             <Button
-              onClick={() => handleSubmit()}
               className={"hover:cursor-pointer"}
+              disabled={schoolScreenDBOperationLoader}
+              onClick={() => handleSubmit()}
             >
               Submit
             </Button>
           )}
           <Button
             variant="outline"
-            onClick={() => handleClose()}
             className={"hover:cursor-pointer ml-2"}
+            disabled={schoolScreenDBOperationLoader}
+            onClick={() => handleClose()}
           >
             Close
           </Button>
@@ -277,6 +281,13 @@ const SchoolScreenFormComponent = () => {
         <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
           <p className="text-sm text-destructive">
             {"Please fill out all required fields."}
+          </p>
+        </div>
+      )}
+      {schoolScreenDBOperationError && (
+        <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
+          <p className="text-sm text-destructive">
+            {schoolScreenDBOperationError}
           </p>
         </div>
       )}

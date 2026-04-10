@@ -36,9 +36,14 @@ const SchoolsPage = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { schoolListLoader, schools, schoolInformationView } = useSelector(
-    (state) => state.schools,
-  );
+  const {
+    schools,
+    stateListLoader,
+    schoolListLoader,
+    schoolTypeListLoader,
+    educationBoardsLoader,
+    schoolInformationView,
+  } = useSelector((state) => state.schools);
 
   useEffect(() => {
     dispatch(getStates());
@@ -57,7 +62,12 @@ const SchoolsPage = () => {
     dispatch(setSchoolScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
   };
 
-  if (schoolListLoader) {
+  if (
+    schoolListLoader ||
+    stateListLoader ||
+    educationBoardsLoader ||
+    schoolTypeListLoader
+  ) {
     return (
       <MEDataLoaderComponent
         loaderHeader={_.upperFirst(

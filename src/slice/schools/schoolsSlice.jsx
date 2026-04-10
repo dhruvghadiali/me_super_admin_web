@@ -5,6 +5,7 @@ import {
   addSchool,
   getschools,
   getSchoolTypes,
+  editOrganization,
   getEducationBoards,
 } from "@MERedux/schools/schoolsAction";
 import {
@@ -83,6 +84,8 @@ export const schoolsSlice = createSlice({
     isSchoolAdminsFormValidated: false,
     schoolInformationView: SCHOOL_INFORMATION_VIEW.TABLE,
     schoolScreenDBOperation: SCHOOL_SCREEN_DB_OPERATIONS.VIEW,
+    schoolScreenDBOperationLoader: false,
+    schoolScreenDBOperationError: "",
     states: [],
     stateListLoader: false,
     schools: [],
@@ -258,16 +261,36 @@ export const schoolsSlice = createSlice({
         state.educationBoards = [];
       })
       .addCase(addSchool.pending, (state) => {
+        state.schoolScreenDBOperationLoader = true;
         state.addSchoolFormHasError = false;
         state.addSchoolError = "";
       })
       .addCase(addSchool.fulfilled, (state, action) => {
+        state.schoolScreenDBOperationLoader = false;
         state.addSchoolFormHasError = false;
         state.addSchoolError = "";
       })
       .addCase(addSchool.rejected, (state, action) => {
+        state.schoolScreenDBOperationLoader = false;
         state.addSchoolFormHasError = true;
         state.addSchoolError = action.payload.error;
+      })
+      .addCase(editOrganization.pending, (state) => {
+        state.schoolScreenDBOperationLoader = true;
+        state.schoolScreenDBOperationError = "";
+      })
+      .addCase(editOrganization.fulfilled, (state, action) => {
+        state.schoolScreenDBOperationLoader = false;
+        state.schoolScreenDBOperationError = action.payload.error;
+
+        if (!action.payload.error) {
+          state.schoolInformationView = SCHOOL_INFORMATION_VIEW.TABLE;
+          state.schoolScreenDBOperation = SCHOOL_SCREEN_DB_OPERATIONS.VIEW;
+        }
+      })
+      .addCase(editOrganization.rejected, (state, action) => {
+        state.schoolScreenDBOperationLoader = false;
+        state.schoolScreenDBOperationError = action.payload.error;
       });
   },
 });
