@@ -81,9 +81,12 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
     try {
       const errors = await formik.validateForm();
       const hasErrors = Object.keys(errors).length > 0;
-      const hasValues = schoolAddressesFormValues.length > 0 && 
-        schoolAddressesFormValues.some(address => 
-          Object.values(address).some(value => 
+      
+      // Check if form has values using formik state (not Redux state)
+      const currentFormValues = formik.values.schoolAddresses || [];
+      const hasValues = currentFormValues.length > 0 && 
+        currentFormValues.some(address => 
+          Object.values(address || {}).some(value => 
             value !== null && value !== undefined && value !== ""
           )
         );

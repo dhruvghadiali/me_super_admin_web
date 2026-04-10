@@ -85,9 +85,12 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     try {
       const errors = await formik.validateForm();
       const hasErrors = Object.keys(errors).length > 0;
-      const hasValues = schoolAdminsFormValues.length > 0 && 
-        schoolAdminsFormValues.some(admin => 
-          Object.values(admin).some(value => 
+      
+      // Check if form has values using formik state (not Redux state)
+      const currentFormValues = formik.values.schoolAdmins || [];
+      const hasValues = currentFormValues.length > 0 && 
+        currentFormValues.some(admin => 
+          Object.values(admin || {}).some(value => 
             value !== null && value !== undefined && value !== ""
           )
         );

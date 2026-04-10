@@ -107,10 +107,8 @@ const SchoolScreenTableDataComponet = () => {
         });
         break;
       case SCHOOL_SCREEN_DB_OPERATIONS.VIEW:
-        console.log("View action selected for row:", row);
         break;
       default:
-        console.log("Unknown action selected:", action);
         break;
     }
   };
@@ -121,11 +119,10 @@ const SchoolScreenTableDataComponet = () => {
     // Handle different actions
     switch (action.value) {
       case SCHOOL_SCREEN_DB_OPERATIONS.DELETE:
-        console.log("Delete school:", row);
         // TODO: Implement delete functionality
         break;
       default:
-        console.log("Unknown action:", action);
+        break;
     }
 
     // Close dialog

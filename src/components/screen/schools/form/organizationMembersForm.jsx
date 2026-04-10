@@ -124,9 +124,12 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
       try {
         const errors = await formik.validateForm();
         const hasErrors = Object.keys(errors).length > 0;
-        const hasValues = organizationMembersFormValues.length > 0 && 
-          organizationMembersFormValues.some(member => 
-            Object.values(member).some(value => 
+        
+        // Check if form has values using formik state (not Redux state)
+        const currentFormValues = formik.values.organizationMembers || [];
+        const hasValues = currentFormValues.length > 0 && 
+          currentFormValues.some(member => 
+            Object.values(member || {}).some(value => 
               value !== null && value !== undefined && value !== ""
             )
           );
@@ -150,6 +153,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
       enableReinitialize: true,
       onSubmit: async (values) => {
         const isValid = await checkFormValidation();
+
         
         if (isValid) {
           switch (schoolScreenDBOperation) {
