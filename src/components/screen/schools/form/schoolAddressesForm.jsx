@@ -73,6 +73,11 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   const { schoolAddressesFormValues, schoolScreenDBOperation, states } =
     useSelector((state) => state.schools);
 
+  console.log(
+    "schoolAddressesFormValues in form component:",
+    schoolAddressesFormValues,
+  );
+
   const changeSchoolAddressesFormValidationStatus = (status) =>
     dispatch(setSchoolAddressesFormValidationStatus(status));
 
@@ -81,16 +86,17 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
     try {
       const errors = await formik.validateForm();
       const hasErrors = Object.keys(errors).length > 0;
-      
+
       // Check if form has values using formik state (not Redux state)
       const currentFormValues = formik.values.schoolAddresses || [];
-      const hasValues = currentFormValues.length > 0 && 
-        currentFormValues.some(address => 
-          Object.values(address || {}).some(value => 
-            value !== null && value !== undefined && value !== ""
-          )
+      const hasValues =
+        currentFormValues.length > 0 &&
+        currentFormValues.some((address) =>
+          Object.values(address || {}).some(
+            (value) => value !== null && value !== undefined && value !== "",
+          ),
         );
-      
+
       // Form is valid if no errors and has some values
       const isValid = !hasErrors && hasValues;
       changeSchoolAddressesFormValidationStatus(isValid);
@@ -110,7 +116,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
     enableReinitialize: true,
     onSubmit: async (values) => {
       const isValid = await checkFormValidation();
-      
+
       if (isValid) {
         switch (schoolScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
@@ -389,10 +395,10 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                   },
                 )?.areaNames || []
               }
-              selectedValue={addressValues?.area_name || ""}
+              selectedValue={addressValues?.areaName || ""}
               onValueChange={(value) =>
                 formik.setFieldValue(
-                  `schoolAddresses[${addressIndex}].area_name`,
+                  `schoolAddresses[${addressIndex}].areaName`,
                   value,
                 )
               }
@@ -402,8 +408,8 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
               messagevariant={SELECTION_COMPONENT_VARIANTS.DESTRUCTIVE}
               selectedVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
               message={
-                addressTouched.area_name && addressErrors.area_name
-                  ? addressErrors.area_name
+                addressTouched.areaName && addressErrors.areaName
+                  ? addressErrors.areaName
                   : ""
               }
             />
@@ -430,12 +436,10 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                     )?.cities || [],
                     { value: addressValues?.city },
                   )?.areaNames || [],
-                  { value: addressValues?.area_name },
+                  { value: addressValues?.areaName },
                 )?.zipcodes || []
               }
-              selectedValue={
-                addressValues?.zipcode || ""
-              }
+              selectedValue={addressValues?.zipcode || ""}
               onValueChange={(value) =>
                 formik.setFieldValue(
                   `schoolAddresses[${addressIndex}].zipcode`,
@@ -492,18 +496,20 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
             <Button type="submit" className="hover:cursor-pointer">
               {submitButtonText()}
             </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="hover:cursor-pointer"
-              onClick={handleCancel}
-            >
-              {_.upperFirst(
-                t("schoolAddressesFormCancelButtonLabel", {
-                  defaultValue: schoolAddressesFormCancelButtonLabel,
-                }),
-              )}
-            </Button>
+            {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+              <Button
+                type="button"
+                variant="outline"
+                className="hover:cursor-pointer"
+                onClick={handleCancel}
+              >
+                {_.upperFirst(
+                  t("schoolAddressesFormCancelButtonLabel", {
+                    defaultValue: schoolAddressesFormCancelButtonLabel,
+                  }),
+                )}
+              </Button>
+            )}
           </div>
         </div>
       </form>
@@ -523,7 +529,7 @@ const validationSchema = Yup.object({
         state: Yup.string().trim().required(stateRequired),
         district: Yup.string().trim().required(districtRequired),
         city: Yup.string().trim().required(cityRequired),
-        area_name: Yup.string().trim().required(areaNameRequired),
+        areaName: Yup.string().trim().required(areaNameRequired),
         zipcode: Yup.string().trim().required(zipCodeRequired),
       }),
     )

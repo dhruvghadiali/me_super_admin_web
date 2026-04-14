@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import _ from "lodash";
+
 import {
   getStates,
   addSchool,
@@ -158,8 +160,22 @@ export const schoolsSlice = createSlice({
       state.isSchoolAddressesFormValidated = action.payload;
     },
     addSchoolAddress: (state) => {
-      if (state.schoolAddressesFormValues.length < 5) {
-        state.schoolAddressesFormValues.push(schoolAddressesInitialValues);
+      if (
+        state.schoolAddressesFormValues.length < 5 &&
+        state.schoolAdminsFormValues.length < 5
+      ) {
+        let uniqueId = _.uniqueId("schoolAddress_");
+        state.schoolAddressesFormValues.push({
+          ...schoolAddressesInitialValues,
+          schoolAdmin: {
+            ...schoolAdminsInitialValues,
+            schoolAddressId: uniqueId,
+          },
+        });
+        state.schoolAdminsFormValues.push({
+          ...schoolAdminsInitialValues,
+          schoolAddressId: uniqueId,
+        });
       }
     },
     removeSchoolAddress: (state, action) => {
@@ -170,6 +186,7 @@ export const schoolsSlice = createSlice({
         index < state.schoolAddressesFormValues.length
       ) {
         state.schoolAddressesFormValues.splice(index, 1);
+        state.schoolAdminsFormValues.splice(index, 1);
       }
     },
     setSchoolAdminsFormValues: (state, action) => {
@@ -179,12 +196,18 @@ export const schoolsSlice = createSlice({
       state.isSchoolAdminsFormValidated = action.payload;
     },
     addSchoolAdmin: (state) => {
-      if (state.schoolAdminsFormValues.length < 5) {
+      if (state.schoolAdminsFormValues.length < 5 && state.schoolAddressesFormValues.length < 5) {
+        let uniqueId = _.uniqueId("schoolAdmin_");
         state.schoolAdminsFormValues.push({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNumber: "",
+          ...schoolAdminsInitialValues,
+          schoolAddressId: uniqueId,
+        });
+        state.schoolAddressesFormValues.push({
+          ...schoolAddressesInitialValues,
+          schoolAdmin: {
+            ...schoolAdminsInitialValues,
+            schoolAddressId: uniqueId,
+          },
         });
       }
     },
@@ -196,6 +219,7 @@ export const schoolsSlice = createSlice({
         index < state.schoolAdminsFormValues.length
       ) {
         state.schoolAdminsFormValues.splice(index, 1);
+        state.schoolAddressesFormValues.splice(index, 1);
       }
     },
     setAddSchoolFormHasError: (state, action) => {

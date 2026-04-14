@@ -19,7 +19,7 @@ const schoolAddressZipCodeInputLabel = `Zip Code`;
 const schoolAddressZipCodeInputPlaceholder = `Enter zip code`;
 
 const schoolAddressesFormSaveButtonLabel = `Save`;
-const schoolAddressesFormEditButtonLabel = `Update`;
+const schoolAddressesFormEditButtonLabel = `Edit`;
 const schoolAddressesFormCancelButtonLabel = `Cancel`;
 const schoolAddressesFormAddAddressButtonLabel = `Add School Address`;
 const schoolAddressesFormSubmitMessage = `Please review all the information before submitting.`;

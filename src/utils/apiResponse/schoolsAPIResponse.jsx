@@ -107,7 +107,10 @@ const setSchoolAddresses = (addresses) =>
     zipcode: setZipcode(_.get(address, "zipcode", {})),
     administrativeHours: mapWeeklyHours(address, "administrative_hours"),
     schoolHours: mapWeeklyHours(address, "school_hours"),
-    setSchoolAdmin: setSchoolAdmin(_.get(address, "user", {})),
+    schoolAdmin: {
+      ...setSchoolAdmin(_.get(address, "user", {})),
+      schoolAddressId: _.get(address, "id", null),
+    },
   }));
 
 const setOrganizationMembers = (members) =>
