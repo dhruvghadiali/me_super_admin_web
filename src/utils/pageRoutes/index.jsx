@@ -1,5 +1,19 @@
 const SIGN_IN = "/";
-const DASHBOARD = "/dashboard";
+const STATES = "/states";
+const CITIES = "/cities";
 const SCHOOLS = "/schools";
+const ZIPCODES = "/zipcodes";
+const DISTRICTS = "/districts";
+const DASHBOARD = "/dashboard";
+const AREA_NAMES = "/area-names";
 
-export { SIGN_IN, DASHBOARD, SCHOOLS };
+export {
+  STATES,
+  CITIES,
+  SIGN_IN,
+  SCHOOLS,
+  ZIPCODES,
+  DASHBOARD,
+  DISTRICTS,
+  AREA_NAMES,
+};

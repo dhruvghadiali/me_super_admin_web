@@ -14,6 +14,7 @@ import MESidebarComponent from "@MECommonComponents/sidebar";
 // Pages
 import SigninPage from "@MEPages/signinPage";
 import SchoolsPage from "@MEPages/schoolsPage";
+import NotFoundPage from "@MEPages/notFoundPage";
 
 const App = () => {
   return (
@@ -52,6 +53,15 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            {/* Catch-all route for 404 Not Found */}
+            <Route
+              path="*"
+              element={
+                <MESidebarComponent>
+                  <NotFoundPage />
+                </MESidebarComponent>
+              }
+            />
           </Routes>
         </AuthChecker>
       </Router>
@@ -60,3 +70,4 @@ const App = () => {
 };
 
 export default App;
+NotFoundPage
