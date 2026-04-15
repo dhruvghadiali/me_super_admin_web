@@ -25,7 +25,7 @@ import {
   removeOrganizationMember,
   setOrganizationMembersFormValues,
   setOrganizationMembersFormValidationStatus,
-} from "@MERedux/schools/schoolsSlice";
+} from "@/slice/schools1/schoolsSlice1";
 import {
   emailMaxChar,
   emailMinChar,

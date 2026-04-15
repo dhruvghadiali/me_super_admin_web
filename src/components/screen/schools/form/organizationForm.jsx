@@ -1,7 +1,8 @@
-import React, { forwardRef, useImperativeHandle, useEffect, use } from "react";
+
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
+import React, { forwardRef, useImperativeHandle, useEffect } from "react";
 
 import _ from "lodash";
 import * as Yup from "yup";
@@ -9,12 +10,12 @@ import * as Yup from "yup";
 import { Button } from "@MEShadcnComponents/button";
 import { phoneNumberRegex } from "@MEHelpers/regex";
 import { Spinner } from "@MEShadcnComponents/spinner";
-import { editOrganization } from "@MERedux/schools/schoolsAction";
+import { editOrganization } from "@/slice/schools1/schoolsAction1";
 import { setEditOrganizationInformation } from "@MEUtils/apiPayload";
 import {
   setOrganizationFormValues,
   setOrganizationFormValidationStatus,
-} from "@MERedux/schools/schoolsSlice";
+} from "@/slice/schools1/schoolsSlice1";
 import {
   SELECTION_COMPONENT_VARIANTS,
   SCHOOL_SCREEN_DB_OPERATIONS,
@@ -97,8 +98,8 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
   const {
     states,
     organizationFormValues,
-    schoolScreenDBOperation,
-    schoolScreenDBOperationLoader,
+    schoolsScreenDBOperation,
+    schoolsScreenDBOperationLoader,
   } = useSelector((state) => state.schools);
 
   const changeOrganizationFormValidationStatus = (status) =>
@@ -134,7 +135,7 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
       const isValid = await checkFormValidation();
 
       if (isValid) {
-        switch (schoolScreenDBOperation) {
+        switch (schoolsScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
             changeOrganizationFormValidationStatus(true);
             dispatch(setOrganizationFormValues(values));
@@ -152,21 +153,9 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
     },
   });
 
-  // Check validation status on initial mount
-  useEffect(() => {
-    switch (schoolScreenDBOperation) {
-      case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
-        // Check initial validation status
-        checkFormValidation();
-        break;
-      default:
-        break;
-    }
-  }, [dispatch]);
-
   // Check validation status when form values, errors, or touched state changes
   useEffect(() => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         checkFormValidation();
         break;
@@ -187,14 +176,13 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
   // Handle cancel/reset with validation check
   const handleCancel = async () => {
     formik.handleReset();
-    // After reset, check validation status
     setTimeout(() => {
       checkFormValidation();
     }, 100); // Small delay to ensure reset is complete
   };
 
   const submitButtonText = () => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         return _.upperFirst(
           t("organizationFormSaveButtonLabel", {
@@ -535,18 +523,18 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
           <Button
             type="submit"
             className="hover:cursor-pointer"
-            disabled={schoolScreenDBOperationLoader}
+            disabled={schoolsScreenDBOperationLoader}
           >
             {submitButtonText()}
-            {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT &&
-              schoolScreenDBOperationLoader && <Spinner />}
+            {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT &&
+              schoolsScreenDBOperationLoader && <Spinner />}
           </Button>
-          {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+          {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
             <Button
               type="button"
               variant="outline"
               className="hover:cursor-pointer"
-              disabled={schoolScreenDBOperationLoader}
+              disabled={schoolsScreenDBOperationLoader}
               onClick={handleCancel}
             >
               {_.upperFirst(

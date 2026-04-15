@@ -9,15 +9,15 @@ import {
   SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
 import {
-  setSchoolInformationView,
-  setSchoolScreenDBOperation,
-} from "@MERedux/schools/schoolsSlice";
+  setSchoolsInformationView,
+  setschoolsScreenDBOperation,
+} from "@/slice/schools/schoolsSlice";
 import {
   getStates,
   getschools,
   getSchoolTypes,
   getEducationBoards,
-} from "@MERedux/schools/schoolsAction";
+} from "@/slice/schools/schoolsAction";
 import {
   schoolDataLoaderHeader,
   schoolDataLoaderMessage,
@@ -37,36 +37,42 @@ const SchoolsPage = () => {
 
   const { t } = useTranslation();
   const {
-    schools,
-    stateListLoader,
-    schoolListLoader,
-    schoolTypeListLoader,
+    states,
+    statesLoader,
+    educationBoards,
     educationBoardsLoader,
-    schoolInformationView,
+    schoolTypes,
+    schoolTypesLoader,
+    schools,
+    schoolsLoader,
+    schoolsInformationView,
   } = useSelector((state) => state.schools);
 
-  useEffect(() => {
+  const reduxAPICalls = () => {
     dispatch(getStates());
     dispatch(getschools());
     dispatch(getSchoolTypes());
     dispatch(getEducationBoards());
-    dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
-  }, [dispatch]);
-
-  const handleTryAgain = () => {
-    dispatch(getschools());
+    dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
+    dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.VIEW));
   };
 
+  useEffect(() => {
+    reduxAPICalls();
+  }, [dispatch]);
+
+  const handleTryAgain = () => reduxAPICalls();
+
   const handleNewRecord = () => {
-    dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.FORM));
-    dispatch(setSchoolScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
+    dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.FORM));
+    dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
   };
 
   if (
-    schoolListLoader ||
-    stateListLoader ||
+    schoolsLoader ||
+    statesLoader ||
     educationBoardsLoader ||
-    schoolTypeListLoader
+    schoolTypesLoader
   ) {
     return (
       <MEDataLoaderComponent
@@ -80,7 +86,12 @@ const SchoolsPage = () => {
     );
   }
 
-  if (!schoolListLoader && (_.isEmpty(schools) || _.isNull(schools))) {
+  if (
+    (!schoolsLoader && _.isEmpty(schools)) ||
+    (!statesLoader && _.isEmpty(states)) ||
+    (!educationBoardsLoader && _.isEmpty(educationBoards)) ||
+    (!schoolTypesLoader && _.isEmpty(schoolTypes))
+  ) {
     return (
       <MEDataListNotFoundComponent
         title={_.upperFirst(
@@ -104,7 +115,7 @@ const SchoolsPage = () => {
     );
   }
 
-  switch (schoolInformationView) {
+  switch (schoolsInformationView) {
     case SCHOOL_INFORMATION_VIEW.TABLE:
       return <SchoolScreenTableDataComponet />;
     case SCHOOL_INFORMATION_VIEW.FORM:

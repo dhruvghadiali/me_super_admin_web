@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 
-import _, { add } from "lodash";
+import _ from "lodash";
 
 import { Button } from "@MEShadcnComponents/button";
 import {
@@ -10,14 +10,11 @@ import {
   SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
 import {
-  setSchoolInformationView,
-  setSchoolScreenDBOperation,
+  resetFormValues,
+  setSchoolsInformationView,
   setOrganizationFormValues,
-  setOrganizationMembersFormValues,
-  setSchoolFormValues,
-  setSchoolAddressesFormValues,
-  setSchoolAdminsFormValues,
-} from "@MERedux/schools/schoolsSlice";
+  setschoolsScreenDBOperation,
+} from "@/slice/schools/schoolsSlice";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -76,8 +73,8 @@ const SchoolScreenTableDataComponet = () => {
   const onActionSelect = (action, row) => {
     switch (action.value) {
       case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
-        dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.FORM));
-        dispatch(setSchoolScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.EDIT));
+        dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.FORM));
+        dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.EDIT));
         dispatch(
           setOrganizationFormValues(
             row.organization
@@ -92,49 +89,49 @@ const SchoolScreenTableDataComponet = () => {
               : {},
           ),
         );
-        dispatch(
-          setOrganizationMembersFormValues(
-            _.map(_.get(row.organization, "members", []), (member) => ({
-              ...member,
-              state: _.get(member, "state.id", {}),
-              district: _.get(member, "district.id", {}),
-              city: _.get(member, "city.id", {}),
-              areaName: _.get(member, "areaName.id", {}),
-              zipcode: _.get(member, "zipcode.id", {}),
-            })),
-          ),
-        );
-        dispatch(
-          setSchoolFormValues(
-            row.school
-              ? {
-                  ...row.school,
-                  schoolType: _.get(row.school, "schoolType.id", {}),
-                  educationBoards: _.map(
-                    _.get(row.school, "educationBoards", []),
-                    (board) => board.id,
-                  ),
-                }
-              : {},
-          ),
-        );
-        dispatch(
-          setSchoolAddressesFormValues(
-            _.map(_.get(row, "schoolAddresses", []), (address) => ({
-              ...address,
-              state: _.get(address, "state.id", {}),
-              district: _.get(address, "district.id", {}),
-              city: _.get(address, "city.id", {}),
-              areaName: _.get(address, "areaName.id", {}),
-              zipcode: _.get(address, "zipcode.id", {}),
-            })),
-          ),
-        );
-        dispatch(setSchoolAdminsFormValues(
-          _.map(_.get(row, "schoolAddresses", []), (address) => ({
-            ...address.schoolAdmin,
-          })),
-        ));
+        // dispatch(
+        //   setOrganizationMembersFormValues(
+        //     _.map(_.get(row.organization, "members", []), (member) => ({
+        //       ...member,
+        //       state: _.get(member, "state.id", {}),
+        //       district: _.get(member, "district.id", {}),
+        //       city: _.get(member, "city.id", {}),
+        //       areaName: _.get(member, "areaName.id", {}),
+        //       zipcode: _.get(member, "zipcode.id", {}),
+        //     })),
+        //   ),
+        // );
+        // dispatch(
+        //   setSchoolFormValues(
+        //     row.school
+        //       ? {
+        //           ...row.school,
+        //           schoolType: _.get(row.school, "schoolType.id", {}),
+        //           educationBoards: _.map(
+        //             _.get(row.school, "educationBoards", []),
+        //             (board) => board.id,
+        //           ),
+        //         }
+        //       : {},
+        //   ),
+        // );
+        // dispatch(
+        //   setSchoolAddressesFormValues(
+        //     _.map(_.get(row, "schoolAddresses", []), (address) => ({
+        //       ...address,
+        //       state: _.get(address, "state.id", {}),
+        //       district: _.get(address, "district.id", {}),
+        //       city: _.get(address, "city.id", {}),
+        //       areaName: _.get(address, "areaName.id", {}),
+        //       zipcode: _.get(address, "zipcode.id", {}),
+        //     })),
+        //   ),
+        // );
+        // dispatch(setSchoolAdminsFormValues(
+        //   _.map(_.get(row, "schoolAddresses", []), (address) => ({
+        //     ...address.schoolAdmin,
+        //   })),
+        // ));
         break;
       case SCHOOL_SCREEN_DB_OPERATIONS.DELETE:
         setAlertDialog({
@@ -167,8 +164,9 @@ const SchoolScreenTableDataComponet = () => {
   };
 
   const onAddClick = () => {
-    dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.FORM));
-    dispatch(setSchoolScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
+    dispatch(resetFormValues());
+    dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.FORM));
+    dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
   };
 
   const handleDialogCancel = () => closeDialog();

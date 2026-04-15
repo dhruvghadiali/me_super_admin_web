@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import _ from "lodash";
+import _, { set } from "lodash";
 
 import {
   getStates,
@@ -10,8 +10,9 @@ import {
   getSchoolTypes,
   editOrganization,
   getEducationBoards,
-} from "@MERedux/schools/schoolsAction";
+} from "@/slice/schools1/schoolsAction1";
 import {
+  SCHOOL_FORM_STEPERS,
   SCHOOL_INFORMATION_VIEW,
   SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
@@ -27,7 +28,7 @@ const organizationFormInitialValues = {
   district: "",
   city: "",
   areaName: "",
-  zipCode: "",
+  zipcode: "",
 };
 
 const schoolFormInitialValues = {
@@ -63,304 +64,136 @@ const schoolAddressesInitialValues = {
   city: "",
   area_name: "",
   zipcode: "",
-};
-
-const schoolAdminsInitialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phoneNumber: "",
+  schoolAdmin: {
+    schoolAddressId: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+  }
 };
 
 export const schoolsSlice = createSlice({
   name: "schools",
   initialState: {
-    schoolFormValues: schoolFormInitialValues,
-    isSchoolFormValidated: false,
-    organizationFormValues: organizationFormInitialValues,
-    isOrganizationFormValidated: false,
-    organizationMembersFormValues: [organizationMembersInitialValues],
-    isOrganizationMembersFormValidated: false,
-    schoolAddressesFormValues: [schoolAddressesInitialValues],
-    isSchoolAddressesFormValidated: false,
-    schoolAdminsFormValues: [schoolAdminsInitialValues],
-    isSchoolAdminsFormValidated: false,
-    schoolInformationView: SCHOOL_INFORMATION_VIEW.TABLE,
-    schoolScreenDBOperation: SCHOOL_SCREEN_DB_OPERATIONS.VIEW,
-    schoolScreenDBOperationLoader: false,
-    schoolScreenDBOperationError: "",
     states: [],
-    stateListLoader: false,
-    schools: [],
-    schoolListLoader: false,
-    schoolListError: "",
-    tableRows: [],
-    schoolTypes: [],
-    schoolTypeListLoader: false,
+    statesLoader: false,
+    statesError: "",
     educationBoards: [],
     educationBoardsLoader: false,
-    addSchoolFormHasError: false,
-    addSchoolError: "",
+    educationBoardsError: "",
+    schoolTypes: [],
+    schoolTypesLoader: false,
+    schoolTypesError: "",
+    schools: [],
+    schoolsLoader: false,
+    schoolsError: "",
+    schoolsInformationView: SCHOOL_INFORMATION_VIEW.TABLE,
+    schoolsScreenDBOperation: SCHOOL_SCREEN_DB_OPERATIONS.VIEW,
+    schoolsScreenDBOperationLoader: false,
+    schoolsScreenDBOperationError: "",
+    organizationFormValues: organizationFormInitialValues,
   },
   reducers: {
-    resetFormValues: (state) => {
-      state.schoolFormValues = schoolFormInitialValues;
-      state.isSchoolFormValidated = false;
-      state.organizationFormValues = organizationFormInitialValues;
-      state.isOrganizationFormValidated = false;
-      state.organizationMembersFormValues = [organizationMembersInitialValues];
-      state.isOrganizationMembersFormValidated = false;
-      state.schoolAddressesFormValues = [schoolAddressesInitialValues];
-      state.isSchoolAddressesFormValidated = false;
-      state.schoolAdminsFormValues = [schoolAdminsInitialValues];
-      state.isSchoolAdminsFormValidated = false;
-      state.addSchoolFormHasError = false;
-      state.addSchoolError = "";
-      state.schoolScreenDBOperationError = "";
+    setSchoolsInformationView: (state, action) => {
+      state.schoolsInformationView = action.payload;
+    },
+    setschoolsScreenDBOperation: (state, action) => {
+      state.schoolsScreenDBOperation = action.payload;
     },
     setOrganizationFormValues: (state, action) => {
       state.organizationFormValues = action.payload;
     },
-    setOrganizationFormValidationStatus: (state, action) => {
-      state.isOrganizationFormValidated = action.payload;
-    },
-    setSchoolFormValues: (state, action) => {
-      state.schoolFormValues = action.payload;
-    },
-    setSchoolFormValidationStatus: (state, action) => {
-      state.isSchoolFormValidated = action.payload;
-    },
-    setOrganizationMembersFormValues: (state, action) => {
-      state.organizationMembersFormValues = action.payload;
-    },
-    setOrganizationMembersFormValidationStatus: (state, action) => {
-      state.isOrganizationMembersFormValidated = action.payload;
-    },
-    addOrganizationMember: (state) => {
-      if (state.organizationMembersFormValues.length < 5) {
-        state.organizationMembersFormValues.push(
-          organizationMembersInitialValues,
-        );
-      }
-    },
-    removeOrganizationMember: (state, action) => {
-      const index = action.payload;
-      if (
-        state.organizationMembersFormValues.length > 1 &&
-        index >= 0 &&
-        index < state.organizationMembersFormValues.length
-      ) {
-        state.organizationMembersFormValues.splice(index, 1);
-      }
-    },
-    setSchoolAddressesFormValues: (state, action) => {
-      state.schoolAddressesFormValues = action.payload;
-    },
-    setSchoolAddressesFormValidationStatus: (state, action) => {
-      state.isSchoolAddressesFormValidated = action.payload;
-    },
-    addSchoolAddress: (state) => {
-      if (
-        state.schoolAddressesFormValues.length < 5 &&
-        state.schoolAdminsFormValues.length < 5
-      ) {
-        let uniqueId = _.uniqueId("schoolAddress_");
-        state.schoolAddressesFormValues.push({
-          ...schoolAddressesInitialValues,
-          schoolAdmin: {
-            ...schoolAdminsInitialValues,
-            schoolAddressId: uniqueId,
-          },
-        });
-        state.schoolAdminsFormValues.push({
-          ...schoolAdminsInitialValues,
-          schoolAddressId: uniqueId,
-        });
-      }
-    },
-    removeSchoolAddress: (state, action) => {
-      const index = action.payload;
-      if (
-        state.schoolAddressesFormValues.length > 1 &&
-        index >= 0 &&
-        index < state.schoolAddressesFormValues.length
-      ) {
-        state.schoolAddressesFormValues.splice(index, 1);
-        state.schoolAdminsFormValues.splice(index, 1);
-      }
-    },
-    setSchoolAdminsFormValues: (state, action) => {
-      state.schoolAdminsFormValues = action.payload;
-    },
-    setSchoolAdminsFormValidationStatus: (state, action) => {
-      state.isSchoolAdminsFormValidated = action.payload;
-    },
-    addSchoolAdmin: (state) => {
-      if (state.schoolAdminsFormValues.length < 5 && state.schoolAddressesFormValues.length < 5) {
-        let uniqueId = _.uniqueId("schoolAdmin_");
-        state.schoolAdminsFormValues.push({
-          ...schoolAdminsInitialValues,
-          schoolAddressId: uniqueId,
-        });
-        state.schoolAddressesFormValues.push({
-          ...schoolAddressesInitialValues,
-          schoolAdmin: {
-            ...schoolAdminsInitialValues,
-            schoolAddressId: uniqueId,
-          },
-        });
-      }
-    },
-    removeSchoolAdmin: (state, action) => {
-      const index = action.payload;
-      if (
-        state.schoolAdminsFormValues.length > 1 &&
-        index >= 0 &&
-        index < state.schoolAdminsFormValues.length
-      ) {
-        state.schoolAdminsFormValues.splice(index, 1);
-        state.schoolAddressesFormValues.splice(index, 1);
-      }
-    },
-    setAddSchoolFormHasError: (state, action) => {
-      state.addSchoolFormHasError = action.payload;
-    },
-    setSchoolInformationView: (state, action) => {
-      state.schoolInformationView = action.payload;
-    },
-    setSchoolScreenDBOperation: (state, action) => {
-      state.schoolScreenDBOperation = action.payload;
-    },
+    resetFormValues: (state) => {
+      state.organizationFormValues = organizationFormInitialValues;
+    }
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getschools.pending, (state) => {
-        state.schools = [];
-        state.tableRows = [];
-        state.schoolListError = "";
-        state.schoolListLoader = true;
-      })
-      .addCase(getschools.fulfilled, (state, action) => {
-        state.schools = action.payload.schools;
-        state.tableRows = action.payload.tableRows;
-        state.schoolListError = action.payload.error;
-        state.schoolListLoader = false;
-      })
-      .addCase(getschools.rejected, (state, action) => {
-        state.schools = [];
-        state.tableRows = [];
-        state.schoolListLoader = false;
-        state.schoolListError = action.payload.error;
-      })
       .addCase(getStates.pending, (state) => {
-        state.stateListLoader = true;
+        state.statesLoader = true;
         state.states = [];
+        state.statesError = "";
       })
       .addCase(getStates.fulfilled, (state, action) => {
-        state.stateListLoader = false;
+        state.statesLoader = false;
         state.states = action.payload.states;
+        state.statesError = action.payload.error;
       })
       .addCase(getStates.rejected, (state, action) => {
-        state.stateListLoader = false;
+        state.statesLoader = false;
         state.states = [];
+        state.statesError = action.payload.error;
       })
       .addCase(getSchoolTypes.pending, (state) => {
-        state.schoolTypeListLoader = true;
+        state.schoolTypesLoader = true;
         state.schoolTypes = [];
+        state.schoolTypesError = "";
       })
       .addCase(getSchoolTypes.fulfilled, (state, action) => {
-        state.schoolTypeListLoader = false;
+        state.schoolTypesLoader = false;
         state.schoolTypes = action.payload.schoolTypes;
+        state.schoolTypesError = action.payload.error;
       })
       .addCase(getSchoolTypes.rejected, (state, action) => {
-        state.schoolTypeListLoader = false;
+        state.schoolTypesLoader = false;
         state.schoolTypes = [];
+        state.schoolTypesError = action.payload.error;
       })
       .addCase(getEducationBoards.pending, (state) => {
         state.educationBoardsLoader = true;
         state.educationBoards = [];
+        state.educationBoardsError = "";
       })
       .addCase(getEducationBoards.fulfilled, (state, action) => {
         state.educationBoardsLoader = false;
         state.educationBoards = action.payload.educationBoards;
+        state.educationBoardsError = action.payload.error;
       })
       .addCase(getEducationBoards.rejected, (state, action) => {
         state.educationBoardsLoader = false;
         state.educationBoards = [];
+        state.educationBoardsError = action.payload.error;
       })
-      .addCase(addSchool.pending, (state) => {
-        state.schoolScreenDBOperationLoader = true;
-        state.addSchoolFormHasError = false;
-        state.addSchoolError = "";
+      .addCase(getschools.pending, (state) => {
+        state.schoolsLoader = true;
+        state.schools = [];
+        state.tableRows = [];
+        state.schoolsError = "";
+        state.schoolsInformationView = SCHOOL_INFORMATION_VIEW.TABLE;
       })
-      .addCase(addSchool.fulfilled, (state, action) => {
-        state.schoolScreenDBOperationLoader = false;
-        state.addSchoolFormHasError = false;
-        state.addSchoolError = "";
+      .addCase(getschools.fulfilled, (state, action) => {
+        state.schoolsLoader = false;
+        state.schools = action.payload.schools;
+        state.tableRows = action.payload.tableRows;
+        state.schoolsError = action.payload.error;
       })
-      .addCase(addSchool.rejected, (state, action) => {
-        state.schoolScreenDBOperationLoader = false;
-        state.addSchoolFormHasError = true;
-        state.addSchoolError = action.payload.error;
+      .addCase(getschools.rejected, (state, action) => {
+        state.schoolsLoader = false;
+        state.schools = [];
+        state.tableRows = [];
+        state.schoolsError = action.payload.error;
       })
       .addCase(editOrganization.pending, (state) => {
-        state.schoolScreenDBOperationLoader = true;
-        state.schoolScreenDBOperationError = "";
+        state.schoolsScreenDBOperationLoader = true;
+        state.schoolsScreenDBOperationError = "";
       })
       .addCase(editOrganization.fulfilled, (state, action) => {
-        state.schoolScreenDBOperationLoader = false;
-        state.schoolScreenDBOperationError = action.payload.error;
-
-        if (!action.payload.error) {
-          state.schoolInformationView = SCHOOL_INFORMATION_VIEW.TABLE;
-          state.schoolScreenDBOperation = SCHOOL_SCREEN_DB_OPERATIONS.VIEW;
-        }
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
       })
       .addCase(editOrganization.rejected, (state, action) => {
-        state.schoolScreenDBOperationLoader = false;
-        state.schoolScreenDBOperationError = action.payload.error;
-      })
-      .addCase(editSchool.pending, (state) => {
-        state.schoolScreenDBOperationLoader = true;
-        state.schoolScreenDBOperationError = "";
-      })
-      .addCase(editSchool.fulfilled, (state, action) => {
-        state.schoolScreenDBOperationLoader = false;
-        state.schoolScreenDBOperationError = action.payload.error;
-
-        if (!action.payload.error) {
-          state.schoolInformationView = SCHOOL_INFORMATION_VIEW.TABLE;
-          state.schoolScreenDBOperation = SCHOOL_SCREEN_DB_OPERATIONS.VIEW;
-        }
-      })
-      .addCase(editSchool.rejected, (state, action) => {
-        state.schoolScreenDBOperationLoader = false;
-        state.schoolScreenDBOperationError = action.payload.error;
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
       });
   },
 });
 
 export const {
-  addSchoolAdmin,
   resetFormValues,
-  addSchoolAddress,
-  removeSchoolAdmin,
-  setSchoolFormValues,
-  removeSchoolAddress,
-  addOrganizationMember,
-  setSchoolInformationView,
-  setAddSchoolFormHasError,
-  removeOrganizationMember,
-  setSchoolAdminsFormValues,
+  setSchoolsInformationView,
   setOrganizationFormValues,
-  setSchoolScreenDBOperation,
-  setSchoolAddressesFormValues,
-  setSchoolFormValidationStatus,
-  setOrganizationMembersFormValues,
-  setOrganizationFormValidationStatus,
-  setSchoolAdminsFormValidationStatus,
-  setSchoolAddressesFormValidationStatus,
-  setOrganizationMembersFormValidationStatus,
+  setschoolsScreenDBOperation,
 } = schoolsSlice.actions;
 
 export default schoolsSlice.reducer;

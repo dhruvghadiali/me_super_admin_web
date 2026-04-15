@@ -20,10 +20,10 @@ import {
   SCHOOL_FORM_ACCORDION_ITEMS,
 } from "@MEHelpers/enums";
 import {
-  resetFormValues,
-  setAddSchoolFormHasError,
-  setSchoolInformationView,
-  setSchoolScreenDBOperation,
+  // resetFormValues,
+  // setAddSchoolFormHasError,
+  setSchoolsInformationView,
+  setschoolsScreenDBOperation,
 } from "@MERedux/schools/schoolsSlice";
 import {
   Accordion,
@@ -61,13 +61,13 @@ const SchoolScreenFormComponent = () => {
     isSchoolFormValidated,
     organizationFormValues,
     schoolAdminsFormValues,
-    schoolScreenDBOperation,
+    schoolsScreenDBOperation,
     schoolAddressesFormValues,
     isOrganizationFormValidated,
     isSchoolAdminsFormValidated,
-    schoolScreenDBOperationError,
+    schoolsScreenDBOperationError,
     organizationMembersFormValues,
-    schoolScreenDBOperationLoader,
+    schoolsScreenDBOperationLoader,
     isSchoolAddressesFormValidated,
     isOrganizationMembersFormValidated,
   } = useSelector((state) => state.schools);
@@ -78,7 +78,7 @@ const SchoolScreenFormComponent = () => {
       if (errorTimeoutRef.current) {
         clearTimeout(errorTimeoutRef.current);
       }
-      dispatch(setAddSchoolFormHasError(false));
+      // dispatch(setAddSchoolFormHasError(false));
     };
   }, [dispatch]);
 
@@ -93,61 +93,61 @@ const SchoolScreenFormComponent = () => {
   const errorTimeoutRef = useRef(null);
 
   const handleSubmit = async () => {
-    try {
-      if (
-        isSchoolFormValidated &&
-        isOrganizationFormValidated &&
-        isOrganizationMembersFormValidated &&
-        isSchoolAddressesFormValidated &&
-        isSchoolAdminsFormValidated &&
-        _.size(schoolAddressesFormValues) === _.size(schoolAdminsFormValues)
-      ) {
-        if (errorTimeoutRef.current) {
-          clearTimeout(errorTimeoutRef.current);
-        }
+    // try {
+    //   if (
+    //     isSchoolFormValidated &&
+    //     isOrganizationFormValidated &&
+    //     isOrganizationMembersFormValidated &&
+    //     isSchoolAddressesFormValidated &&
+    //     isSchoolAdminsFormValidated &&
+    //     _.size(schoolAddressesFormValues) === _.size(schoolAdminsFormValues)
+    //   ) {
+    //     if (errorTimeoutRef.current) {
+    //       clearTimeout(errorTimeoutRef.current);
+    //     }
 
-        dispatch(setAddSchoolFormHasError(false));
-        dispatch(
-          addSchool(
-            setAddSchoolAPIPayload({
-              school: schoolFormValues,
-              organization: organizationFormValues,
-              members: organizationMembersFormValues,
-              addresses: schoolAddressesFormValues,
-              admins: schoolAdminsFormValues,
-            }),
-          ),
-        );
-      } else {
-        if (errorTimeoutRef.current) {
-          clearTimeout(errorTimeoutRef.current);
-        }
+    //     // dispatch(setAddSchoolFormHasError(false));
+    //     dispatch(
+    //       addSchool(
+    //         setAddSchoolAPIPayload({
+    //           school: schoolFormValues,
+    //           organization: organizationFormValues,
+    //           members: organizationMembersFormValues,
+    //           addresses: schoolAddressesFormValues,
+    //           admins: schoolAdminsFormValues,
+    //         }),
+    //       ),
+    //     );
+    //   } else {
+    //     if (errorTimeoutRef.current) {
+    //       clearTimeout(errorTimeoutRef.current);
+    //     }
 
-        errorTimeoutRef.current = setTimeout(() => {
-          dispatch(setAddSchoolFormHasError(false));
-        }, 5000);
+    //     errorTimeoutRef.current = setTimeout(() => {
+    //       // dispatch(setAddSchoolFormHasError(false));
+    //     }, 5000);
 
-        dispatch(setAddSchoolFormHasError(true));
-      }
-    } catch (error) {
-      // Clear any existing timeout
-      if (errorTimeoutRef.current) {
-        clearTimeout(errorTimeoutRef.current);
-      }
+    //     // dispatch(setAddSchoolFormHasError(true));
+    //   }
+    // } catch (error) {
+    //   // Clear any existing timeout
+    //   if (errorTimeoutRef.current) {
+    //     clearTimeout(errorTimeoutRef.current);
+    //   }
 
-      dispatch(setAddSchoolFormHasError(true));
+    //   // dispatch(setAddSchoolFormHasError(true));
 
-      // Auto-clear error after 5 seconds
-      errorTimeoutRef.current = setTimeout(() => {
-        dispatch(setAddSchoolFormHasError(false));
-      }, 5000);
-    }
+    //   // Auto-clear error after 5 seconds
+    //   errorTimeoutRef.current = setTimeout(() => {
+    //     // dispatch(setAddSchoolFormHasError(false));
+    //   }, 5000);
+    // }
   };
 
   const handleClose = () => {
-    dispatch(resetFormValues());
-    dispatch(setSchoolInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
-    dispatch(setSchoolScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.VIEW));
+    // dispatch(resetFormValues());
+    dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
+    dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.VIEW));
   };
 
   const items = [
@@ -247,21 +247,21 @@ const SchoolScreenFormComponent = () => {
       >
         <MEScreenHeaderComponent
           title={
-            schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD
+            schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD
               ? "New School"
               : "Update School Details"
           }
           subtitle={
-            schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD
+            schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD
               ? "Complete the form to register a new school"
               : "Make changes and keep information up to date"
           }
         />
         <div>
-          {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+          {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
             <Button
               className={"hover:cursor-pointer"}
-              disabled={schoolScreenDBOperationLoader}
+              disabled={schoolsScreenDBOperationLoader}
               onClick={() => handleSubmit()}
             >
               Submit
@@ -270,27 +270,27 @@ const SchoolScreenFormComponent = () => {
           <Button
             variant="outline"
             className={"hover:cursor-pointer ml-2"}
-            disabled={schoolScreenDBOperationLoader}
+            disabled={schoolsScreenDBOperationLoader}
             onClick={() => handleClose()}
           >
             Close
           </Button>
         </div>
       </div>
-      {addSchoolFormHasError && (
+      {/* {addSchoolFormHasError && (
         <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
           <p className="text-sm text-destructive">
             {"Please fill out all required fields."}
           </p>
         </div>
-      )}
-      {schoolScreenDBOperationError && (
+      )}*/}
+      {schoolsScreenDBOperationError && (
         <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
           <p className="text-sm text-destructive">
-            {schoolScreenDBOperationError}
+            {schoolsScreenDBOperationError}
           </p>
         </div>
-      )}
+      )} 
       <Accordion
         type="single"
         className=""

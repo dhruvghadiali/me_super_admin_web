@@ -10,12 +10,12 @@ import * as Yup from "yup";
 import { Button } from "@MEShadcnComponents/button";
 import { phoneNumberRegex } from "@MEHelpers/regex";
 import { Spinner } from "@MEShadcnComponents/spinner";
-import { editSchool } from "@MERedux/schools/schoolsAction";
+import { editSchool } from "@/slice/schools1/schoolsAction1";
 import { setEditSchoolInformation } from "@MEUtils/apiPayload";
 import {
   setSchoolFormValues,
   setSchoolFormValidationStatus,
-} from "@MERedux/schools/schoolsSlice";
+} from "@/slice/schools1/schoolsSlice1";
 import {
   SELECTION_COMPONENT_VARIANTS,
   SCHOOL_SCREEN_DB_OPERATIONS,

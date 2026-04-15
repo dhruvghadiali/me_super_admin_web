@@ -23,7 +23,7 @@ import {
   removeSchoolAddress,
   setSchoolAddressesFormValues,
   setSchoolAddressesFormValidationStatus,
-} from "@MERedux/schools/schoolsSlice";
+} from "@/slice/schools1/schoolsSlice1";
 import {
   addressMaxChar,
   addressMinChar,
