@@ -5,3 +5,4 @@ export * from "@MEUtils/validationConst/schoolAdminFormValidationConst";
 export * from "@MEUtils/validationConst/organizationFormValidationConst";
 export * from "@MEUtils/validationConst/schoolAddressFormValidationConst";
 export * from "@MEUtils/validationConst/organizationMemberFormValidationConst";
+export * from "@MEUtils/validationConst/statesFormValidationConst";

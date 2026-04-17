@@ -144,7 +144,6 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
             break;
           case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
             changeSchoolFormValidationStatus(true);
-            console.log("Submitting edited school with values:", values, setEditSchoolInformation(values));
             dispatch(editSchool(setEditSchoolInformation(values)));
             break;
           default:

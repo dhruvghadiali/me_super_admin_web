@@ -122,6 +122,7 @@ const MEDataTableComponent = (props) => {
                                     return (
                                       <DropdownMenuItem
                                         key={actionIndex}
+                                        className={"hover:cursor-pointer"}
                                         onSelect={() =>
                                           col.onActionSelect(action, row)
                                         }

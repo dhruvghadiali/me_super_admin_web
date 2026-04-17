@@ -73,11 +73,6 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   const { schoolAddressesFormValues, schoolScreenDBOperation, states } =
     useSelector((state) => state.schools);
 
-  console.log(
-    "schoolAddressesFormValues in form component:",
-    schoolAddressesFormValues,
-  );
-
   const changeSchoolAddressesFormValidationStatus = (status) =>
     dispatch(setSchoolAddressesFormValidationStatus(status));
 

@@ -23,7 +23,6 @@ const getStates = createAsyncThunk(
     try {
       const response = await axiosInstance.get(`${statesAPIRoute}`, {
         state: getState(),
-        callPublicAPI: true,
       });
 
       if (apiResponseHaveData(response)) {

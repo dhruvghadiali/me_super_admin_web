@@ -1,7 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { DASHBOARD, SCHOOLS, SIGN_IN } from "@MEUtils/pageRoutes";
 
 import { ThemeProvider } from "@MEContexts/themeProvider.jsx";
+import {
+  STATES,
+  CITIES,
+  SIGN_IN,
+  SCHOOLS,
+  ZIPCODES,
+  DASHBOARD,
+  DISTRICTS,
+  AREA_NAMES,
+} from "@MEUtils/pageRoutes";
 
 // HOC components
 import AuthChecker from "@MECommonComponents/hoc/authChecker";
@@ -13,6 +22,7 @@ import MESidebarComponent from "@MECommonComponents/sidebar";
 
 // Pages
 import SigninPage from "@MEPages/signinPage";
+import StatesPage from "@MEPages/statesPage";
 import SchoolsPage from "@MEPages/schoolsPage";
 import NotFoundPage from "@MEPages/notFoundPage";
 
@@ -53,6 +63,16 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path={STATES}
+              element={
+                <ProtectedRoute>
+                  <MESidebarComponent>
+                    <StatesPage />
+                  </MESidebarComponent>
+                </ProtectedRoute>
+              }
+            />
             {/* Catch-all route for 404 Not Found */}
             <Route
               path="*"
@@ -70,4 +90,4 @@ const App = () => {
 };
 
 export default App;
-NotFoundPage
+NotFoundPage;
