@@ -113,7 +113,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
   (props, ref) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const { organizationMembersFormValues, schoolScreenDBOperation, states } =
+    const { organizationMembersFormValues, schoolsScreenDBOperation, states } =
       useSelector((state) => state.schools);
 
     const changeOrganizationMembersFormValidationStatus = (status) =>
@@ -156,7 +156,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
         const isValid = await checkFormValidation();
 
         if (isValid) {
-          switch (schoolScreenDBOperation) {
+          switch (schoolsScreenDBOperation) {
             case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
               changeOrganizationMembersFormValidationStatus(true);
               dispatch(
@@ -177,7 +177,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
 
     // Check validation status on initial mount
     useEffect(() => {
-      switch (schoolScreenDBOperation) {
+      switch (schoolsScreenDBOperation) {
         case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
           // Check initial validation status
           checkFormValidation();
@@ -189,7 +189,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
 
     // Check validation status when form values, errors, or touched state changes
     useEffect(() => {
-      switch (schoolScreenDBOperation) {
+      switch (schoolsScreenDBOperation) {
         case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
           checkFormValidation();
           break;
@@ -213,7 +213,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
     };
 
     const submitButtonText = () => {
-      switch (schoolScreenDBOperation) {
+      switch (schoolsScreenDBOperation) {
         case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
           return _.upperFirst(
             t("organizationMembersFormSaveButtonLabel", {
@@ -669,7 +669,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
     return (
       <>
         <div className="flex justify-end items-center mb-5">
-          {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD
+          {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD
             ? organizationMembersFormValues.length <
                 organizationMembersMaxLimit && (
                 <Button
@@ -692,7 +692,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
             renderMemberForm(index),
           )}
 
-          {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+          {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
             <div className="flex flex-col gap-3 pt-5 mt-5 border-t border-primary/20">
               <p className="text-xs sm:text-sm text-muted-foreground">
                 {_.upperFirst(

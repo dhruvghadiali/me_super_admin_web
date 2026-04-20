@@ -14,6 +14,7 @@ import {
   setSchoolsInformationView,
   setOrganizationFormValues,
   setschoolsScreenDBOperation,
+  setOrganizationMembersFormValues,
 } from "@/slice/schools/schoolsSlice";
 import {
   AlertDialog,
@@ -89,18 +90,18 @@ const SchoolScreenTableDataComponet = () => {
               : {},
           ),
         );
-        // dispatch(
-        //   setOrganizationMembersFormValues(
-        //     _.map(_.get(row.organization, "members", []), (member) => ({
-        //       ...member,
-        //       state: _.get(member, "state.id", {}),
-        //       district: _.get(member, "district.id", {}),
-        //       city: _.get(member, "city.id", {}),
-        //       areaName: _.get(member, "areaName.id", {}),
-        //       zipcode: _.get(member, "zipcode.id", {}),
-        //     })),
-        //   ),
-        // );
+        dispatch(
+          setOrganizationMembersFormValues(
+            _.map(_.get(row.organization, "members", []), (member) => ({
+              ...member,
+              state: _.get(member, "state.id", {}),
+              district: _.get(member, "district.id", {}),
+              city: _.get(member, "city.id", {}),
+              areaName: _.get(member, "areaName.id", {}),
+              zipcode: _.get(member, "zipcode.id", {}),
+            })),
+          ),
+        );
         // dispatch(
         //   setSchoolFormValues(
         //     row.school

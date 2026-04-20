@@ -16,62 +16,16 @@ import {
   SCHOOL_INFORMATION_VIEW,
   SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
+import {
+  organizationFormInitialValues,
+  organizationMembersInitialValues,
+  schoolFormInitialValues,
+  schoolAddressesInitialValues,
+} from "@MEUtils/formInitialValues";
 
-const organizationFormInitialValues = {
-  name: "",
-  shortName: "",
-  email: "",
-  phoneNumber: "",
-  governmentRegistrationNumber: "",
-  address: "",
-  state: "",
-  district: "",
-  city: "",
-  areaName: "",
-  zipcode: "",
-};
 
-const schoolFormInitialValues = {
-  name: "",
-  shortName: "",
-  email: "",
-  phoneNumber: "",
-  affiliateNumber: "",
-  establishedYear: "",
-  schoolType: "",
-  educationBoards: [],
-};
 
-const organizationMembersInitialValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phoneNumber: "",
-  position: "",
-  aadhaarNumber: "",
-  address: "",
-  state: "",
-  district: "",
-  city: "",
-  areaName: "",
-  zipcode: "",
-};
 
-const schoolAddressesInitialValues = {
-  address: "",
-  state: "",
-  district: "",
-  city: "",
-  area_name: "",
-  zipcode: "",
-  schoolAdmin: {
-    schoolAddressId: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-  }
-};
 
 export const schoolsSlice = createSlice({
   name: "schools",
@@ -93,6 +47,9 @@ export const schoolsSlice = createSlice({
     schoolsScreenDBOperationLoader: false,
     schoolsScreenDBOperationError: "",
     organizationFormValues: organizationFormInitialValues,
+    organizationMembersFormValues: [organizationMembersInitialValues],
+    schoolFormValues: schoolFormInitialValues,
+    schoolAddressesFormValues: schoolAddressesInitialValues,
   },
   reducers: {
     setSchoolsInformationView: (state, action) => {
@@ -104,9 +61,15 @@ export const schoolsSlice = createSlice({
     setOrganizationFormValues: (state, action) => {
       state.organizationFormValues = action.payload;
     },
+    setOrganizationMembersFormValues: (state, action) => {
+      state.organizationMembersFormValues = action.payload;
+    },
     resetFormValues: (state) => {
       state.organizationFormValues = organizationFormInitialValues;
-    }
+      state.organizationMembersFormValues = [organizationMembersInitialValues];
+      state.schoolFormValues = schoolFormInitialValues;
+      state.schoolAddressesFormValues = schoolAddressesInitialValues;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -194,6 +157,7 @@ export const {
   setSchoolsInformationView,
   setOrganizationFormValues,
   setschoolsScreenDBOperation,
+  setOrganizationMembersFormValues,
 } = schoolsSlice.actions;
 
 export default schoolsSlice.reducer;
