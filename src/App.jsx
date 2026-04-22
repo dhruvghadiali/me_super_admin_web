@@ -24,6 +24,7 @@ import MESidebarComponent from "@MECommonComponents/sidebar";
 import SigninPage from "@MEPages/signinPage";
 import StatesPage from "@MEPages/statesPage";
 import SchoolsPage from "@MEPages/schoolsPage";
+import DistrictsPage from "@MEPages/districtsPage";
 import NotFoundPage from "@MEPages/notFoundPage";
 
 const App = () => {
@@ -69,6 +70,16 @@ const App = () => {
                 <ProtectedRoute>
                   <MESidebarComponent>
                     <StatesPage />
+                  </MESidebarComponent>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={DISTRICTS}
+              element={
+                <ProtectedRoute>
+                  <MESidebarComponent>
+                    <DistrictsPage />
                   </MESidebarComponent>
                 </ProtectedRoute>
               }
