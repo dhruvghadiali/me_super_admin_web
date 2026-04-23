@@ -72,10 +72,7 @@ export const schoolsSlice = createSlice({
       );
     },
     removeOrganizationMember: (state, action) => {
-      state.organizationMembersFormValues = _.pullAt(
-        state.organizationMembersFormValues,
-        action.payload,
-      );
+      _.pullAt(state.organizationMembersFormValues, action.payload);
     },
     setSchoolFormValues: (state, action) => {
       state.schoolFormValues = action.payload;
@@ -90,10 +87,7 @@ export const schoolsSlice = createSlice({
       );
     },
     removeSchoolAddress: (state, action) => {
-      state.schoolAddressesFormValues = _.pullAt(
-        state.schoolAddressesFormValues,
-        action.payload,
-      );
+      _.pullAt(state.schoolAddressesFormValues, action.payload);
     },
   },
   extraReducers: (builder) => {

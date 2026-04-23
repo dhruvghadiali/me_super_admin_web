@@ -199,6 +199,20 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
     const addressErrors = formik.errors.schoolAddresses?.[addressIndex] || {};
     const addressTouched = formik.touched.schoolAddresses?.[addressIndex] || {};
     const addressValues = formik.values.schoolAddresses?.[addressIndex] || {};
+    const adminFirstName = _.upperCase(
+      _.get(
+        schoolAddressesFormValues,
+        `[${addressIndex}].schoolAdmin.firstName`,
+        "",
+      ),
+    );
+    const adminLastName = _.upperCase(
+      _.get(
+        schoolAddressesFormValues,
+        `[${addressIndex}].schoolAdmin.lastName`,
+        "",
+      ),
+    );
 
     return (
       <Card key={addressIndex} className="mb-4">
@@ -213,6 +227,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
               {formik.values.schoolAddresses.length > 1
                 ? ` ${addressIndex + 1}`
                 : ""}
+              {`(${adminFirstName} ${adminLastName})`}
             </CardTitle>
             <div className="flex gap-x-2.5">
               {schoolsScreenDBOperation ===
@@ -226,7 +241,8 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                   <Save className="w-4 h-4" />
                 </Button>
               )}
-              {formik.values.schoolAddresses.length > schoolAddressesMinLimit && (
+              {formik.values.schoolAddresses.length >
+                schoolAddressesMinLimit && (
                 <Button
                   type="button"
                   variant="destructive"

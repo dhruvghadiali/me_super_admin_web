@@ -219,6 +219,9 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   const renderAdminForm = (adminIndex) => {
     const adminErrors = formik.errors.schoolAdmins?.[adminIndex] || {};
     const adminTouched = formik.touched.schoolAdmins?.[adminIndex] || {};
+    const schoolAddress = _.upperFirst(
+      _.get(schoolAddressesFormValues, `[${adminIndex}].address`, ""),
+    );
 
     return (
       <Card key={adminIndex} className="mb-4">
@@ -233,6 +236,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
               {formik.values.schoolAdmins.length > 1
                 ? ` ${adminIndex + 1}`
                 : ""}
+              {`(${schoolAddress})`}
             </CardTitle>
             <div className="flex gap-x-2.5">
               {schoolsScreenDBOperation ===
