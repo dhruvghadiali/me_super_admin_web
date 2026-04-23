@@ -16,12 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@MEShadcnComponents/card";
-import {
-  // addSchoolAdmin,
-  // removeSchoolAdmin,
-  // setSchoolAdminsFormValues,
-  // setSchoolAdminsFormValidationStatus,
-} from "@MERedux/schools/schoolsSlice";
+
 import {
   emailMaxChar,
   emailMinChar,
@@ -73,28 +68,31 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { schoolAdminsFormValues, schoolScreenDBOperation, isSchoolAdminsFormValidated } = useSelector(
-    (state) => state.schools,
-  );
+  const {
+    schoolAddressesFormValues,
+    schoolScreenDBOperation,
+    isSchoolAdminsFormValidated,
+  } = useSelector((state) => state.schools);
 
   const changeSchoolAdminsFormValidationStatus = (status) => {};
-    // dispatch(setSchoolAdminsFormValidationStatus(status));
+  // dispatch(setSchoolAdminsFormValidationStatus(status));
 
   // Helper function to check if form is valid
   const checkFormValidation = async () => {
     try {
       const errors = await formik.validateForm();
       const hasErrors = Object.keys(errors).length > 0;
-      
+
       // Check if form has values using formik state (not Redux state)
       const currentFormValues = formik.values.schoolAdmins || [];
-      const hasValues = currentFormValues.length > 0 && 
-        currentFormValues.some(admin => 
-          Object.values(admin || {}).some(value => 
-            value !== null && value !== undefined && value !== ""
-          )
+      const hasValues =
+        currentFormValues.length > 0 &&
+        currentFormValues.some((admin) =>
+          Object.values(admin || {}).some(
+            (value) => value !== null && value !== undefined && value !== "",
+          ),
         );
-      
+
       // Form is valid if no errors and has some values
       const isValid = !hasErrors && hasValues;
       changeSchoolAdminsFormValidationStatus(isValid);
@@ -108,13 +106,17 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
 
   const formik = useFormik({
     initialValues: {
-      schoolAdmins: schoolAdminsFormValues,
+      schoolAdmins:
+        _.isArray(schoolAddressesFormValues) &&
+        _.size(schoolAddressesFormValues) > 0
+          ? schoolAddressesFormValues.map((address) => address.schoolAdmin)
+          : [organizationMembersInitialValues],
     },
     validationSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
       const isValid = await checkFormValidation();
-      
+
       if (isValid) {
         switch (schoolScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
@@ -154,7 +156,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
       default:
         break;
     }
-  }, [formik.values, formik.errors, formik.touched, schoolAdminsFormValues]);
+  }, [formik.values, formik.errors, formik.touched, schoolAddressesFormValues]);
 
   // Handle cancel/reset with validation check
   const handleCancel = async () => {
@@ -188,8 +190,8 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     }
   };
 
-  const addAdmin = () => {} // dispatch(addSchoolAdmin());
-  const removeAdmin = (index) => {} //dispatch(removeSchoolAdmin(index));
+  const addAdmin = () => {}; // dispatch(addSchoolAdmin());
+  const removeAdmin = (index) => {}; //dispatch(removeSchoolAdmin(index));
 
   // Expose formik methods to parent component
   useImperativeHandle(ref, () => ({
@@ -340,7 +342,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   return (
     <>
       <div className="flex justify-end items-center mb-5">
-        {schoolAdminsFormValues.length < schoolAdminsMaxLimit && (
+        {schoolAddressesFormValues.length < schoolAdminsMaxLimit && (
           <Button
             type="button"
             onClick={addAdmin}
@@ -356,7 +358,11 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
         )}
       </div>
       <form onSubmit={formik.handleSubmit} className="space-y-6">
-        {schoolAdminsFormValues.map((_, index) => renderAdminForm(index))}
+        {_.isArray(schoolAddressesFormValues) &&
+          _.size(schoolAddressesFormValues) > 0 &&
+          _.map(schoolAddressesFormValues, (address, index) =>
+            renderAdminForm(index),
+          )}
 
         <div className="flex flex-col gap-3 pt-5 mt-5 border-t border-primary/20">
           <p className="text-xs sm:text-sm text-muted-foreground">

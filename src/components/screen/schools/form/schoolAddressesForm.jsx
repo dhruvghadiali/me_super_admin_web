@@ -19,12 +19,6 @@ import {
   SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
 import {
-  // addSchoolAddress,
-  // removeSchoolAddress,
-  // setSchoolAddressesFormValues,
-  // setSchoolAddressesFormValidationStatus,
-} from "@MERedux/schools/schoolsSlice";
-import {
   addressMaxChar,
   addressMinChar,
   schoolAddressesMinLimit,
@@ -74,7 +68,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
     useSelector((state) => state.schools);
 
   const changeSchoolAddressesFormValidationStatus = (status) => {};
-    // dispatch(setSchoolAddressesFormValidationStatus(status));
+  // dispatch(setSchoolAddressesFormValidationStatus(status));
 
   // Helper function to check if form is valid
   const checkFormValidation = async () => {
@@ -477,7 +471,11 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
         )}
       </div>
       <form onSubmit={formik.handleSubmit} className="space-y-6">
-        {schoolAddressesFormValues.map((_, index) => renderAddressForm(index))}
+        {_.isArray(schoolAddressesFormValues) &&
+          _.size(schoolAddressesFormValues) > 0 &&
+          _.map(schoolAddressesFormValues, (address, index) =>
+            renderAddressForm(index),
+          )}
 
         <div className="flex flex-col gap-3 pt-5 mt-5 border-t border-primary/20">
           <p className="text-xs sm:text-sm text-muted-foreground">

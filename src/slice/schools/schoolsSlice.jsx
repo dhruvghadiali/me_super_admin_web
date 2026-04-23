@@ -44,14 +44,14 @@ export const schoolsSlice = createSlice({
     organizationFormValues: organizationFormInitialValues,
     organizationMembersFormValues: [organizationMembersInitialValues],
     schoolFormValues: schoolFormInitialValues,
-    schoolAddressesFormValues: schoolAddressesInitialValues,
+    schoolAddressesFormValues: [schoolAddressesInitialValues],
   },
   reducers: {
     resetFormValues: (state) => {
       state.organizationFormValues = organizationFormInitialValues;
       state.organizationMembersFormValues = [organizationMembersInitialValues];
       state.schoolFormValues = schoolFormInitialValues;
-      state.schoolAddressesFormValues = schoolAddressesInitialValues;
+      state.schoolAddressesFormValues = [schoolAddressesInitialValues];
     },
     setSchoolsInformationView: (state, action) => {
       state.schoolsInformationView = action.payload;
