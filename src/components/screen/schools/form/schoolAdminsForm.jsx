@@ -20,6 +20,7 @@ import {
   addSchoolAddress,
   removeSchoolAddress,
   setSchoolAddressesFormValues,
+  setSchoolAdminsFormValidationStatus, 
 } from "@MERedux/schools/schoolsSlice";
 import {
   emailMaxChar,
@@ -78,8 +79,9 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     isSchoolAdminsFormValidated,
   } = useSelector((state) => state.schools);
 
-  const changeSchoolAdminsFormValidationStatus = (status) => {};
-  // dispatch(setSchoolAdminsFormValidationStatus(status));
+  const changeSchoolAdminsFormValidationStatus = (status) => {
+    dispatch(setSchoolAdminsFormValidationStatus(status));
+  };
 
   // Helper function to check if form is valid
   const checkFormValidation = async () => {

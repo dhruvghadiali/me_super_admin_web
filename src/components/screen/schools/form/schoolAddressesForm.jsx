@@ -22,6 +22,7 @@ import {
   addSchoolAddress,
   removeSchoolAddress,
   setSchoolAddressesFormValues,
+  setSchoolAddressesFormValidationStatus,
 } from "@MERedux/schools/schoolsSlice";
 import {
   addressMaxChar,
@@ -72,8 +73,9 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   const { schoolAddressesFormValues, schoolsScreenDBOperation, states } =
     useSelector((state) => state.schools);
 
-  const changeSchoolAddressesFormValidationStatus = (status) => {};
-  // dispatch(setSchoolAddressesFormValidationStatus(status));
+  const changeSchoolAddressesFormValidationStatus = (status) => {
+    dispatch(setSchoolAddressesFormValidationStatus(status));
+  };
 
   // Helper function to check if form is valid
   const checkFormValidation = async () => {

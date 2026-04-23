@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import _ from "lodash";
+import _, { set } from "lodash";
 
 import {
   getStates,
@@ -42,16 +42,28 @@ export const schoolsSlice = createSlice({
     schoolsScreenDBOperationLoader: false,
     schoolsScreenDBOperationError: "",
     organizationFormValues: organizationFormInitialValues,
+    isOrganizationFormValid: false,
     organizationMembersFormValues: [organizationMembersInitialValues],
+    isOrganizationMembersFormValid: false,
     schoolFormValues: schoolFormInitialValues,
+    isSchoolFormValid: false,
     schoolAddressesFormValues: [schoolAddressesInitialValues],
+    isSchoolAddressesFormValid: false,
+    isSchoolAdminsFormValidated: false,
+    isFormHasError: false,
   },
   reducers: {
     resetFormValues: (state) => {
       state.organizationFormValues = organizationFormInitialValues;
+      state.isOrganizationFormValid = false;
       state.organizationMembersFormValues = [organizationMembersInitialValues];
+      state.isOrganizationMembersFormValid = false;
       state.schoolFormValues = schoolFormInitialValues;
+      state.isSchoolFormValid = false;
       state.schoolAddressesFormValues = [schoolAddressesInitialValues];
+      state.isSchoolAddressesFormValid = false;
+      state.isSchoolAdminsFormValidated = false;
+      state.isFormHasError = false;
     },
     setSchoolsInformationView: (state, action) => {
       state.schoolsInformationView = action.payload;
@@ -62,8 +74,16 @@ export const schoolsSlice = createSlice({
     setOrganizationFormValues: (state, action) => {
       state.organizationFormValues = action.payload;
     },
+    setOrganizationFormValidationStatus: (state, action) => {
+      state.isOrganizationFormValid = action.payload;
+      state.isFormHasError = false;
+    },
     setOrganizationMembersFormValues: (state, action) => {
       state.organizationMembersFormValues = action.payload;
+    },
+    setOrganizationMembersFormValidationStatus: (state, action) => {
+      state.isOrganizationMembersFormValid = action.payload;
+      state.isFormHasError = false;
     },
     addOrganizationMember: (state) => {
       state.organizationMembersFormValues = _.concat(
@@ -77,8 +97,16 @@ export const schoolsSlice = createSlice({
     setSchoolFormValues: (state, action) => {
       state.schoolFormValues = action.payload;
     },
+    setSchoolFormValidationStatus: (state, action) => {
+      state.isSchoolFormValid = action.payload;
+      state.isFormHasError = false;
+    },
     setSchoolAddressesFormValues: (state, action) => {
       state.schoolAddressesFormValues = action.payload;
+    },
+    setSchoolAddressesFormValidationStatus: (state, action) => {
+      state.isSchoolAddressesFormValid = action.payload;
+      state.isFormHasError = false;
     },
     addSchoolAddress: (state) => {
       state.schoolAddressesFormValues = _.concat(
@@ -88,6 +116,13 @@ export const schoolsSlice = createSlice({
     },
     removeSchoolAddress: (state, action) => {
       _.pullAt(state.schoolAddressesFormValues, action.payload);
+    },
+    setSchoolAdminsFormValidationStatus: (state, action) => {
+      state.isSchoolAdminsFormValidated = action.payload;
+      state.isFormHasError = false;
+    },
+    setFormHasError: (state, action) => {
+      state.isFormHasError = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -187,14 +222,20 @@ export const {
   resetFormValues,
   setSchoolsInformationView,
   setOrganizationFormValues,
+  setOrganizationFormValidationStatus,
   setschoolsScreenDBOperation,
   setOrganizationMembersFormValues,
+  setOrganizationMembersFormValidationStatus,
   addOrganizationMember,
   removeOrganizationMember,
   setSchoolFormValues,
+  setSchoolFormValidationStatus,
   setSchoolAddressesFormValues,
+  setSchoolAddressesFormValidationStatus,
   addSchoolAddress,
   removeSchoolAddress,
+  setSchoolAdminsFormValidationStatus,
+  setFormHasError,
 } = schoolsSlice.actions;
 
 export default schoolsSlice.reducer;

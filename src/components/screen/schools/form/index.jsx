@@ -20,8 +20,8 @@ import {
   SCHOOL_FORM_ACCORDION_ITEMS,
 } from "@MEHelpers/enums";
 import {
-  // resetFormValues,
-  // setAddSchoolFormHasError,
+  resetFormValues,
+  setFormHasError,
   setSchoolsInformationView,
   setschoolsScreenDBOperation,
 } from "@MERedux/schools/schoolsSlice";
@@ -64,12 +64,17 @@ const SchoolScreenFormComponent = () => {
     schoolsScreenDBOperation,
     schoolAddressesFormValues,
     isOrganizationFormValidated,
-    isSchoolAdminsFormValidated,
     schoolsScreenDBOperationError,
     organizationMembersFormValues,
     schoolsScreenDBOperationLoader,
     isSchoolAddressesFormValidated,
     isOrganizationMembersFormValidated,
+    isOrganizationFormValid,
+    isOrganizationMembersFormValid,
+    isSchoolFormValid,
+    isSchoolAddressesFormValid,
+    isSchoolAdminsFormValidated,
+    isFormHasError,
   } = useSelector((state) => state.schools);
 
   useEffect(() => {
@@ -93,59 +98,30 @@ const SchoolScreenFormComponent = () => {
   const errorTimeoutRef = useRef(null);
 
   const handleSubmit = async () => {
-    // try {
-    //   if (
-    //     isSchoolFormValidated &&
-    //     isOrganizationFormValidated &&
-    //     isOrganizationMembersFormValidated &&
-    //     isSchoolAddressesFormValidated &&
-    //     isSchoolAdminsFormValidated &&
-    //     _.size(schoolAddressesFormValues) === _.size(schoolAdminsFormValues)
-    //   ) {
-    //     if (errorTimeoutRef.current) {
-    //       clearTimeout(errorTimeoutRef.current);
-    //     }
-
-    //     // dispatch(setAddSchoolFormHasError(false));
-    //     dispatch(
-    //       addSchool(
-    //         setAddSchoolAPIPayload({
-    //           school: schoolFormValues,
-    //           organization: organizationFormValues,
-    //           members: organizationMembersFormValues,
-    //           addresses: schoolAddressesFormValues,
-    //           admins: schoolAdminsFormValues,
-    //         }),
-    //       ),
-    //     );
-    //   } else {
-    //     if (errorTimeoutRef.current) {
-    //       clearTimeout(errorTimeoutRef.current);
-    //     }
-
-    //     errorTimeoutRef.current = setTimeout(() => {
-    //       // dispatch(setAddSchoolFormHasError(false));
-    //     }, 5000);
-
-    //     // dispatch(setAddSchoolFormHasError(true));
-    //   }
-    // } catch (error) {
-    //   // Clear any existing timeout
-    //   if (errorTimeoutRef.current) {
-    //     clearTimeout(errorTimeoutRef.current);
-    //   }
-
-    //   // dispatch(setAddSchoolFormHasError(true));
-
-    //   // Auto-clear error after 5 seconds
-    //   errorTimeoutRef.current = setTimeout(() => {
-    //     // dispatch(setAddSchoolFormHasError(false));
-    //   }, 5000);
-    // }
+    if (
+      isOrganizationFormValid &&
+      isOrganizationMembersFormValid &&
+      isSchoolFormValid &&
+      isSchoolAddressesFormValid &&
+      isSchoolAdminsFormValidated
+    ) {
+      const payload = setAddSchoolAPIPayload(
+        organizationFormValues,
+        organizationMembersFormValues,
+        schoolFormValues,
+        schoolAddressesFormValues,
+        schoolAdminsFormValues,
+      );
+      dispatch(addSchool(payload));
+      dispatch(setFormHasError(false));
+    } else {
+      dispatch(setFormHasError(true));
+    }
   };
 
   const handleClose = () => {
-    // dispatch(resetFormValues());
+    dispatch(resetFormValues());
+    dispatch(setFormHasError(false));
     dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
     dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.VIEW));
   };
@@ -277,20 +253,21 @@ const SchoolScreenFormComponent = () => {
           </Button>
         </div>
       </div>
-      {/* {addSchoolFormHasError && (
-        <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
-          <p className="text-sm text-destructive">
-            {"Please fill out all required fields."}
-          </p>
-        </div>
-      )}*/}
+      {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD &&
+        isFormHasError && (
+          <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
+            <p className="text-sm text-destructive">
+              {"Please fill out all required fields."}
+            </p>
+          </div>
+        )}
       {schoolsScreenDBOperationError && (
         <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
           <p className="text-sm text-destructive">
             {schoolsScreenDBOperationError}
           </p>
         </div>
-      )} 
+      )}
       <Accordion
         type="single"
         className=""

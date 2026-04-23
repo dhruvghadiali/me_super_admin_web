@@ -14,7 +14,7 @@ import { editSchool } from "@MERedux/schools/schoolsAction";
 import { setEditSchoolInformation } from "@MEUtils/apiPayload";
 import {
   setSchoolFormValues,
-  // setSchoolFormValidationStatus,
+  setSchoolFormValidationStatus,
 } from "@MERedux/schools/schoolsSlice";
 import {
   SELECTION_COMPONENT_VARIANTS,
@@ -100,8 +100,9 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
     schoolsScreenDBOperationLoader,
   } = useSelector((state) => state.schools);
 
-  const changeSchoolFormValidationStatus = (status) => {};
-  // dispatch(setSchoolFormValidationStatus(status));
+  const changeSchoolFormValidationStatus = (status) => {
+    dispatch(setSchoolFormValidationStatus(status));
+  };
 
   // Helper function to check if form is valid
   const checkFormValidation = async () => {
