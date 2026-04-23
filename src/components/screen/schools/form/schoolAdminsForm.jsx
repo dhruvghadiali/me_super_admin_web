@@ -19,6 +19,7 @@ import {
 import {
   addSchoolAddress,
   removeSchoolAddress,
+  setSchoolAddressesFormValues,
 } from "@MERedux/schools/schoolsSlice";
 import {
   emailMaxChar,
@@ -107,6 +108,16 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     }
   };
 
+  const setFormValuesToRedux = (schoolAdmins) => {
+    if (_.isArray(schoolAddressesFormValues) && _.size(schoolAddressesFormValues) > 0) {
+      const updatedAddresses = schoolAddressesFormValues.map((address, index) => ({
+        ...address,
+        schoolAdmin: schoolAdmins[index] || null,
+      }));
+      dispatch(setSchoolAddressesFormValues(updatedAddresses));
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       schoolAdmins:
@@ -124,9 +135,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
         switch (schoolsScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
             changeSchoolAdminsFormValidationStatus(true);
-            /**
-             * TODO: Set this form value in school address redux
-             */
+            setFormValuesToRedux(values.schoolAdmins);
             break;
           case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
             changeSchoolAdminsFormValidationStatus(true);
@@ -154,6 +163,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
 
   // Check validation status when form values, errors, or touched state changes
   useEffect(() => {
+    setFormValuesToRedux(formik.values.schoolAdmins);
     switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         checkFormValidation();
@@ -161,7 +171,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
       default:
         break;
     }
-  }, [formik.values, formik.errors, formik.touched, schoolAddressesFormValues]);
+  }, [formik.values, formik.errors, formik.touched]);
 
   // Handle cancel/reset with validation check
   const handleCancel = async () => {

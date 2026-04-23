@@ -101,7 +101,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
   } = useSelector((state) => state.schools);
 
   const changeSchoolFormValidationStatus = (status) => {};
-    // dispatch(setSchoolFormValidationStatus(status));
+  // dispatch(setSchoolFormValidationStatus(status));
 
   // Helper function to check if form is valid
   const checkFormValidation = async () => {
@@ -159,7 +159,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
   useEffect(() => {
     switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
-        // Check initial validation status
+        dispatch(setSchoolFormValues(formik.values));
         checkFormValidation();
         break;
       default:

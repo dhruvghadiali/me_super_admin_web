@@ -21,6 +21,7 @@ import {
 import {
   addSchoolAddress,
   removeSchoolAddress,
+  setSchoolAddressesFormValues,
 } from "@MERedux/schools/schoolsSlice";
 import {
   addressMaxChar,
@@ -101,6 +102,10 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
     }
   };
 
+  const setFormValuesToRedux = (schoolAddresses) => {
+    dispatch(setSchoolAddressesFormValues(schoolAddresses));
+  };
+
   const formik = useFormik({
     initialValues: {
       schoolAddresses: schoolAddressesFormValues,
@@ -114,7 +119,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
         switch (schoolsScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
             changeSchoolAddressesFormValidationStatus(true);
-            // dispatch(setSchoolAddressesFormValues(values.schoolAddresses));
+            setFormValuesToRedux(values.schoolAddresses);
             break;
           case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
             changeSchoolAddressesFormValidationStatus(true);
@@ -142,6 +147,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
 
   // Check validation status when form values, errors, or touched state changes
   useEffect(() => {
+    setFormValuesToRedux(formik.values.schoolAddresses)
     switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         checkFormValidation();

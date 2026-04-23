@@ -157,6 +157,7 @@ const SchoolScreenOrganizationFormComponent = forwardRef((props, ref) => {
   useEffect(() => {
     switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+        dispatch(setOrganizationFormValues(formik.values));
         checkFormValidation();
         break;
       default:

@@ -11,6 +11,7 @@ const MEInputComponent = (props) => {
     autoComplete,
     errorMessage,
     required = false,
+    disabled = false,
     onBlur,
     onChange,
   } = props;
@@ -30,6 +31,7 @@ const MEInputComponent = (props) => {
         value={value}
         placeholder={placeholder}
         className="h-10 sm:h-11"
+        disabled={disabled}
         autoComplete={autoComplete}
         aria-invalid={!!errorMessage}
         onBlur={onBlur}

@@ -9,6 +9,7 @@ import {
   SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
 import {
+  resetFormValues,
   setSchoolsInformationView,
   setschoolsScreenDBOperation,
 } from "@/slice/schools/schoolsSlice";
@@ -64,6 +65,7 @@ const SchoolsPage = () => {
   const handleTryAgain = () => reduxAPICalls();
 
   const handleNewRecord = () => {
+    dispatch(resetFormValues());
     dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.FORM));
     dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
   };
