@@ -24,8 +24,8 @@ import {
   addOrganizationMember,
   removeOrganizationMember,
   setOrganizationMembersFormValues,
-  setOrganizationMembersFormValidationStatus,
-} from "@/slice/schools1/schoolsSlice1";
+  // setOrganizationMembersFormValidationStatus,
+} from "@MERedux/schools/schoolsSlice";
 import {
   emailMaxChar,
   emailMinChar,
@@ -116,8 +116,8 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
     const { organizationMembersFormValues, schoolsScreenDBOperation, states } =
       useSelector((state) => state.schools);
 
-    const changeOrganizationMembersFormValidationStatus = (status) =>
-      dispatch(setOrganizationMembersFormValidationStatus(status));
+    const changeOrganizationMembersFormValidationStatus = (status) => {};
+      // dispatch(setOrganizationMembersFormValidationStatus(status));
 
     // Helper function to check if form is valid
     const checkFormValidation = async () => {

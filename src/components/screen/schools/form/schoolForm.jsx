@@ -10,12 +10,12 @@ import * as Yup from "yup";
 import { Button } from "@MEShadcnComponents/button";
 import { phoneNumberRegex } from "@MEHelpers/regex";
 import { Spinner } from "@MEShadcnComponents/spinner";
-import { editSchool } from "@/slice/schools1/schoolsAction1";
+import { editSchool } from "@MERedux/schools/schoolsAction";
 import { setEditSchoolInformation } from "@MEUtils/apiPayload";
 import {
   setSchoolFormValues,
-  setSchoolFormValidationStatus,
-} from "@/slice/schools1/schoolsSlice1";
+  // setSchoolFormValidationStatus,
+} from "@MERedux/schools/schoolsSlice";
 import {
   SELECTION_COMPONENT_VARIANTS,
   SCHOOL_SCREEN_DB_OPERATIONS,
@@ -100,8 +100,8 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
     schoolsScreenDBOperationLoader,
   } = useSelector((state) => state.schools);
 
-  const changeSchoolFormValidationStatus = (status) =>
-    dispatch(setSchoolFormValidationStatus(status));
+  const changeSchoolFormValidationStatus = (status) => {};
+    // dispatch(setSchoolFormValidationStatus(status));
 
   // Helper function to check if form is valid
   const checkFormValidation = async () => {

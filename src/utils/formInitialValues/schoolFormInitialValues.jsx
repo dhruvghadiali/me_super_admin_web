@@ -1,3 +1,5 @@
+import {SCHOOL_SCREEN_DB_OPERATIONS,} from "@MEHelpers/enums";
+
 const organizationFormInitialValues = {
   name: "",
   shortName: "",
@@ -38,25 +40,30 @@ const schoolFormInitialValues = {
   educationBoards: [],
 };
 
-const schoolAddressesInitialValues = {
-  address: "",
-  state: "",
-  district: "",
-  city: "",
-  area_name: "",
-  zipcode: "",
-  schoolAdmin: {
-    schoolAddressId: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phoneNumber: "",
-  },
-};
+const schoolAddressesInitialValues = (() => {
+  const id = crypto.randomUUID();
+  return {
+    dbOperation: SCHOOL_SCREEN_DB_OPERATIONS.ADD,
+    id: id,
+    address: "",
+    state: "",
+    district: "",
+    city: "",
+    area_name: "",
+    zipcode: "",
+    schoolAdmin: {
+      schoolAddressId: id,
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+    },
+  };
+})();
 
 export {
-    organizationFormInitialValues,
-    organizationMembersInitialValues,
-    schoolFormInitialValues,
-    schoolAddressesInitialValues,
-}
+  organizationFormInitialValues,
+  organizationMembersInitialValues,
+  schoolFormInitialValues,
+  schoolAddressesInitialValues,
+};

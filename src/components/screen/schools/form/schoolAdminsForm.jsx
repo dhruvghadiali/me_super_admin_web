@@ -17,11 +17,11 @@ import {
   CardTitle,
 } from "@MEShadcnComponents/card";
 import {
-  addSchoolAdmin,
-  removeSchoolAdmin,
-  setSchoolAdminsFormValues,
-  setSchoolAdminsFormValidationStatus,
-} from "@/slice/schools1/schoolsSlice1";
+  // addSchoolAdmin,
+  // removeSchoolAdmin,
+  // setSchoolAdminsFormValues,
+  // setSchoolAdminsFormValidationStatus,
+} from "@MERedux/schools/schoolsSlice";
 import {
   emailMaxChar,
   emailMinChar,
@@ -77,8 +77,8 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     (state) => state.schools,
   );
 
-  const changeSchoolAdminsFormValidationStatus = (status) =>
-    dispatch(setSchoolAdminsFormValidationStatus(status));
+  const changeSchoolAdminsFormValidationStatus = (status) => {};
+    // dispatch(setSchoolAdminsFormValidationStatus(status));
 
   // Helper function to check if form is valid
   const checkFormValidation = async () => {
@@ -119,7 +119,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
         switch (schoolScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
             changeSchoolAdminsFormValidationStatus(true);
-            dispatch(setSchoolAdminsFormValues(values.schoolAdmins));
+            // dispatch(setSchoolAdminsFormValues(values.schoolAdmins));
             break;
           case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
             changeSchoolAdminsFormValidationStatus(true);
@@ -188,8 +188,8 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     }
   };
 
-  const addAdmin = () => dispatch(addSchoolAdmin());
-  const removeAdmin = (index) => dispatch(removeSchoolAdmin(index));
+  const addAdmin = () => {} // dispatch(addSchoolAdmin());
+  const removeAdmin = (index) => {} //dispatch(removeSchoolAdmin(index));
 
   // Expose formik methods to parent component
   useImperativeHandle(ref, () => ({

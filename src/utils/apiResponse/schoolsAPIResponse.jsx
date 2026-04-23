@@ -1,7 +1,7 @@
-import _, { set } from "lodash";
+import _ from "lodash";
 import moment from "moment";
 
-import { SCHOOL_WEEK_DAYS } from "@MEHelpers/enums";
+import { SCHOOL_WEEK_DAYS, SCHOOL_SCREEN_DB_OPERATIONS } from "@MEHelpers/enums";
 
 const setDateTimeFormat = (value) => {
   return moment(value).format("DD-MMM-YYYY HH:mm A");
@@ -91,6 +91,7 @@ const setSchoolAdmin = (schoolAdmin) => ({
 
 const setSchoolAddresses = (addresses) =>
   _.map(addresses, (address) => ({
+    dbOPeration: SCHOOL_SCREEN_DB_OPERATIONS.EDIT,
     id: _.get(address, "id", null),
     address: _.get(address, "address", ""),
     isActive: _.get(address, "is_active", false),

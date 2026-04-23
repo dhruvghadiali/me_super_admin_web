@@ -19,11 +19,11 @@ import {
   SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
 import {
-  addSchoolAddress,
-  removeSchoolAddress,
-  setSchoolAddressesFormValues,
-  setSchoolAddressesFormValidationStatus,
-} from "@/slice/schools1/schoolsSlice1";
+  // addSchoolAddress,
+  // removeSchoolAddress,
+  // setSchoolAddressesFormValues,
+  // setSchoolAddressesFormValidationStatus,
+} from "@MERedux/schools/schoolsSlice";
 import {
   addressMaxChar,
   addressMinChar,
@@ -73,8 +73,8 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   const { schoolAddressesFormValues, schoolScreenDBOperation, states } =
     useSelector((state) => state.schools);
 
-  const changeSchoolAddressesFormValidationStatus = (status) =>
-    dispatch(setSchoolAddressesFormValidationStatus(status));
+  const changeSchoolAddressesFormValidationStatus = (status) => {};
+    // dispatch(setSchoolAddressesFormValidationStatus(status));
 
   // Helper function to check if form is valid
   const checkFormValidation = async () => {
@@ -116,7 +116,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
         switch (schoolScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
             changeSchoolAddressesFormValidationStatus(true);
-            dispatch(setSchoolAddressesFormValues(values.schoolAddresses));
+            // dispatch(setSchoolAddressesFormValues(values.schoolAddresses));
             break;
           case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
             changeSchoolAddressesFormValidationStatus(true);
@@ -185,8 +185,8 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
     }
   };
 
-  const addAddress = () => dispatch(addSchoolAddress());
-  const removeAddress = (index) => dispatch(removeSchoolAddress(index));
+  const addAddress = () => {}; //dispatch(addSchoolAddress());
+  const removeAddress = (index) => {}; // dispatch(removeSchoolAddress(index));
 
   // Expose formik methods to parent component
   useImperativeHandle(ref, () => ({

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import _, { set } from "lodash";
+import _ from "lodash";
 
 import {
   getStates,
@@ -10,9 +10,8 @@ import {
   getSchoolTypes,
   editOrganization,
   getEducationBoards,
-} from "@/slice/schools1/schoolsAction1";
+} from "@MERedux/schools/schoolsAction";
 import {
-  SCHOOL_FORM_STEPERS,
   SCHOOL_INFORMATION_VIEW,
   SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
@@ -22,10 +21,6 @@ import {
   schoolFormInitialValues,
   schoolAddressesInitialValues,
 } from "@MEUtils/formInitialValues";
-
-
-
-
 
 export const schoolsSlice = createSlice({
   name: "schools",
@@ -71,14 +66,16 @@ export const schoolsSlice = createSlice({
       state.organizationMembersFormValues = action.payload;
     },
     addOrganizationMember: (state) => {
-      state.organizationMembersFormValues.push(organizationMembersInitialValues);
+      state.organizationMembersFormValues.push(
+        organizationMembersInitialValues,
+      );
     },
     removeOrganizationMember: (state, action) => {
       state.organizationMembersFormValues.splice(action.payload, 1);
     },
     setSchoolFormValues: (state, action) => {
       state.schoolFormValues = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
