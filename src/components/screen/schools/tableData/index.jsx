@@ -15,6 +15,7 @@ import {
   setOrganizationFormValues,
   setschoolsScreenDBOperation,
   setOrganizationMembersFormValues,
+  setSchoolFormValues,
 } from "@/slice/schools/schoolsSlice";
 import {
   AlertDialog,
@@ -102,20 +103,20 @@ const SchoolScreenTableDataComponet = () => {
             })),
           ),
         );
-        // dispatch(
-        //   setSchoolFormValues(
-        //     row.school
-        //       ? {
-        //           ...row.school,
-        //           schoolType: _.get(row.school, "schoolType.id", {}),
-        //           educationBoards: _.map(
-        //             _.get(row.school, "educationBoards", []),
-        //             (board) => board.id,
-        //           ),
-        //         }
-        //       : {},
-        //   ),
-        // );
+        dispatch(
+          setSchoolFormValues( 
+            row.school
+              ? {
+                  ...row.school,
+                  schoolType: _.get(row.school, "schoolType.id", {}),
+                  educationBoards: _.map(
+                    _.get(row.school, "educationBoards", []),
+                    (board) => board.id,
+                  ),
+                }
+              : {},
+          ),
+        );
         // dispatch(
         //   setSchoolAddressesFormValues(
         //     _.map(_.get(row, "schoolAddresses", []), (address) => ({

@@ -95,9 +95,9 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
     schoolTypes,
     educationBoards,
     schoolFormValues,
-    schoolScreenDBOperation,
+    schoolsScreenDBOperation,
     isSchoolFormValidated,
-    schoolScreenDBOperationLoader,
+    schoolsScreenDBOperationLoader,
   } = useSelector((state) => state.schools);
 
   const changeSchoolFormValidationStatus = (status) =>
@@ -137,7 +137,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
       const isValid = await checkFormValidation();
 
       if (isValid) {
-        switch (schoolScreenDBOperation) {
+        switch (schoolsScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
             changeSchoolFormValidationStatus(true);
             dispatch(setSchoolFormValues(values));
@@ -157,7 +157,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
 
   // Check validation status on initial mount
   useEffect(() => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         // Check initial validation status
         checkFormValidation();
@@ -169,7 +169,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
 
   // Check validation status when form values, errors, or touched state changes
   useEffect(() => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         checkFormValidation();
         break;
@@ -197,7 +197,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
   }));
 
   const submitButtonText = () => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         return _.upperFirst(
           t("schoolFormSaveButtonLabel", {
@@ -429,12 +429,16 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
           )}
         </p>
         <div className="flex items-center gap-3">
-          <Button type="submit" className="hover:cursor-pointer">
+          <Button
+            type="submit"
+            className="hover:cursor-pointer"
+            disabled={true}
+          >
             {submitButtonText()}
-            {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT &&
-              schoolScreenDBOperationLoader && <Spinner />}
+            {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT &&
+              schoolsScreenDBOperationLoader && <Spinner />}
           </Button>
-          {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+          {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
             <Button
               type="button"
               variant="outline"

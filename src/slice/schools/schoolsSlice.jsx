@@ -76,6 +76,9 @@ export const schoolsSlice = createSlice({
     removeOrganizationMember: (state, action) => {
       state.organizationMembersFormValues.splice(action.payload, 1);
     },
+    setSchoolFormValues: (state, action) => {
+      state.schoolFormValues = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -154,6 +157,18 @@ export const schoolsSlice = createSlice({
       .addCase(editOrganization.rejected, (state, action) => {
         state.schoolsScreenDBOperationLoader = false;
         state.schoolsScreenDBOperationError = action.payload.error;
+      })
+      .addCase(editSchool.pending, (state) => {
+        state.schoolsScreenDBOperationLoader = true;
+        state.schoolsScreenDBOperationError = "";
+      })
+      .addCase(editSchool.fulfilled, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
+      })
+      .addCase(editSchool.rejected, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
       });
   },
 });
@@ -164,6 +179,9 @@ export const {
   setOrganizationFormValues,
   setschoolsScreenDBOperation,
   setOrganizationMembersFormValues,
+  addOrganizationMember,
+  removeOrganizationMember,
+  setSchoolFormValues,
 } = schoolsSlice.actions;
 
 export default schoolsSlice.reducer;
