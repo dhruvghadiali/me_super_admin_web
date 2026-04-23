@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useEffect } from "react";
 import { useFormik } from "formik";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Save } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -18,6 +18,10 @@ import {
   SELECTION_COMPONENT_VARIANTS,
   SCHOOL_SCREEN_DB_OPERATIONS,
 } from "@MEHelpers/enums";
+import {
+  addSchoolAddress,
+  removeSchoolAddress,
+} from "@MERedux/schools/schoolsSlice";
 import {
   addressMaxChar,
   addressMinChar,
@@ -64,7 +68,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { schoolAddressesFormValues, schoolScreenDBOperation, states } =
+  const { schoolAddressesFormValues, schoolsScreenDBOperation, states } =
     useSelector((state) => state.schools);
 
   const changeSchoolAddressesFormValidationStatus = (status) => {};
@@ -107,7 +111,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
       const isValid = await checkFormValidation();
 
       if (isValid) {
-        switch (schoolScreenDBOperation) {
+        switch (schoolsScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
             changeSchoolAddressesFormValidationStatus(true);
             // dispatch(setSchoolAddressesFormValues(values.schoolAddresses));
@@ -126,7 +130,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
 
   // Check validation status on initial mount
   useEffect(() => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         // Check initial validation status
         checkFormValidation();
@@ -138,7 +142,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
 
   // Check validation status when form values, errors, or touched state changes
   useEffect(() => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         checkFormValidation();
         break;
@@ -157,7 +161,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
   };
 
   const submitButtonText = () => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         return _.upperFirst(
           t("schoolAddressesFormSaveButtonLabel", {
@@ -179,8 +183,8 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
     }
   };
 
-  const addAddress = () => {}; //dispatch(addSchoolAddress());
-  const removeAddress = (index) => {}; // dispatch(removeSchoolAddress(index));
+  const addAddress = () => dispatch(addSchoolAddress());
+  const removeAddress = (index) => dispatch(removeSchoolAddress(index));
 
   // Expose formik methods to parent component
   useImperativeHandle(ref, () => ({
@@ -210,17 +214,30 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                 ? ` ${addressIndex + 1}`
                 : ""}
             </CardTitle>
-            {formik.values.schoolAddresses.length > schoolAddressesMinLimit && (
-              <Button
-                type="button"
-                variant="destructive"
-                size="sm"
-                className={"hover:cursor-pointer"}
-                onClick={() => removeAddress(addressIndex)}
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            )}
+            <div className="flex gap-x-2.5">
+              {schoolsScreenDBOperation ===
+                SCHOOL_SCREEN_DB_OPERATIONS.EDIT && (
+                <Button
+                  type="button"
+                  size="sm"
+                  className={"hover:cursor-pointer"}
+                  onClick={() => {}}
+                >
+                  <Save className="w-4 h-4" />
+                </Button>
+              )}
+              {formik.values.schoolAddresses.length > schoolAddressesMinLimit && (
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className={"hover:cursor-pointer"}
+                  onClick={() => removeAddress(addressIndex)}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -477,19 +494,19 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
             renderAddressForm(index),
           )}
 
-        <div className="flex flex-col gap-3 pt-5 mt-5 border-t border-primary/20">
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            {_.upperFirst(
-              t("schoolAddressesFormSubmitMessage", {
-                defaultValue: schoolAddressesFormSubmitMessage,
-              }),
-            )}
-          </p>
-          <div className="flex items-center gap-3">
-            <Button type="submit" className="hover:cursor-pointer">
-              {submitButtonText()}
-            </Button>
-            {schoolScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+        {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+          <div className="flex flex-col gap-3 pt-5 mt-5 border-t border-primary/20">
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              {_.upperFirst(
+                t("schoolAddressesFormSubmitMessage", {
+                  defaultValue: schoolAddressesFormSubmitMessage,
+                }),
+              )}
+            </p>
+            <div className="flex items-center gap-3">
+              <Button type="submit" className="hover:cursor-pointer">
+                {submitButtonText()}
+              </Button>
               <Button
                 type="button"
                 variant="outline"
@@ -502,9 +519,9 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                   }),
                 )}
               </Button>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </form>
     </>
   );

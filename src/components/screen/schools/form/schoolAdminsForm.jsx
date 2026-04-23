@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useEffect } from "react";
 import { useFormik } from "formik";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Save } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -16,7 +16,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@MEShadcnComponents/card";
-
+import {
+  addSchoolAddress,
+  removeSchoolAddress,
+} from "@MERedux/schools/schoolsSlice";
 import {
   emailMaxChar,
   emailMinChar,
@@ -70,7 +73,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   const { t } = useTranslation();
   const {
     schoolAddressesFormValues,
-    schoolScreenDBOperation,
+    schoolsScreenDBOperation,
     isSchoolAdminsFormValidated,
   } = useSelector((state) => state.schools);
 
@@ -118,10 +121,12 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
       const isValid = await checkFormValidation();
 
       if (isValid) {
-        switch (schoolScreenDBOperation) {
+        switch (schoolsScreenDBOperation) {
           case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
             changeSchoolAdminsFormValidationStatus(true);
-            // dispatch(setSchoolAdminsFormValues(values.schoolAdmins));
+            /**
+             * TODO: Set this form value in school address redux
+             */
             break;
           case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
             changeSchoolAdminsFormValidationStatus(true);
@@ -137,7 +142,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
 
   // Check validation status on initial mount
   useEffect(() => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         // Check initial validation status
         checkFormValidation();
@@ -149,7 +154,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
 
   // Check validation status when form values, errors, or touched state changes
   useEffect(() => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         checkFormValidation();
         break;
@@ -168,7 +173,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   };
 
   const submitButtonText = () => {
-    switch (schoolScreenDBOperation) {
+    switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
         return _.upperFirst(
           t("schoolAdminsFormSaveButtonLabel", {
@@ -190,8 +195,8 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     }
   };
 
-  const addAdmin = () => {}; // dispatch(addSchoolAdmin());
-  const removeAdmin = (index) => {}; //dispatch(removeSchoolAdmin(index));
+  const addAdmin = () => dispatch(addSchoolAddress());
+  const removeAdmin = (index) => dispatch(removeSchoolAddress(index));
 
   // Expose formik methods to parent component
   useImperativeHandle(ref, () => ({
@@ -229,17 +234,30 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
                 ? ` ${adminIndex + 1}`
                 : ""}
             </CardTitle>
-            {formik.values.schoolAdmins.length > schoolAdminsMinLimit && (
-              <Button
-                type="button"
-                variant="destructive"
-                size="sm"
-                className={"hover:cursor-pointer"}
-                onClick={() => removeAdmin(adminIndex)}
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            )}
+            <div className="flex gap-x-2.5">
+              {schoolsScreenDBOperation ===
+                SCHOOL_SCREEN_DB_OPERATIONS.EDIT && (
+                <Button
+                  type="button"
+                  size="sm"
+                  className={"hover:cursor-pointer"}
+                  onClick={() => {}}
+                >
+                  <Save className="w-4 h-4" />
+                </Button>
+              )}
+              {formik.values.schoolAdmins.length > schoolAdminsMinLimit && (
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className={"hover:cursor-pointer"}
+                  onClick={() => removeAdmin(adminIndex)}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              )}
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -364,32 +382,34 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
             renderAdminForm(index),
           )}
 
-        <div className="flex flex-col gap-3 pt-5 mt-5 border-t border-primary/20">
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            {_.upperFirst(
-              t("schoolAdminsFormSubmitMessage", {
-                defaultValue: schoolAdminsFormSubmitMessage,
-              }),
-            )}
-          </p>
-          <div className="flex items-center gap-3">
-            <Button type="submit" className="hover:cursor-pointer">
-              {submitButtonText()}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="hover:cursor-pointer"
-              onClick={handleCancel}
-            >
+        {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+          <div className="flex flex-col gap-3 pt-5 mt-5 border-t border-primary/20">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               {_.upperFirst(
-                t("schoolAdminsFormCancelButtonLabel", {
-                  defaultValue: schoolAdminsFormCancelButtonLabel,
+                t("schoolAdminsFormSubmitMessage", {
+                  defaultValue: schoolAdminsFormSubmitMessage,
                 }),
               )}
-            </Button>
+            </p>
+            <div className="flex items-center gap-3">
+              <Button type="submit" className="hover:cursor-pointer">
+                {submitButtonText()}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="hover:cursor-pointer"
+                onClick={handleCancel}
+              >
+                {_.upperFirst(
+                  t("schoolAdminsFormCancelButtonLabel", {
+                    defaultValue: schoolAdminsFormCancelButtonLabel,
+                  }),
+                )}
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
       </form>
     </>
   );

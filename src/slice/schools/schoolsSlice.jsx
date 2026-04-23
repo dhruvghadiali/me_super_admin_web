@@ -66,15 +66,34 @@ export const schoolsSlice = createSlice({
       state.organizationMembersFormValues = action.payload;
     },
     addOrganizationMember: (state) => {
-      state.organizationMembersFormValues.push(
+      state.organizationMembersFormValues = _.concat(
+        state.organizationMembersFormValues,
         organizationMembersInitialValues,
       );
     },
     removeOrganizationMember: (state, action) => {
-      state.organizationMembersFormValues.splice(action.payload, 1);
+      state.organizationMembersFormValues = _.pullAt(
+        state.organizationMembersFormValues,
+        action.payload,
+      );
     },
     setSchoolFormValues: (state, action) => {
       state.schoolFormValues = action.payload;
+    },
+    setSchoolAddressesFormValues: (state, action) => {
+      state.schoolAddressesFormValues = action.payload;
+    },
+    addSchoolAddress: (state) => {
+      state.schoolAddressesFormValues = _.concat(
+        state.schoolAddressesFormValues,
+        schoolAddressesInitialValues,
+      );
+    },
+    removeSchoolAddress: (state, action) => {
+      state.schoolAddressesFormValues = _.pullAt(
+        state.schoolAddressesFormValues,
+        action.payload,
+      );
     },
   },
   extraReducers: (builder) => {
@@ -179,6 +198,9 @@ export const {
   addOrganizationMember,
   removeOrganizationMember,
   setSchoolFormValues,
+  setSchoolAddressesFormValues,
+  addSchoolAddress,
+  removeSchoolAddress,
 } = schoolsSlice.actions;
 
 export default schoolsSlice.reducer;

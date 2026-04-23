@@ -16,6 +16,7 @@ import {
   setschoolsScreenDBOperation,
   setOrganizationMembersFormValues,
   setSchoolFormValues,
+  setSchoolAddressesFormValues
 } from "@/slice/schools/schoolsSlice";
 import {
   AlertDialog,
@@ -117,23 +118,18 @@ const SchoolScreenTableDataComponet = () => {
               : {},
           ),
         );
-        // dispatch(
-        //   setSchoolAddressesFormValues(
-        //     _.map(_.get(row, "schoolAddresses", []), (address) => ({
-        //       ...address,
-        //       state: _.get(address, "state.id", {}),
-        //       district: _.get(address, "district.id", {}),
-        //       city: _.get(address, "city.id", {}),
-        //       areaName: _.get(address, "areaName.id", {}),
-        //       zipcode: _.get(address, "zipcode.id", {}),
-        //     })),
-        //   ),
-        // );
-        // dispatch(setSchoolAdminsFormValues(
-        //   _.map(_.get(row, "schoolAddresses", []), (address) => ({
-        //     ...address.schoolAdmin,
-        //   })),
-        // ));
+        dispatch(
+          setSchoolAddressesFormValues(
+            _.map(_.get(row, "schoolAddresses", []), (address) => ({
+              ...address,
+              state: _.get(address, "state.id", {}),
+              district: _.get(address, "district.id", {}),
+              city: _.get(address, "city.id", {}),
+              areaName: _.get(address, "areaName.id", {}),
+              zipcode: _.get(address, "zipcode.id", {}),
+            })),
+          ),
+        );
         break;
       case SCHOOL_SCREEN_DB_OPERATIONS.DELETE:
         setAlertDialog({
