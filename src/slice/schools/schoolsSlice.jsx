@@ -52,6 +52,12 @@ export const schoolsSlice = createSlice({
     schoolAddressesFormValues: schoolAddressesInitialValues,
   },
   reducers: {
+    resetFormValues: (state) => {
+      state.organizationFormValues = organizationFormInitialValues;
+      state.organizationMembersFormValues = [organizationMembersInitialValues];
+      state.schoolFormValues = schoolFormInitialValues;
+      state.schoolAddressesFormValues = schoolAddressesInitialValues;
+    },
     setSchoolsInformationView: (state, action) => {
       state.schoolsInformationView = action.payload;
     },
@@ -64,11 +70,11 @@ export const schoolsSlice = createSlice({
     setOrganizationMembersFormValues: (state, action) => {
       state.organizationMembersFormValues = action.payload;
     },
-    resetFormValues: (state) => {
-      state.organizationFormValues = organizationFormInitialValues;
-      state.organizationMembersFormValues = [organizationMembersInitialValues];
-      state.schoolFormValues = schoolFormInitialValues;
-      state.schoolAddressesFormValues = schoolAddressesInitialValues;
+    addOrganizationMember: (state) => {
+      state.organizationMembersFormValues.push(organizationMembersInitialValues);
+    },
+    removeOrganizationMember: (state, action) => {
+      state.organizationMembersFormValues.splice(action.payload, 1);
     },
   },
   extraReducers: (builder) => {
