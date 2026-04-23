@@ -432,7 +432,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
           <Button
             type="submit"
             className="hover:cursor-pointer"
-            disabled={true}
+            disabled={schoolsScreenDBOperationLoader}
           >
             {submitButtonText()}
             {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT &&
