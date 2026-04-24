@@ -22,6 +22,8 @@ import {
   setSchoolAddressesFormValues,
   setSchoolAdminsFormValidationStatus,
 } from "@MERedux/schools/schoolsSlice";
+import { editSchoolAdminProfile } from "@MERedux/schools/schoolsAction";
+import { setEditSchoolAdminProfileAPIPayload } from "@MEUtils/apiPayload";
 import {
   emailMaxChar,
   emailMinChar,
@@ -233,6 +235,40 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     errors: formik.errors,
   }));
 
+  const saveData = async (index) => {
+    if (await checkFormValidation()) {
+      switch (_.get(schoolAddressesFormValues[index], "dbOPeration", "")) {
+        case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
+          dispatch(
+            editSchoolAdminProfile(
+              setEditSchoolAdminProfileAPIPayload(
+                formik.values.schoolAdmins[index],
+              ),
+            ),
+          );
+          break;
+        case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+          break;
+        default:
+          break;
+      }
+    } else {
+      await formik.validateForm();
+
+      // Set all school admin fields as touched to display errors
+      const touchedState = {
+        schoolAdmins: _.map(formik.values.schoolAdmins, () => ({
+          firstName: true,
+          lastName: true,
+          email: true,
+          phoneNumber: true,
+        })),
+      };
+
+      formik.setTouched(touchedState);
+    }
+  };
+
   const renderAdminForm = (adminIndex) => {
     const adminErrors = formik.errors.schoolAdmins?.[adminIndex] || {};
     const adminTouched = formik.touched.schoolAdmins?.[adminIndex] || {};
@@ -263,7 +299,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
                   size="sm"
                   className={"hover:cursor-pointer"}
                   disabled={schoolsScreenDBOperationLoader}
-                  onClick={() => {}}
+                  onClick={() => saveData(adminIndex)}
                 >
                   <Save className="w-4 h-4" />
                 </Button>

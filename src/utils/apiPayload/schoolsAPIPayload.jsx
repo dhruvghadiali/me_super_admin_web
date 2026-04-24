@@ -128,11 +128,20 @@ const setEditSchoolAddressAPIPayload = (address) => ({
   },
 });
 
+const setEditSchoolAdminProfileAPIPayload = (schoolAdmin) => ({
+  id: _.get(schoolAdmin, "id", ""),
+  data: {
+    first_name: _.get(schoolAdmin, "firstName", ""),
+    last_name: _.get(schoolAdmin, "lastName", ""),
+    email: _.get(schoolAdmin, "email", ""),
+    phone_number: _.get(schoolAdmin, "phoneNumber", ""),
+  },
+});
 
 export {
   setAddSchoolAPIPayload,
   setEditSchoolAddressAPIPayload,
   setEditOrganizationInformation,
   setEditSchoolInformation,
-  
+  setEditSchoolAdminProfileAPIPayload,
 };

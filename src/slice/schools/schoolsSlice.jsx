@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import _, { set } from "lodash";
+import _ from "lodash";
 
 import {
   getStates,
@@ -11,6 +11,7 @@ import {
   editOrganization,
   editSchoolAddress,
   getEducationBoards,
+  editSchoolAdminProfile,
 } from "@MERedux/schools/schoolsAction";
 import {
   SCHOOL_INFORMATION_VIEW,
@@ -69,7 +70,7 @@ export const schoolsSlice = createSlice({
     setSchoolsInformationView: (state, action) => {
       state.schoolsInformationView = action.payload;
     },
-    setschoolsScreenDBOperation: (state, action) => {
+    setSchoolsScreenDBOperation: (state, action) => {
       state.schoolsScreenDBOperation = action.payload;
     },
     setOrganizationFormValues: (state, action) => {
@@ -239,6 +240,18 @@ export const schoolsSlice = createSlice({
       .addCase(editSchoolAddress.rejected, (state, action) => {
         state.schoolsScreenDBOperationLoader = false;
         state.schoolsScreenDBOperationError = action.payload.error;
+      })
+      .addCase(editSchoolAdminProfile.pending, (state) => {
+        state.schoolsScreenDBOperationLoader = true;
+        state.schoolsScreenDBOperationError = "";
+      })
+      .addCase(editSchoolAdminProfile.fulfilled, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
+      })
+      .addCase(editSchoolAdminProfile.rejected, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
       });
   },
 });
@@ -248,7 +261,7 @@ export const {
   setSchoolsInformationView,
   setOrganizationFormValues,
   setOrganizationFormValidationStatus,
-  setschoolsScreenDBOperation,
+  setSchoolsScreenDBOperation,
   setOrganizationMembersFormValues,
   setOrganizationMembersFormValidationStatus,
   addOrganizationMember,

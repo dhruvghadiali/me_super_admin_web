@@ -11,7 +11,7 @@ import {
 import {
   resetFormValues,
   setSchoolsInformationView,
-  setschoolsScreenDBOperation,
+  setSchoolsScreenDBOperation,
 } from "@/slice/schools/schoolsSlice";
 import {
   getStates,
@@ -55,7 +55,7 @@ const SchoolsPage = () => {
     dispatch(getSchoolTypes());
     dispatch(getEducationBoards());
     dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
-    dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.VIEW));
+    dispatch(setSchoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.VIEW));
   };
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const SchoolsPage = () => {
   const handleNewRecord = () => {
     dispatch(resetFormValues());
     dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.FORM));
-    dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
+    dispatch(setSchoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
   };
 
   if (

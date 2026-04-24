@@ -24,7 +24,7 @@ import {
   resetFormValues,
   setFormHasError,
   setSchoolsInformationView,
-  setschoolsScreenDBOperation,
+  setSchoolsScreenDBOperation,
 } from "@MERedux/schools/schoolsSlice";
 import {
   Accordion,
@@ -117,7 +117,7 @@ const SchoolScreenFormComponent = () => {
     dispatch(resetFormValues());
     dispatch(setFormHasError(false));
     dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.TABLE));
-    dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.VIEW));
+    dispatch(setSchoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.VIEW));
   };
 
   const items = [

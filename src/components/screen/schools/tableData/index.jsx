@@ -13,7 +13,7 @@ import {
   resetFormValues,
   setSchoolsInformationView,
   setOrganizationFormValues,
-  setschoolsScreenDBOperation,
+  setSchoolsScreenDBOperation,
   setOrganizationMembersFormValues,
   setSchoolFormValues,
   setSchoolAddressesFormValues
@@ -77,7 +77,7 @@ const SchoolScreenTableDataComponet = () => {
     switch (action.value) {
       case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
         dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.FORM));
-        dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.EDIT));
+        dispatch(setSchoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.EDIT));
         dispatch(
           setOrganizationFormValues(
             row.organization
@@ -164,7 +164,7 @@ const SchoolScreenTableDataComponet = () => {
   const onAddClick = () => {
     dispatch(resetFormValues());
     dispatch(setSchoolsInformationView(SCHOOL_INFORMATION_VIEW.FORM));
-    dispatch(setschoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
+    dispatch(setSchoolsScreenDBOperation(SCHOOL_SCREEN_DB_OPERATIONS.ADD));
   };
 
   const handleDialogCancel = () => closeDialog();
