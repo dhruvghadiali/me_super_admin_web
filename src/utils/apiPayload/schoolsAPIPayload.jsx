@@ -116,8 +116,23 @@ const setEditSchoolInformation = (school) => ({
   },
 });
 
+const setEditSchoolAddressAPIPayload = (address) => ({
+  id: _.get(address, "id", ""),
+  data: {
+    address: _.get(address, "address", ""),
+    state: _.get(address, "state", ""),
+    district: _.get(address, "district", ""),
+    city: _.get(address, "city", ""),
+    area_name: _.get(address, "areaName", ""),
+    zipcode: _.get(address, "zipcode", ""),
+  },
+});
+
+
 export {
   setAddSchoolAPIPayload,
+  setEditSchoolAddressAPIPayload,
   setEditOrganizationInformation,
   setEditSchoolInformation,
+  
 };

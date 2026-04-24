@@ -9,6 +9,7 @@ import {
   getschools,
   getSchoolTypes,
   editOrganization,
+  editSchoolAddress,
   getEducationBoards,
 } from "@MERedux/schools/schoolsAction";
 import {
@@ -224,6 +225,18 @@ export const schoolsSlice = createSlice({
         state.schoolsScreenDBOperationError = action.payload.error;
       })
       .addCase(addSchool.rejected, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
+      })
+      .addCase(editSchoolAddress.pending, (state) => {
+        state.schoolsScreenDBOperationLoader = true;
+        state.schoolsScreenDBOperationError = "";
+      })
+      .addCase(editSchoolAddress.fulfilled, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
+      })
+      .addCase(editSchoolAddress.rejected, (state, action) => {
         state.schoolsScreenDBOperationLoader = false;
         state.schoolsScreenDBOperationError = action.payload.error;
       });

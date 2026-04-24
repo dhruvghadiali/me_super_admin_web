@@ -9,6 +9,10 @@ import * as Yup from "yup";
 
 import { Button } from "@MEShadcnComponents/button";
 import {
+  editSchoolAddress,
+} from "@MERedux/schools/schoolsAction";
+import { setEditSchoolAddressAPIPayload } from "@MEUtils/apiPayload";
+import {
   Card,
   CardContent,
   CardHeader,
@@ -207,6 +211,44 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
     errors: formik.errors,
   }));
 
+  const saveData = async (index) => {
+    if (await checkFormValidation()) {
+      switch (
+        _.get(formik.values.schoolAddresses[index], "dbOPeration", "")
+      ) {
+        case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
+          dispatch(
+            editSchoolAddress(
+              setEditSchoolAddressAPIPayload(
+                formik.values.schoolAddresses[index],
+              ),
+            ),
+          );
+          break;
+        case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+          break;
+        default:
+          break;
+      }
+    } else {
+      await formik.validateForm();
+
+      // Set all school address fields as touched to display errors
+      const touchedState = {
+        schoolAddresses: _.map(formik.values.schoolAddresses, () => ({
+          address: true,
+          state: true,
+          district: true,
+          city: true,
+          areaName: true,
+          zipcode: true,
+        })),
+      };
+
+      formik.setTouched(touchedState);
+    }
+  };
+
   const renderAddressForm = (addressIndex) => {
     const addressErrors = formik.errors.schoolAddresses?.[addressIndex] || {};
     const addressTouched = formik.touched.schoolAddresses?.[addressIndex] || {};
@@ -249,7 +291,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                   size="sm"
                   className={"hover:cursor-pointer"}
                   disabled={schoolsScreenDBOperationLoader}
-                  onClick={() => {}}
+                  onClick={() => saveData(addressIndex)}
                 >
                   <Save className="w-4 h-4" />
                 </Button>

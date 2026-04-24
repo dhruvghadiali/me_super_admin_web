@@ -5,6 +5,7 @@ const districtsAPIRoute = "/districts";
 const organizationsAPIRoute = "/organizations";
 const schoolTypesAPIRoute = "/school-types";
 const educationBoardsAPIRoute = "/education-boards";
+const schoolAddressesAPIRoute = "/school-addresses";
 
 export {
   signInAPIRoute,
@@ -14,4 +15,5 @@ export {
   schoolTypesAPIRoute,
   organizationsAPIRoute,
   educationBoardsAPIRoute,
+  schoolAddressesAPIRoute,
 };

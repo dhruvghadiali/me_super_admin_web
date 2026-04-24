@@ -49,7 +49,7 @@ const schoolAddressesInitialValues = (() => {
     state: "",
     district: "",
     city: "",
-    area_name: "",
+    areaName: "",
     zipcode: "",
     schoolAdmin: {
       schoolAddressId: id,

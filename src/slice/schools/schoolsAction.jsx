@@ -7,6 +7,7 @@ import {
   schoolTypesAPIRoute,
   organizationsAPIRoute,
   educationBoardsAPIRoute,
+  schoolAddressesAPIRoute,
 } from "@/utils/apiRoutes";
 import {
   setSchoolsInformation,
@@ -234,6 +235,38 @@ const editSchool = createAsyncThunk(
   },
 );
 
+const editSchoolAddress = createAsyncThunk(
+  "schools/editSchoolAddress",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const response = await axiosInstance.put(
+        `${schoolAddressesAPIRoute}/${payload.id}`,
+        payload.data,
+        {
+          state: getState(),
+        },
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getschools());
+        return { error: "" };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to edit school address. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
 export {
   getStates,
   addSchool,
@@ -241,5 +274,6 @@ export {
   getschools,
   getSchoolTypes,
   editOrganization,
+  editSchoolAddress,
   getEducationBoards,
 };
