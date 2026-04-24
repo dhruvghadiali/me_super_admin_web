@@ -157,7 +157,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
       default:
         break;
     }
-  }, [formik.values, formik.errors, formik.touched, schoolAddressesFormValues]);
+  }, [formik.values, formik.errors, formik.touched]);
 
   // Handle cancel/reset with validation check
   const handleCancel = async () => {

@@ -200,12 +200,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
         default:
           break;
       }
-    }, [
-      formik.values,
-      formik.errors,
-      formik.touched,
-      organizationMembersFormValues,
-    ]);
+    }, [formik.values, formik.errors, formik.touched]);
 
     // Handle cancel/reset with validation check
     const handleCancel = async () => {
@@ -274,17 +269,19 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                   : ""}
               </CardTitle>
               {formik.values.organizationMembers.length >
-                organizationMembersMinLimit && (
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="sm"
-                  className={"hover:cursor-pointer"}
-                  onClick={() => removeMember(memberIndex)}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              )}
+                organizationMembersMinLimit &&
+                schoolsScreenDBOperation ===
+                  SCHOOL_SCREEN_DB_OPERATIONS.ADD && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    className={"hover:cursor-pointer"}
+                    onClick={() => removeMember(memberIndex)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                )}
             </div>
           </CardHeader>
           <CardContent>
@@ -303,7 +300,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                 )}
                 name={`organizationMembers[${memberIndex}].firstName`}
                 value={memberValues.firstName || ""}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 errorMessage={
@@ -327,7 +326,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                 )}
                 name={`organizationMembers[${memberIndex}].lastName`}
                 value={memberValues.lastName || ""}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 errorMessage={
@@ -351,7 +352,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                 )}
                 name={`organizationMembers[${memberIndex}].email`}
                 value={memberValues.email || ""}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 errorMessage={
@@ -375,7 +378,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                 )}
                 name={`organizationMembers[${memberIndex}].phoneNumber`}
                 value={memberValues.phoneNumber || ""}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 errorMessage={
@@ -402,7 +407,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                   label: _.startCase(key),
                   value: value,
                 }))}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 selectedValue={memberValues.position || ""}
                 onValueChange={(value) =>
                   formik.setFieldValue(
@@ -437,7 +444,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                 )}
                 name={`organizationMembers[${memberIndex}].aadhaarNumber`}
                 value={memberValues.aadhaarNumber || ""}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 errorMessage={
@@ -461,7 +470,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                 )}
                 name={`organizationMembers[${memberIndex}].address`}
                 value={memberValues.address || ""}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 errorMessage={
@@ -484,7 +495,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                   }),
                 )}
                 items={states}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 selectedValue={memberValues.state || ""}
                 labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
                 selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
@@ -523,7 +536,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                   })?.districts || []
                 }
                 selectedValue={memberValues.district || ""}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 onValueChange={(value) =>
                   formik.setFieldValue(
                     `organizationMembers[${memberIndex}].district`,
@@ -572,7 +587,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                   )
                 }
                 clearable={true}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
                 selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
                 messagevariant={SELECTION_COMPONENT_VARIANTS.DESTRUCTIVE}
@@ -620,7 +637,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                   )
                 }
                 clearable={true}
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 labelvariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
                 selectVariant={SELECTION_COMPONENT_VARIANTS.PRIMARY}
                 messagevariant={SELECTION_COMPONENT_VARIANTS.DESTRUCTIVE}
@@ -657,7 +676,9 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                     { value: memberValues?.areaName },
                   )?.zipcodes || []
                 }
-                disabled={schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT}
+                disabled={
+                  schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT
+                }
                 selectedValue={memberValues?.zipcode || ""}
                 onValueChange={(value) =>
                   formik.setFieldValue(

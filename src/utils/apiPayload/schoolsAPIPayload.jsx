@@ -45,23 +45,23 @@ const setAddOrganizationMembersInformation = (members) =>
     zipcode: _.get(member, "zipcode", ""),
   }));
 
-const setAddSchoolAddressesInformation = (addresses, admins) =>
+const setAddSchoolAddressesInformation = (addresses) =>
   _.map(addresses, (address, index) => ({
-    user_phone_number: _.get(admins, `[${index}].phoneNumber`, ""),
+    user_phone_number: _.get(address, "schoolAdmin.phoneNumber", ""),
     address: _.get(address, "address", ""),
     state: _.get(address, "state", ""),
     district: _.get(address, "district", ""),
     city: _.get(address, "city", ""),
-    area_name: _.get(address, "area_name", ""),
+    area_name: _.get(address, "areaName", ""),
     zipcode: _.get(address, "zipcode", ""),
   }));
 
-const setAddSchoolAdminsInformation = (admins) =>
-  _.map(admins, (admin) => ({
-    first_name: _.get(admin, "firstName", ""),
-    last_name: _.get(admin, "lastName", ""),
-    email: _.get(admin, "email", ""),
-    phone_number: _.get(admin, "phoneNumber", ""),
+const setAddSchoolAdminsInformation = (addresses) =>
+  _.map(addresses, (address) => ({
+    first_name: _.get(address, "schoolAdmin.firstName", ""),
+    last_name: _.get(address, "schoolAdmin.lastName", ""),
+    email: _.get(address, "schoolAdmin.email", ""),
+    phone_number: _.get(address, "schoolAdmin.phoneNumber", ""),
   }));
 
 const setAddSchoolAPIPayload = (formValues) => {
@@ -75,10 +75,9 @@ const setAddSchoolAPIPayload = (formValues) => {
     ),
     school_addresses: setAddSchoolAddressesInformation(
       _.get(formValues, "addresses", []),
-      _.get(formValues, "admins", []),
     ),
     school_admins: setAddSchoolAdminsInformation(
-      _.get(formValues, "admins", []),
+      _.get(formValues, "addresses", []),
     ),
   };
 };

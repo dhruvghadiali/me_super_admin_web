@@ -160,7 +160,6 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
   useEffect(() => {
     switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
-        dispatch(setSchoolFormValues(formik.values));
         checkFormValidation();
         break;
       default:
@@ -172,12 +171,13 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
   useEffect(() => {
     switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+        dispatch(setSchoolFormValues(formik.values));
         checkFormValidation();
         break;
       default:
         break;
     }
-  }, [formik.values, formik.errors, formik.touched, schoolFormValues]);
+  }, [formik.values, formik.errors, formik.touched]);
 
   // Handle cancel/reset with validation check
   const handleCancel = async () => {

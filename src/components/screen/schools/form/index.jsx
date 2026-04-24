@@ -56,19 +56,13 @@ const SchoolScreenFormComponent = () => {
 
   const { t } = useTranslation();
   const {
-    schoolFormValues,
-    addSchoolFormHasError,
-    isSchoolFormValidated,
-    organizationFormValues,
-    schoolAdminsFormValues,
     schoolsScreenDBOperation,
-    schoolAddressesFormValues,
-    isOrganizationFormValidated,
     schoolsScreenDBOperationError,
-    organizationMembersFormValues,
     schoolsScreenDBOperationLoader,
-    isSchoolAddressesFormValidated,
-    isOrganizationMembersFormValidated,
+    organizationFormValues,
+    organizationMembersFormValues,
+    schoolFormValues,
+    schoolAddressesFormValues,
     isOrganizationFormValid,
     isOrganizationMembersFormValid,
     isSchoolFormValid,
@@ -105,13 +99,12 @@ const SchoolScreenFormComponent = () => {
       isSchoolAddressesFormValid &&
       isSchoolAdminsFormValidated
     ) {
-      const payload = setAddSchoolAPIPayload(
-        organizationFormValues,
-        organizationMembersFormValues,
-        schoolFormValues,
-        schoolAddressesFormValues,
-        schoolAdminsFormValues,
-      );
+      const payload = setAddSchoolAPIPayload({
+        organization: organizationFormValues,
+        members: organizationMembersFormValues,
+        school: schoolFormValues,
+        addresses: schoolAddressesFormValues,
+      });
       dispatch(addSchool(payload));
       dispatch(setFormHasError(false));
     } else {
