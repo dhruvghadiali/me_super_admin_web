@@ -20,7 +20,7 @@ import {
   addSchoolAddress,
   removeSchoolAddress,
   setSchoolAddressesFormValues,
-  setSchoolAdminsFormValidationStatus, 
+  setSchoolAdminsFormValidationStatus,
 } from "@MERedux/schools/schoolsSlice";
 import {
   emailMaxChar,
@@ -76,7 +76,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   const {
     schoolAddressesFormValues,
     schoolsScreenDBOperation,
-    isSchoolAdminsFormValidated,
+    schoolsScreenDBOperationLoader,
   } = useSelector((state) => state.schools);
 
   const changeSchoolAdminsFormValidationStatus = (status) => {
@@ -111,11 +111,16 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
   };
 
   const setFormValuesToRedux = (schoolAdmins) => {
-    if (_.isArray(schoolAddressesFormValues) && _.size(schoolAddressesFormValues) > 0) {
-      const updatedAddresses = schoolAddressesFormValues.map((address, index) => ({
-        ...address,
-        schoolAdmin: schoolAdmins[index] || null,
-      }));
+    if (
+      _.isArray(schoolAddressesFormValues) &&
+      _.size(schoolAddressesFormValues) > 0
+    ) {
+      const updatedAddresses = schoolAddressesFormValues.map(
+        (address, index) => ({
+          ...address,
+          schoolAdmin: schoolAdmins[index] || null,
+        }),
+      );
       dispatch(setSchoolAddressesFormValues(updatedAddresses));
     }
   };
@@ -248,7 +253,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
               {formik.values.schoolAdmins.length > 1
                 ? ` ${adminIndex + 1}`
                 : ""}
-              {`(${schoolAddress})`}
+              <p className="text-xs">{`(${schoolAddress})`}</p>
             </CardTitle>
             <div className="flex gap-x-2.5">
               {schoolsScreenDBOperation ===
@@ -257,6 +262,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
                   type="button"
                   size="sm"
                   className={"hover:cursor-pointer"}
+                  disabled={schoolsScreenDBOperationLoader}
                   onClick={() => {}}
                 >
                   <Save className="w-4 h-4" />
@@ -268,6 +274,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
                   variant="destructive"
                   size="sm"
                   className={"hover:cursor-pointer"}
+                  disabled={schoolsScreenDBOperationLoader}
                   onClick={() => removeAdmin(adminIndex)}
                 >
                   <Trash2 className="w-4 h-4" />
@@ -380,6 +387,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
           <Button
             type="button"
             onClick={addAdmin}
+            disabled={schoolsScreenDBOperationLoader}
             className="flex items-center gap-2 hover:cursor-pointer"
           >
             <Plus className="w-4 h-4" />
@@ -408,13 +416,18 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
               )}
             </p>
             <div className="flex items-center gap-3">
-              <Button type="submit" className="hover:cursor-pointer">
+              <Button
+                type="submit"
+                className="hover:cursor-pointer"
+                disabled={schoolsScreenDBOperationLoader}
+              >
                 {submitButtonText()}
               </Button>
               <Button
                 type="button"
                 variant="outline"
                 className="hover:cursor-pointer"
+                disabled={schoolsScreenDBOperationLoader}
                 onClick={handleCancel}
               >
                 {_.upperFirst(

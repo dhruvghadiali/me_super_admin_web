@@ -113,8 +113,12 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
   (props, ref) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const { organizationMembersFormValues, schoolsScreenDBOperation, states } =
-      useSelector((state) => state.schools);
+    const {
+      organizationMembersFormValues,
+      schoolsScreenDBOperation,
+      states,
+      schoolsScreenDBOperationLoader,
+    } = useSelector((state) => state.schools);
 
     const changeOrganizationMembersFormValidationStatus = (status) => {
       dispatch(setOrganizationMembersFormValidationStatus(status));
@@ -277,6 +281,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                     variant="destructive"
                     size="sm"
                     className={"hover:cursor-pointer"}
+                    disabled={schoolsScreenDBOperationLoader}
                     onClick={() => removeMember(memberIndex)}
                   >
                     <Trash2 className="w-4 h-4" />
@@ -712,6 +717,7 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
                 <Button
                   type="button"
                   onClick={addMember}
+                  disabled={schoolsScreenDBOperationLoader}
                   className="flex items-center gap-2 hover:cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
@@ -742,13 +748,18 @@ const SchoolScreenOrganizationMembersFormComponent = forwardRef(
               </p>
 
               <div className="flex items-center gap-3">
-                <Button type="submit" className="hover:cursor-pointer">
+                <Button
+                  type="submit"
+                  className="hover:cursor-pointer"
+                  disabled={schoolsScreenDBOperationLoader}
+                >
                   {submitButtonText()}
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   className="hover:cursor-pointer"
+                  disabled={schoolsScreenDBOperationLoader}
                   onClick={handleCancel}
                 >
                   {_.upperFirst(

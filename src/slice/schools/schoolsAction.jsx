@@ -150,8 +150,9 @@ const addSchool = createAsyncThunk(
         state: getState(),
       });
 
-      if (apiResponseHaveData(response)) {
+      if (isAPIServedSuccessfully(response)) {
         dispatch(getschools());
+        return { error: "" };
       } else {
         return {
           error:

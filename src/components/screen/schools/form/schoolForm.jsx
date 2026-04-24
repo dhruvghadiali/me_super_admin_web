@@ -96,7 +96,6 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
     educationBoards,
     schoolFormValues,
     schoolsScreenDBOperation,
-    isSchoolFormValidated,
     schoolsScreenDBOperationLoader,
   } = useSelector((state) => state.schools);
 
@@ -444,6 +443,7 @@ const SchoolScreenSchoolFormComponent = forwardRef((props, ref) => {
               type="button"
               variant="outline"
               className="hover:cursor-pointer"
+              disabled={schoolsScreenDBOperationLoader}
               onClick={handleCancel}
             >
               {_.upperFirst(

@@ -12,6 +12,7 @@ import {
 import _ from "lodash";
 
 import { Button } from "@MEShadcnComponents/button";
+import { Spinner } from "@MEShadcnComponents/spinner";
 import { addSchool } from "@MERedux/schools/schoolsAction";
 import { setAddSchoolAPIPayload } from "@MEUtils/apiPayload";
 import {
@@ -233,7 +234,7 @@ const SchoolScreenFormComponent = () => {
               disabled={schoolsScreenDBOperationLoader}
               onClick={() => handleSubmit()}
             >
-              Submit
+              Submit {schoolsScreenDBOperationLoader && <Spinner />}
             </Button>
           )}
           <Button

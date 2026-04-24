@@ -214,6 +214,18 @@ export const schoolsSlice = createSlice({
       .addCase(editSchool.rejected, (state, action) => {
         state.schoolsScreenDBOperationLoader = false;
         state.schoolsScreenDBOperationError = action.payload.error;
+      })
+      .addCase(addSchool.pending, (state) => {
+        state.schoolsScreenDBOperationLoader = true;
+        state.schoolsScreenDBOperationError = "";
+      })
+      .addCase(addSchool.fulfilled, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
+      })
+      .addCase(addSchool.rejected, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
       });
   },
 });
