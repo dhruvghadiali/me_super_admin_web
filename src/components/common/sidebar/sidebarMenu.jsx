@@ -6,6 +6,12 @@ import {
   Building2,
   MapPinHouse,
   LayoutDashboard,
+  Building2Icon,
+  HotelIcon,
+  FileBadgeIcon,
+  IndianRupee,
+  GraduationCapIcon,
+  PresentationIcon
 } from "lucide-react";
 import {
   STATES,
@@ -28,6 +34,36 @@ const menuItems = [
     title: "schools",
     path: SCHOOLS,
     icon: School,
+  },
+  {
+    title: "facility types",
+    path: STATES,
+    icon: HotelIcon,
+  },
+  {
+    title: "facilities",
+    path: STATES,
+    icon: Building2Icon,
+  },
+  {
+    title: "admission documents",
+    path: STATES,
+    icon: FileBadgeIcon,
+  },
+  {
+    title: "fee types",
+    path: STATES,
+    icon: IndianRupee,
+  },
+  {
+    title: "academic classes",
+    path: STATES,
+    icon: PresentationIcon,
+  },
+  {
+    title: "eduction boards",
+    path: STATES,
+    icon: GraduationCapIcon,
   },
   {
     title: "states",
