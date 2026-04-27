@@ -17,7 +17,11 @@ import {
   setSchoolTypesDropdownOptions,
   setEducationBoardsDropdownOptions,
 } from "@MEUtils/apiResponse";
-import { axiosInstance, apiResponseHaveData, isAPIServedSuccessfully } from "@MEHelpers/axiosHelpers";
+import {
+  axiosInstance,
+  apiResponseHaveData,
+  isAPIServedSuccessfully,
+} from "@MEHelpers/axiosHelpers";
 
 const getStates = createAsyncThunk(
   "schools/getStates",
@@ -300,6 +304,38 @@ const editSchoolAdminProfile = createAsyncThunk(
   },
 );
 
+const addSchoolAddress = createAsyncThunk(
+  "schools/addSchoolAddress",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const response = await axiosInstance.post(
+        `${schoolAddressesAPIRoute}`,
+        payload,
+        {
+          state: getState(),
+        },
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getschools());
+        return { error: "" };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to add school address. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
 export {
   getStates,
   addSchool,
@@ -310,4 +346,5 @@ export {
   editSchoolAddress,
   editSchoolAdminProfile,
   getEducationBoards,
+  addSchoolAddress,
 };

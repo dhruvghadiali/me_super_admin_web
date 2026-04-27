@@ -138,10 +138,29 @@ const setEditSchoolAdminProfileAPIPayload = (schoolAdmin) => ({
   },
 });
 
+const setAddSchoolAddressAPIPaylod = (formValues) => ({
+  school_id: _.get(formValues, "schoolId", ""),
+  school_address: {
+    address: _.get(formValues, "address", ""),
+    state: _.get(formValues, "state", ""),
+    district: _.get(formValues, "district", ""),
+    city: _.get(formValues, "city", ""),
+    area_name: _.get(formValues, "areaName", ""),
+    zipcode: _.get(formValues, "zipcode", ""),
+  },
+  school_admin: {
+    first_name: _.get(formValues, "schoolAdmin.firstName", ""),
+    last_name: _.get(formValues, "schoolAdmin.lastName", ""),
+    email: _.get(formValues, "schoolAdmin.email", ""),
+    phone_number: _.get(formValues, "schoolAdmin.phoneNumber", ""),
+  },
+});
+
 export {
   setAddSchoolAPIPayload,
   setEditSchoolAddressAPIPayload,
   setEditOrganizationInformation,
   setEditSchoolInformation,
   setEditSchoolAdminProfileAPIPayload,
+  setAddSchoolAddressAPIPaylod,
 };

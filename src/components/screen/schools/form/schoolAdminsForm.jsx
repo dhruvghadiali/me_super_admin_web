@@ -17,13 +17,20 @@ import {
   CardTitle,
 } from "@MEShadcnComponents/card";
 import {
-  addSchoolAddress,
+  setFormHasError,
+  addSchoolAddressForm,
   removeSchoolAddress,
   setSchoolAddressesFormValues,
   setSchoolAdminsFormValidationStatus,
 } from "@MERedux/schools/schoolsSlice";
-import { editSchoolAdminProfile } from "@MERedux/schools/schoolsAction";
-import { setEditSchoolAdminProfileAPIPayload } from "@MEUtils/apiPayload";
+import {
+  addSchoolAddress,
+  editSchoolAdminProfile,
+} from "@MERedux/schools/schoolsAction";
+import {
+  setEditSchoolAdminProfileAPIPayload,
+  setAddSchoolAddressAPIPaylod,
+} from "@MEUtils/apiPayload";
 import {
   emailMaxChar,
   emailMinChar,
@@ -79,6 +86,9 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     schoolAddressesFormValues,
     schoolsScreenDBOperation,
     schoolsScreenDBOperationLoader,
+    isSchoolAddressesFormValid,
+    isSchoolAdminsFormValidated,
+    schoolFormValues,
   } = useSelector((state) => state.schools);
 
   const changeSchoolAdminsFormValidationStatus = (status) => {
@@ -165,6 +175,9 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
         // Check initial validation status
         checkFormValidation();
         break;
+      case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
+        checkFormValidation();
+        break;
       default:
         break;
     }
@@ -175,6 +188,9 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     setFormValuesToRedux(formik.values.schoolAdmins);
     switch (schoolsScreenDBOperation) {
       case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+        checkFormValidation();
+        break;
+      case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
         checkFormValidation();
         break;
       default:
@@ -214,7 +230,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     }
   };
 
-  const addAdmin = () => dispatch(addSchoolAddress());
+  const addAdmin = () => dispatch(addSchoolAddressForm());
   const removeAdmin = (index) => dispatch(removeSchoolAddress(index));
 
   // Expose formik methods to parent component
@@ -237,7 +253,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
 
   const saveData = async (index) => {
     if (await checkFormValidation()) {
-      switch (_.get(schoolAddressesFormValues[index], "dbOPeration", "")) {
+      switch (_.get(schoolAddressesFormValues[index], "dbOperation", "")) {
         case SCHOOL_SCREEN_DB_OPERATIONS.EDIT:
           dispatch(
             editSchoolAdminProfile(
@@ -248,6 +264,20 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
           );
           break;
         case SCHOOL_SCREEN_DB_OPERATIONS.ADD:
+          if (isSchoolAddressesFormValid && isSchoolAdminsFormValidated) {
+            dispatch(
+              addSchoolAddress(
+                setAddSchoolAddressAPIPaylod({
+                  ...schoolAddressesFormValues[index],
+                  schoolId: schoolFormValues.id,
+                }),
+              ),
+            );
+            dispatch(setFormHasError(false));
+          } else {
+            dispatch(setFormHasError(true));
+          }
+          break;
           break;
         default:
           break;

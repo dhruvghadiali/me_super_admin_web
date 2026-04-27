@@ -247,14 +247,13 @@ const SchoolScreenFormComponent = () => {
           </Button>
         </div>
       </div>
-      {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.ADD &&
-        isFormHasError && (
-          <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
-            <p className="text-sm text-destructive">
-              {"Please fill out all required fields."}
-            </p>
-          </div>
-        )}
+      {isFormHasError && (
+        <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
+          <p className="text-sm text-destructive">
+            {"Please fill out all required fields."}
+          </p>
+        </div>
+      )}
       {schoolsScreenDBOperationError && (
         <div className="w-full rounded-md bg-destructive/10 border border-destructive/20 px-3 py-2 mr-4">
           <p className="text-sm text-destructive">

@@ -8,6 +8,7 @@ import {
   editSchool,
   getschools,
   getSchoolTypes,
+  addSchoolAddress,
   editOrganization,
   editSchoolAddress,
   getEducationBoards,
@@ -110,7 +111,7 @@ export const schoolsSlice = createSlice({
       state.isSchoolAddressesFormValid = action.payload;
       state.isFormHasError = false;
     },
-    addSchoolAddress: (state) => {
+    addSchoolAddressForm: (state) => {
       state.schoolAddressesFormValues = _.concat(
         state.schoolAddressesFormValues,
         schoolAddressesInitialValues,
@@ -252,7 +253,19 @@ export const schoolsSlice = createSlice({
       .addCase(editSchoolAdminProfile.rejected, (state, action) => {
         state.schoolsScreenDBOperationLoader = false;
         state.schoolsScreenDBOperationError = action.payload.error;
-      });
+      })
+      .addCase(addSchoolAddress.pending, (state) => {
+        state.schoolsScreenDBOperationLoader = true;
+        state.schoolsScreenDBOperationError = "";
+      })
+      .addCase(addSchoolAddress.fulfilled, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
+      })
+      .addCase(addSchoolAddress.rejected, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
+      })
   },
 });
 
@@ -270,7 +283,7 @@ export const {
   setSchoolFormValidationStatus,
   setSchoolAddressesFormValues,
   setSchoolAddressesFormValidationStatus,
-  addSchoolAddress,
+  addSchoolAddressForm,
   removeSchoolAddress,
   setSchoolAdminsFormValidationStatus,
   setFormHasError,
