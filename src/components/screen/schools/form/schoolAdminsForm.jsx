@@ -9,6 +9,7 @@ import * as Yup from "yup";
 
 import { phoneNumberRegex } from "@MEHelpers/regex";
 import { Button } from "@MEShadcnComponents/button";
+import { Spinner } from "@MEShadcnComponents/spinner";
 import { SCHOOL_SCREEN_DB_OPERATIONS } from "@MEHelpers/enums";
 import {
   Card,
@@ -332,6 +333,7 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
                   onClick={() => saveData(adminIndex)}
                 >
                   <Save className="w-4 h-4" />
+                  {schoolsScreenDBOperationLoader && <Spinner />}
                 </Button>
               )}
               {formik.values.schoolAdmins.length > schoolAdminsMinLimit && (

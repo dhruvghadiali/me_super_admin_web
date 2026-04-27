@@ -91,7 +91,7 @@ const setSchoolAdmin = (schoolAdmin) => ({
 
 const setSchoolAddresses = (addresses) =>
   _.map(addresses, (address) => ({
-    dbOPeration: SCHOOL_SCREEN_DB_OPERATIONS.EDIT,
+    dbOperation: SCHOOL_SCREEN_DB_OPERATIONS.EDIT,
     id: _.get(address, "id", null),
     address: _.get(address, "address", ""),
     isActive: _.get(address, "is_active", false),

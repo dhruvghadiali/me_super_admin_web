@@ -8,6 +8,7 @@ import _ from "lodash";
 import * as Yup from "yup";
 
 import { Button } from "@MEShadcnComponents/button";
+import { Spinner } from "@MEShadcnComponents/spinner";
 import {
   editSchoolAddress,
   addSchoolAddress,
@@ -319,6 +320,7 @@ const SchoolScreenSchoolAddressesFormComponent = forwardRef((props, ref) => {
                   onClick={() => saveData(addressIndex)}
                 >
                   <Save className="w-4 h-4" />
+                  {schoolsScreenDBOperationLoader && <Spinner/>}
                 </Button>
               )}
               {formik.values.schoolAddresses.length >
