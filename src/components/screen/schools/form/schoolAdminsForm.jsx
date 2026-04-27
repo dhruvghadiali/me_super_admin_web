@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useEffect } from "react";
 import { useFormik } from "formik";
-import { Plus, Trash2, Save } from "lucide-react";
+import { Plus, Trash2, Save, KeyRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -27,10 +27,12 @@ import {
 import {
   addSchoolAddress,
   editSchoolAdminProfile,
+  changeSchoolAdminPassword,
 } from "@MERedux/schools/schoolsAction";
 import {
   setEditSchoolAdminProfileAPIPayload,
   setAddSchoolAddressAPIPaylod,
+  setSchoolAdminChangePasswordAPIPayload,
 } from "@MEUtils/apiPayload";
 import {
   emailMaxChar,
@@ -300,6 +302,16 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
     }
   };
 
+  const changePassword = (index) => {
+    dispatch(
+      changeSchoolAdminPassword(
+        setSchoolAdminChangePasswordAPIPayload(
+          formik.values.schoolAdmins[index]?.id,
+        ),
+      ),
+    );
+  };
+
   const renderAdminForm = (adminIndex) => {
     const adminErrors = formik.errors.schoolAdmins?.[adminIndex] || {};
     const adminTouched = formik.touched.schoolAdmins?.[adminIndex] || {};
@@ -323,6 +335,21 @@ const SchoolScreenSchoolAdminsFormComponent = forwardRef((props, ref) => {
               <p className="text-xs">{`(${schoolAddress})`}</p>
             </CardTitle>
             <div className="flex gap-x-2.5">
+              {schoolsScreenDBOperation === SCHOOL_SCREEN_DB_OPERATIONS.EDIT &&
+                _.get(schoolAddressesFormValues[0], "dbOperation") ===
+                  SCHOOL_SCREEN_DB_OPERATIONS.EDIT && (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    className={"hover:cursor-pointer"}
+                    disabled={schoolsScreenDBOperationLoader}
+                    onClick={() => changePassword(adminIndex)}
+                  >
+                    <KeyRound className="w-4 h-4" />
+                    {schoolsScreenDBOperationLoader && <Spinner />}
+                  </Button>
+                )}
               {schoolsScreenDBOperation ===
                 SCHOOL_SCREEN_DB_OPERATIONS.EDIT && (
                 <Button

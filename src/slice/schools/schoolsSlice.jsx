@@ -13,6 +13,7 @@ import {
   editSchoolAddress,
   getEducationBoards,
   editSchoolAdminProfile,
+  changeSchoolAdminPassword,
 } from "@MERedux/schools/schoolsAction";
 import {
   SCHOOL_INFORMATION_VIEW,
@@ -266,6 +267,18 @@ export const schoolsSlice = createSlice({
         state.schoolsScreenDBOperationLoader = false;
         state.schoolsScreenDBOperationError = action.payload.error;
       })
+      .addCase(changeSchoolAdminPassword.pending, (state) => {
+        state.schoolsScreenDBOperationLoader = true;
+        state.schoolsScreenDBOperationError = "";
+      })
+      .addCase(changeSchoolAdminPassword.fulfilled, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
+      })
+      .addCase(changeSchoolAdminPassword.rejected, (state, action) => {
+        state.schoolsScreenDBOperationLoader = false;
+        state.schoolsScreenDBOperationError = action.payload.error;
+      });
   },
 });
 

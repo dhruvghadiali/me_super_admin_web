@@ -9,6 +9,7 @@ import {
   educationBoardsAPIRoute,
   schoolAddressesAPIRoute,
   schoolAdminProfileAPIRoute,
+  schoolAdminChangePasswordAPIRoute,
 } from "@/utils/apiRoutes";
 import {
   setSchoolsInformation,
@@ -336,6 +337,38 @@ const addSchoolAddress = createAsyncThunk(
   },
 );
 
+const changeSchoolAdminPassword = createAsyncThunk(
+  "schools/changeSchoolAdminPassword",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const response = await axiosInstance.put(
+        `${schoolAdminChangePasswordAPIRoute}/${payload.id}`,
+        payload.data,
+        {
+          state: getState(),
+        },
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getschools());
+        return { error: "" };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to change school admin password. Please try again.",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
 export {
   getStates,
   addSchool,
@@ -347,4 +380,5 @@ export {
   editSchoolAdminProfile,
   getEducationBoards,
   addSchoolAddress,
+  changeSchoolAdminPassword,
 };

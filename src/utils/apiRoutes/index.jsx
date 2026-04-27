@@ -7,6 +7,7 @@ const schoolTypesAPIRoute = "/school-types";
 const educationBoardsAPIRoute = "/education-boards";
 const schoolAddressesAPIRoute = "/school-addresses";
 const schoolAdminProfileAPIRoute = "/school-admins/profile";
+const schoolAdminChangePasswordAPIRoute = "/school-admins/change-password";
 
 export {
   signInAPIRoute,
@@ -18,4 +19,5 @@ export {
   educationBoardsAPIRoute,
   schoolAddressesAPIRoute,
   schoolAdminProfileAPIRoute,
+  schoolAdminChangePasswordAPIRoute
 };

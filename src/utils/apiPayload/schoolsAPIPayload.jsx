@@ -156,6 +156,13 @@ const setAddSchoolAddressAPIPaylod = (formValues) => ({
   },
 });
 
+const setSchoolAdminChangePasswordAPIPayload = (id = "") => ({
+  id: id,
+  data: {
+    password: "123456789",
+  },
+});
+
 export {
   setAddSchoolAPIPayload,
   setEditSchoolAddressAPIPayload,
@@ -163,4 +170,5 @@ export {
   setEditSchoolInformation,
   setEditSchoolAdminProfileAPIPayload,
   setAddSchoolAddressAPIPaylod,
+  setSchoolAdminChangePasswordAPIPayload,
 };
