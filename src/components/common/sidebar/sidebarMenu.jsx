@@ -22,6 +22,7 @@ import {
   DASHBOARD,
   DISTRICTS,
   AREA_NAMES,
+  FACILITY_TYPES,
 } from "@MEUtils/pageRoutes";
 
 const menuItems = [
@@ -37,7 +38,7 @@ const menuItems = [
   },
   {
     title: "facility types",
-    path: STATES,
+    path: FACILITY_TYPES,
     icon: HotelIcon,
   },
   {

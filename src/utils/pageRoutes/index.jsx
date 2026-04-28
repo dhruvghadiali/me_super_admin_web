@@ -6,6 +6,7 @@ const ZIPCODES = "/zipcodes";
 const DISTRICTS = "/districts";
 const DASHBOARD = "/dashboard";
 const AREA_NAMES = "/area-names";
+const FACILITY_TYPES = "/facility-types";
 
 export {
   STATES,
@@ -16,4 +17,5 @@ export {
   DASHBOARD,
   DISTRICTS,
   AREA_NAMES,
+  FACILITY_TYPES,
 };

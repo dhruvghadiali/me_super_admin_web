@@ -10,6 +10,7 @@ import {
   DASHBOARD,
   DISTRICTS,
   AREA_NAMES,
+  FACILITY_TYPES,
 } from "@MEUtils/pageRoutes";
 
 // HOC components
@@ -25,6 +26,7 @@ import SigninPage from "@MEPages/signinPage";
 import StatesPage from "@MEPages/statesPage";
 import SchoolsPage from "@MEPages/schoolsPage";
 import DistrictsPage from "@MEPages/districtsPage";
+import FacilityTypesPage from "@MEPages/facilityTypesPage";
 import NotFoundPage from "@MEPages/notFoundPage";
 
 const App = () => {
@@ -60,6 +62,16 @@ const App = () => {
                 <ProtectedRoute>
                   <MESidebarComponent>
                     <SchoolsPage />
+                  </MESidebarComponent>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path={FACILITY_TYPES}
+              element={
+                <ProtectedRoute>
+                  <MESidebarComponent>
+                    <FacilityTypesPage />
                   </MESidebarComponent>
                 </ProtectedRoute>
               }
